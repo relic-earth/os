@@ -51,7 +51,7 @@ export function Viewer({ win, tv }: { win: RelicWindow; tv?: boolean }) {
             <div className="panel absolute bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-3 px-3 py-1">
               <button onClick={() => setPage((p) => Math.max(0, p - 1))} className="text-ash hover:text-bone" aria-label="Previous page"><ChevronLeft size={14} /></button>
               <span className="num text-[10px] tracking-[0.2em] text-bone">{page + 1} / {pages}</span>
-              <button onClick={() => setPage((p) => Math.min(shown - 1, p + 1))} className="text-ash hover:text-bone" aria-label="Next page"><ChevronRight size={14} /></button>
+              <button onClick={() => setPage((p) => Math.min(pages - 1, p + 1))} className="text-ash hover:text-bone" aria-label="Next page"><ChevronRight size={14} /></button>
             </div>
           )}
         </div>

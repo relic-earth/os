@@ -61,7 +61,7 @@ export function ThermostatMode() {
   const ia = angleFor(th.indoor)
 
   return (
-    <div className="relative flex h-full w-full items-center justify-center overflow-hidden">
+    <div className="relative flex h-full w-full items-center justify-center overflow-clip">
       <Background variant="topographic" />
       <div className="absolute left-8 top-6 z-10 flex items-center gap-6">
         <Wordmark />

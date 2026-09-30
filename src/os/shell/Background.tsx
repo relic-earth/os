@@ -6,7 +6,7 @@ export function Background({ variant }: { variant?: string }) {
   const bg = useOS((s) => s.background)
   const v = variant ?? bg
   return (
-    <div className="pointer-events-none absolute inset-0 overflow-hidden bg-void">
+    <div className="pointer-events-none absolute inset-0 overflow-clip bg-void">
       {v === 'horizon' && (
         <>
           <Art variant="horizon" seed={4} className="absolute inset-0 h-full w-full opacity-80" />

@@ -9,7 +9,6 @@ import { authorize, requiresConfirmation } from './policies'
 import { classify } from './intent'
 import { memory } from './memory'
 import { getOS, setOS, sleep, uid } from '../os/runtime/store'
-import { getApp } from '../os/apps/registry'
 import { notifications } from '../os/notifications/service'
 import { cloudAi } from '../cloud/ai'
 
@@ -140,10 +139,4 @@ export const relicAgent: RelicAgent = {
       }
     }
   },
-}
-
-/** Friendly name for a focused app, used in UI hints. */
-export const focusName = () => {
-  const f = systemContext().focused
-  return f ? getApp(f.appId)?.name ?? f.title : undefined
 }

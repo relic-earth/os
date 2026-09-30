@@ -195,20 +195,22 @@ export function Art({ variant, className, seed = 3 }: { variant: string; classNa
 
       {v === 'render' && (
         <>
-          <rect width="400" height="300" fill={`url(#${id}-sun)`} opacity="0.6" />
-          <path d={ridge(seed + 2, 250, 50)} fill="#0b0808" />
+          <rect width="400" height="300" fill={`url(#${id}-sun)`} />
+          <ellipse cx="220" cy="210" rx="170" ry="40" fill="#e8242b" opacity="0.12" filter={`url(#${id}-glow)`} />
+          <path d={ridge(seed + 2, 236, 60)} fill="#140d0d" />
+          <path d={ridge(seed + 9, 250, 30)} fill="#0c0808" />
           {/* cantilevered house */}
-          <path d="M90 214 L300 214 L300 222 L90 222 Z" fill="#1a1414" stroke="#3a0a0d" strokeWidth="0.5" />
-          <path d="M120 170 L330 170 L330 178 L120 178 Z" fill="#221a1a" />
-          <rect x="130" y="178" width="150" height="36" fill="#0a0707" />
-          <rect x="138" y="182" width="134" height="28" fill="#e8242b" opacity="0.28" />
-          <rect x="138" y="182" width="134" height="28" fill="none" stroke="#e8242b" strokeOpacity="0.6" strokeWidth="0.5" />
+          <path d="M80 212 L310 212 L310 221 L80 221 Z" fill="#2b2222" stroke="#5a1418" strokeWidth="0.5" />
+          <path d="M112 164 L340 164 L340 173 L112 173 Z" fill="#352a2a" />
+          <rect x="124" y="173" width="162" height="39" fill="#0d0909" />
+          <rect x="132" y="177" width="146" height="31" fill="#e8242b" opacity="0.42" />
+          <rect x="132" y="177" width="146" height="31" fill="none" stroke="#ff6a6a" strokeOpacity="0.7" strokeWidth="0.6" />
           {Array.from({ length: 6 }).map((_, i) => (
-            <line key={i} x1={160 + i * 22} x2={160 + i * 22} y1="182" y2="210" stroke="#1a0506" strokeWidth="1" />
+            <line key={i} x1={156 + i * 22} x2={156 + i * 22} y1="177" y2="208" stroke="#220607" strokeWidth="1.2" />
           ))}
-          <rect x="280" y="178" width="40" height="36" fill="#141010" />
-          <path d="M0 240 L400 232 L400 300 L0 300Z" fill="#050404" />
-          <path d="M90 240 L300 236 L300 244 L90 248 Z" fill="#e8242b" opacity="0.12" />
+          <rect x="286" y="173" width="44" height="39" fill="#1f1818" />
+          <path d="M0 238 L400 229 L400 300 L0 300Z" fill="#070505" />
+          <path d="M92 238 L300 233 L300 243 L92 248 Z" fill="#e8242b" opacity="0.22" filter={`url(#${id}-glow)`} />
         </>
       )}
 

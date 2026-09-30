@@ -33,7 +33,7 @@ export function Home({ compact }: { compact?: boolean }) {
           </div>
         </motion.div>
 
-        <div className={`mt-6 grid gap-4 ${compact ? 'grid-cols-2' : 'grid-cols-2 xl:grid-cols-4'}`}>
+        <div className="mt-6 grid grid-cols-2 gap-4 md:grid-cols-4">
           {TILES.map((t, i) => (
             <motion.button
               key={t.id}

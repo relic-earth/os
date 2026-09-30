@@ -15,7 +15,7 @@ export const PROFILES: { id: Profile; label: string; mode: string }[] = [
   { id: 'relic-thermostat', label: 'RELIC THERMOSTAT', mode: 'SINGLE PURPOSE' },
 ]
 
-export function DeviceSwitcher({ align = 'right', compact }: { align?: 'right' | 'left'; compact?: boolean }) {
+export function DeviceSwitcher({ align = 'right', compact, up }: { align?: 'right' | 'left'; compact?: boolean; up?: boolean }) {
   const [open, setOpen] = useState(false)
   const profile = useOS((s) => s.profile)
   const devices = useOS((s) => s.devices)
@@ -36,11 +36,11 @@ export function DeviceSwitcher({ align = 'right', compact }: { align?: 'right' |
           <>
             <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
             <motion.div
-              initial={{ opacity: 0, y: -4 }}
+              initial={{ opacity: 0, y: up ? 4 : -4 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -4 }}
+              exit={{ opacity: 0, y: up ? 4 : -4 }}
               transition={{ duration: 0.16 }}
-              className={`panel ticks absolute top-9 z-50 w-[280px] py-2 ${align === 'right' ? 'right-0' : 'left-0'}`}
+              className={`panel ticks absolute z-50 w-[280px] py-2 ${up ? 'bottom-9' : 'top-9'} ${align === 'right' ? 'right-0' : 'left-0'}`}
             >
               <div className="label-sm px-4 pb-2 pt-1">RENDER THIS SCREEN AS</div>
               {PROFILES.map((p) => {

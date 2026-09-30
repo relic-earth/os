@@ -17,12 +17,12 @@ export function OSShell({ compact }: { compact?: boolean }) {
   const section = useOS((s) => s.section)
   const profile = useOS((s) => s.profile)
   return (
-    <div className="relative flex h-full w-full flex-col overflow-hidden">
+    <div className="relative flex h-full w-full flex-col overflow-clip">
       <Background />
       <TopBar compact={compact} />
       <div className="relative flex min-h-0 flex-1">
         <Sidebar compact={compact} />
-        <main className="relative min-w-0 flex-1">
+        <main className="relative min-w-0 flex-1 overflow-clip">
           <AnimatePresence mode="wait">
             <motion.div
               key={section + profile}

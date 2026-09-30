@@ -32,9 +32,9 @@ const TABS: { id: Tab; label: string; icon: string }[] = [
 /** RELIC PHONE — mobile shell. Same environment, different body. */
 export function PhoneMode({ framed }: { framed: boolean }) {
   const screen = <PhoneShell />
-  if (!framed) return <div className="relative h-full w-full overflow-hidden bg-void">{screen}</div>
+  if (!framed) return <div className="relative h-full w-full overflow-clip bg-void">{screen}</div>
   return (
-    <div className="relative flex h-full w-full items-center justify-center overflow-hidden">
+    <div className="relative flex h-full w-full items-center justify-center overflow-clip">
       <Background />
       <div className="absolute left-8 top-6 z-10 flex items-center gap-6">
         <Wordmark />

@@ -107,10 +107,10 @@ export function TVMode() {
   const hero = items[focus] ?? items[0]
 
   return (
-    <div className="relative h-full w-full overflow-hidden bg-void">
+    <div className="relative h-full w-full overflow-clip bg-void">
       <AnimatePresence mode="wait">
         {screen.kind === 'player' && (
-          <motion.div key="player" className="absolute inset-0 z-10 bg-void" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+          <motion.div key="player" className="absolute inset-0 z-30 bg-void" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
             <Player win={{ id: 'tv-player', appId: 'player', title: '', deviceId: TV, x: 0, y: 0, width: 0, height: 0, z: 0, minimized: false, maximized: true, focused: true, sessionId: screen.sessionId }} tv />
             <TVHint text="ENTER PLAY/PAUSE · ← → SEEK · ESC BACK" />
           </motion.div>
@@ -120,7 +120,7 @@ export function TVMode() {
           if (!w) return null
           const from = sessions.find((s) => s.id === w.sessionId)?.history.slice(-2)[0]?.deviceId
           return (
-            <motion.div key="app" className="absolute inset-0 z-10 flex flex-col bg-void" initial={{ opacity: 0, scale: 1.02 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}>
+            <motion.div key="app" className="absolute inset-0 z-30 flex flex-col bg-void" initial={{ opacity: 0, scale: 1.02 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}>
               <div className="flex items-center gap-4 border-b hair bg-void px-10 py-4">
                 <Icon name={getApp(w.appId)?.icon} size={18} className="text-red" />
                 <span className="text-[14px] tracking-[0.4em] text-bone">{getApp(w.appId)?.name.toUpperCase()}</span>

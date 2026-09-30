@@ -23,7 +23,7 @@ export function CarMode() {
   const car = useOS((s) => s.devices.find((d) => d.id === CAR)!)
   const st = car.state as Record<string, number | boolean>
   return (
-    <div className="relative flex h-full w-full overflow-hidden bg-void text-bone">
+    <div className="relative flex h-full w-full overflow-clip bg-void text-bone">
       <div className="grain" />
       {/* rail */}
       <nav className="relative z-10 flex w-[150px] shrink-0 flex-col border-r hair bg-void/80">
@@ -33,7 +33,7 @@ export function CarMode() {
             {p.toUpperCase()}
           </button>
         ))}
-        <div className="mt-auto p-4"><DeviceSwitcher align="left" compact /></div>
+        <div className="mt-auto p-4"><DeviceSwitcher align="left" compact up /></div>
       </nav>
 
       <div className="relative flex min-w-0 flex-1 flex-col">

@@ -59,7 +59,10 @@ function plan(st: TurnState, ctx: SystemContext, offline: boolean): Plan {
   const { intent, rounds } = st
   const last = rounds[rounds.length - 1]
   const failed = rounds.find((r) => !r.ok)
-  if (failed) return { say: `I couldn't complete that: ${failed.content}.` }
+  if (failed) {
+    if (/denied/i.test(failed.content)) return { say: 'Cancelled — nothing was changed.' }
+    return { say: `I couldn't complete that: ${failed.content.replace(/\.$/, '')}.` }
+  }
 
   switch (intent.kind) {
     case 'temp_query': {

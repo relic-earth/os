@@ -29,10 +29,11 @@ function CommandSurface() {
 
   const results = useMemo(() => {
     if (q.length < 2) return { apps: [], files: [] }
-    const lower = q.toLowerCase()
+    const term = q.toLowerCase().replace(/^(open|launch|start|run|find|show|search( for)?)\s+/, '').trim()
+    if (term.length < 2) return { apps: [], files: [] }
     return {
-      apps: relicRuntime.apps.list().filter((a) => a.name.toLowerCase().includes(lower) || lower.includes(a.name.toLowerCase())).slice(0, 4),
-      files: relicRuntime.files.search(q, { limit: 4 }),
+      apps: relicRuntime.apps.list().filter((a) => !['viewer', 'player'].includes(a.id) && (a.name.toLowerCase().includes(term) || term.includes(a.name.toLowerCase()))).slice(0, 4),
+      files: relicRuntime.files.search(term, { limit: 4 }),
     }
   }, [q])
 

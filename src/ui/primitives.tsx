@@ -23,34 +23,12 @@ export function Wordmark({ className = '', size = 13 }: { className?: string; si
   )
 }
 
-export function Label({ children, className = '', red }: { children: ReactNode; className?: string; red?: boolean }) {
-  return <div className={`label ${red ? 'label-red' : ''} ${className}`}>{children}</div>
-}
-
-/** Stacked KEY / VALUE readout used throughout the HUD. */
-export function Readout({ k, v, active, className = '' }: { k: ReactNode; v: ReactNode; active?: boolean; className?: string }) {
-  return (
-    <div className={className}>
-      <div className="label-sm">{k}</div>
-      <div className={`mt-1 text-[12px] tracking-[0.2em] uppercase ${active ? 'text-signal' : 'text-bone'}`}>{v}</div>
-    </div>
-  )
-}
-
-export function Rule({ className = '' }: { className?: string }) {
-  return <div className={`h-px bg-[var(--line-soft)] ${className}`} />
-}
-
 export function Bar({ value, className = '' }: { value: number; className?: string }) {
   return (
     <div className={`bar ${className}`}>
       <i style={{ width: `${Math.max(0, Math.min(1, value)) * 100}%` }} />
     </div>
   )
-}
-
-export function StatusDot({ on = true, pulse }: { on?: boolean; pulse?: boolean }) {
-  return <span className={`dot ${on ? '' : 'dot-off'} ${pulse ? 'pulse' : ''}`} />
 }
 
 export function statusText(d: RelicDevice) {

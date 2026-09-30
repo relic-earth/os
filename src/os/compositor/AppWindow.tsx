@@ -125,7 +125,7 @@ export function AppWindow({ win, children }: { win: RelicWindow; children: React
           </div>
         </div>
 
-        <div className="relative min-h-0 flex-1 overflow-hidden">
+        <div className="relative min-h-0 flex-1 overflow-clip">
           {children}
           {showCompat && isForeign && <CompatPanel win={win} onClose={() => setShowCompat(false)} />}
           <ComputerUseOverlay windowId={win.id} />

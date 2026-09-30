@@ -73,7 +73,7 @@ export function ClaudeInput({ autoFocus, onSubmitted, placeholder = 'ASK CLAUDEâ
   const busy = useOS((s) => s.agentBusy)
   const ref = useRef<HTMLInputElement>(null)
   useEffect(() => {
-    if (autoFocus) ref.current?.focus()
+    if (autoFocus) ref.current?.focus({ preventScroll: true })
   }, [autoFocus])
   const preview = text.trim().length > 2 ? classify(text) : null
   const submit = () => {
