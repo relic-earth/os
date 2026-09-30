@@ -53,8 +53,8 @@ EMythDistrict FMythCityGrid::BlockDistrict(int32 IX, int32 IY)
 
 bool FMythCityGrid::WorldToBlock(const FVector& P, int32& OutX, int32& OutY)
 {
-	OutX = FMath::FloorToInt(P.X / Pitch + NumBlocksX * 0.5f);
-	OutY = FMath::FloorToInt(P.Y / Pitch + NumBlocksY * 0.5f);
+	OutX = FMath::FloorToInt32(P.X / Pitch + NumBlocksX * 0.5f);
+	OutY = FMath::FloorToInt32(P.Y / Pitch + NumBlocksY * 0.5f);
 	return IsValidBlock(OutX, OutY);
 }
 

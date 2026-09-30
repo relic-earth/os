@@ -128,7 +128,8 @@ class Graph(object):
             inputs.append(ci)
         node.set_editor_property("inputs", inputs)
         for n in self.INPUTS:
-            MEL.connect_material_expressions(self.src[n], "", node, n)
+            if not MEL.connect_material_expressions(self.src[n], "", node, n):
+                unreal.log_error("[MYTH content] %s: could not connect input %s in %s" % (self.mat.get_name(), n, name))
         if prop is not None:
             MEL.connect_material_property(node, "", prop)
         return node
@@ -443,7 +444,7 @@ def build_glass_clear(mpc):
     m = new_material("M_Myth_GlassClear")
     set_prop(m, "blend_mode", unreal.BlendMode.BLEND_TRANSLUCENT)
     set_prop(m, "two_sided", True)
-    set_prop(m, "translucency_lighting_mode", unreal.TranslucencyLightingMode.TLM_SURFACE_PER_PIXEL_LIGHTING)
+    set_prop(m, "translucency_lighting_mode", unreal.TranslucencyLightingMode.TLM_SURFACE)
     g = Graph(m, mpc)
     g.custom("BaseColor", "return CA.rgb;", F3, P.MP_BASE_COLOR)
     g.custom("Roughness", GLASS_ROUGH, F1, P.MP_ROUGHNESS)
@@ -537,6 +538,7 @@ def build_text():
         MEL.connect_material_expressions(node, "", mul, "A")
         MEL.connect_material_property(mul, "", P.MP_EMISSIVE_COLOR)
         set_prop(mat, "shading_model", unreal.MaterialShadingModel.MSM_UNLIT)
+        set_prop(mat, "used_as_special_engine_material", False)
         finish(mat)
     except Exception as e:
         log("text material skipped: %s" % e)

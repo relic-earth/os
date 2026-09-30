@@ -63,8 +63,8 @@ void AMythStreetLightPool::BeginPlay()
 		S->OuterConeAngle = 62.f;
 		S->SourceRadius = 30.f;
 		S->SetLightColor(FLinearColor(1.f, 0.82f, 0.62f));
-		S->VolumetricScatteringIntensity = 3.f;
-		S->SetCastShadows(i < 3);
+		S->VolumetricScatteringIntensity = 1.5f;
+		S->SetCastShadows(FMythGraphics::Current() >= EMythGraphicsPreset::High && i < 2);
 		S->SetWorldRotation(FRotator(-90.f, 0.f, 0.f));
 		S->RegisterComponent();
 		S->SetVisibility(false);
@@ -148,6 +148,7 @@ void AMythTrain::BeginPlay()
 		TailLamps.Add(MakePart(this, RootComponent, EMythMesh::Cube, "Taillight", FVector(EX, 0, Z + 330.f), FVector(4.f, 200.f, 8.f)));
 	}
 	CabinLight = NewObject<UPointLightComponent>(this);
+	CabinLight->SetMobility(EComponentMobility::Movable);
 	CabinLight->SetupAttachment(RootComponent);
 	CabinLight->SetRelativeLocation(FVector(0, 0, Z + 250.f));
 	CabinLight->IntensityUnits = ELightUnits::Candelas;
@@ -242,7 +243,8 @@ void AMythEventDirector::BeginPlay()
 			Letters.Add(FVector(FMath::Lerp(S[0], S[2], T), 0.f, FMath::Lerp(S[1], S[3], T)));
 		}
 	}
-	for (int32 i = 0; i < Letters.Num(); ++i) Drones->AddInstance(FTransform(FQuat::Identity, FVector::ZeroVector, FVector::ZeroVector), false);
+	for (int32 i = 0; i < Letters.Num(); ++i) Drones->AddInstance(FTransform(FQuat::Identity, FVector::ZeroVector, FVector(0.9f)), false);
+	Drones->SetVisibility(false);
 	ShowPositions.SetNum(Letters.Num());
 
 	USceneComponent* CourierRoot = NewObject<USceneComponent>(this);
@@ -337,8 +339,9 @@ void AMythEventDirector::UpdateDroneShow(float Dt)
 	TArray<FTransform> Xf;
 	Xf.Reserve(N);
 	const bool bVisible = ShowTime < Duration;
-	for (int32 i = 0; i < N; ++i) Xf.Add(FTransform(FQuat::Identity, ShowPositions[i], bVisible ? FVector(0.9f) : FVector::ZeroVector));
+	for (int32 i = 0; i < N; ++i) Xf.Add(FTransform(FQuat::Identity, ShowPositions[i], FVector(0.9f)));
 	Drones->BatchUpdateInstancesTransforms(0, Xf, true, true, false);
+	if (Drones->IsVisible() != bVisible) Drones->SetVisibility(bVisible);
 	if (!bVisible) ShowTime = -1.f;
 }
 
@@ -417,6 +420,7 @@ void AMythPickupManager::BeginPlay()
 		V->SetVisibility(!I.bTaken);
 		I.Mesh = Visuals.Add(V);
 		UPointLightComponent* L = NewObject<UPointLightComponent>(this);
+		L->SetMobility(EComponentMobility::Movable);
 		L->SetupAttachment(RootComponent);
 		L->SetWorldLocation(I.Pos);
 		L->IntensityUnits = ELightUnits::Candelas;

@@ -67,7 +67,7 @@ UInstancedStaticMeshComponent* AMythCityBuilder::GetISM(EMythMesh Mesh, FName Ma
 		C->LDMaxDrawDistance = PassDrawDistance;
 		C->SetCachedMaxDrawDistance(PassDrawDistance);
 	}
-	if (IsTranslucentKey(Mat)) C->bAffectDistanceFieldLighting = false;
+	if (IsTranslucentKey(Mat) || !bShadow) { C->bAffectDistanceFieldLighting = false; C->bAffectDynamicIndirectLighting = false; }
 	ISMs.Add(Key, C);
 	return C;
 }
@@ -82,7 +82,7 @@ static void SetInstanceData(UInstancedStaticMeshComponent* C, int32 Index, const
 int32 AMythCityBuilder::Box(FName Mat, const FVector& Center, const FVector& Size, const FRotator& Rot, bool bCollide, const FLinearColor& Tint)
 {
 	if (Size.X <= 0.1f || Size.Y <= 0.1f || Size.Z <= 0.1f) return INDEX_NONE;
-	UInstancedStaticMeshComponent* C = GetISM(EMythMesh::Cube, Mat, bCollide, Size.GetMin() > 3.f);
+	UInstancedStaticMeshComponent* C = GetISM(EMythMesh::Cube, Mat, bCollide, Size.GetMin() > 12.f); // tiny props: no shadows / distance field
 	const int32 I = C->AddInstance(FTransform(Rot, Center, Size / 100.f), false);
 	SetInstanceData(C, I, Tint, Rng.FRand());
 	return I;
@@ -176,7 +176,7 @@ UTextRenderComponent* AMythCityBuilder::Text(const FString& S, const FVector& Po
 	T->SetWorldSize(Size);
 	T->SetHorizontalAlignment(EHTA_Center);
 	T->SetVerticalAlignment(EVRTA_TextCenter);
-	T->SetTextRenderColor(Color.ToFColor(true));
+	T->SetTextRenderColor((Color / FMath::Max(1.f, Color.GetMax())).ToFColor(true)); // brightness comes from M_Myth_Text
 	T->SetCastShadow(false);
 	T->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	if (bEmissive && Assets->TextMaterial()) T->SetTextMaterial(Assets->TextMaterial());
@@ -479,7 +479,7 @@ void AMythCityBuilder::Tree(const FVector& Base, float Scale, bool bPit)
 	if (bPit)
 	{
 		Box("Soil", Base + FVector(0, 0, 1.f), FVector(150.f, 150.f, 2.f), FRotator::ZeroRotator, false);
-		Box("MetalDark", Base + FVector(0, 0, 1.5f), FVector(160.f, 160.f, 1.f), FRotator::ZeroRotator, false);
+		Box("MetalDark", Base + FVector(0, 0, 2.5f), FVector(160.f, 160.f, 1.f), FRotator::ZeroRotator, false);
 	}
 	const float TrunkH = 420.f * Scale;
 	Cyl("Bark", Base + FVector(0, 0, TrunkH * 0.5f), 26.f * Scale, TrunkH, FRotator(Rng.FRandRange(-3.f, 3.f), 0, Rng.FRandRange(-3.f, 3.f)), true);
@@ -487,7 +487,7 @@ void AMythCityBuilder::Tree(const FVector& Base, float Scale, bool bPit)
 	for (int32 b = 0; b < 3; ++b)
 	{
 		const float A = Rng.FRandRange(0.f, 360.f);
-		Cyl("Bark", Base + FVector(FMath::Cos(FMath::DegreesToRadians(A)) * 40.f, FMath::Sin(FMath::DegreesToRadians(A)) * 40.f, TrunkH * 0.85f), 10.f * Scale, 150.f * Scale, FRotator(35.f, A, 0), false);
+		Cyl("Bark", Base + FVector(FMath::Cos(FMath::DegreesToRadians(A)) * 40.f, FMath::Sin(FMath::DegreesToRadians(A)) * 40.f, TrunkH * 0.85f), 10.f * Scale, 150.f * Scale, FRotator(-35.f, A, 0), false);
 	}
 	// crown: clustered ellipsoids with slight hue variation
 	const FLinearColor Tint(Rng.FRandRange(0.8f, 1.2f), Rng.FRandRange(0.85f, 1.15f), Rng.FRandRange(0.8f, 1.1f));
@@ -713,7 +713,7 @@ void AMythCityBuilder::BuildWalkGraph()
 				const FVector Bk = C[(k + 1) % 4];
 				CornerIdx.Add(AddNode(A));
 				Ring.Add(CornerIdx.Last());
-				const int32 Subdiv = FMath::Max(1, FMath::RoundToInt(FVector::Dist(A, Bk) / 2200.f));
+				const int32 Subdiv = FMath::Max(1, (int32)FMath::RoundToInt(FVector::Dist(A, Bk) / 2200.0));
 				for (int32 s = 1; s < Subdiv; ++s)
 				{
 					Ring.Add(AddNode(FMath::Lerp(A, Bk, s / (float)Subdiv)));

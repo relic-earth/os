@@ -91,7 +91,10 @@ void AMythCityBuilder::Storefront(const FVector2D& A, const FVector2D& B, float 
 		const int32 C = Rng.RandRange(0, UE_ARRAY_COUNT(SignColors) - 1);
 		const FVector2D TP = M + OutN * 31.f;
 		const float TYaw = FMath::RadiansToDegrees(FMath::Atan2(OutN.Y, OutN.X));
+		const float PrevDist = PassDrawDistance;
+		PassDrawDistance = 15000.f;
 		Text(ShopNames[(SignCounter++) % UE_ARRAY_COUNT(ShopNames)], FVector(TP.X, TP.Y, GF - 45.f), TYaw, FMath::Min(55.f, Len / 12.f), SignColors[C] * 3.f);
+		PassDrawDistance = PrevDist;
 		Box(SignMats[C], At(0, 30.f, GF - 88.f), FVector(Len - 40.f, 2.f, 2.f), R, false);
 	}
 	else if (bLit)
