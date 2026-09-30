@@ -46,7 +46,7 @@ HARDWARE
 | `src/mesh` | Device identity, discovery (incl. wake-on-mesh), transport, and session continuity (`continuity.transfer`) |
 | `src/cloud` | Relic Cloud mocks (identity, devices, ai, storage, sync). The OS keeps working when the cloud is off. |
 | `src/agent/claude` | `ClaudeGateway` with providers: **Mock Claude** (default), **on-device router** (used while the cloud is down), **Anthropic API** (via proxy) |
-| `src/agent/tools` | 23 typed tools (`open_app`, `search_files`, `send_to_device`, `set_temperature`, `install_app`, `computer_use`, `vehicle_control`, …) and an executor that runs them against the runtime |
+| `src/agent/tools` | 22 typed tools (`open_app`, `search_files`, `send_to_device`, `set_temperature`, `install_app`, `computer_use`, `vehicle_control`, …) and an executor that runs them against the runtime |
 | `src/agent/policies` | Permission model (READ / LOW RISK / SENSITIVE / SYSTEM). Sensitive and system actions open a confirmation dialog. |
 | `src/agent/memory` | `RelicMemory` with a pluggable backend (localStorage now; Postgres, object storage and a vector index later) |
 

@@ -170,6 +170,6 @@ export function fmtAgo(ts: number) {
   if (d < 60) return 'JUST NOW'
   if (d < 3600) return `${Math.floor(d / 60)} MIN AGO`
   if (d < 86400) return `${Math.floor(d / 3600)} HR AGO`
-  if (d < 86400 * 7) return `${Math.floor(d / 86400)} DAYS AGO`
+  if (d < 86400 * 7) return Math.floor(d / 86400) === 1 ? "YESTERDAY" : `${Math.floor(d / 86400)} DAYS AGO`
   return new Date(ts).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase()
 }
