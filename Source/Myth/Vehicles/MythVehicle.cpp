@@ -42,6 +42,7 @@ AMythVehicle::AMythVehicle()
 
 	Engine = CreateDefaultSubobject<UMythEngineSynth>(TEXT("Engine"));
 	Engine->SetupAttachment(Collision);
+	Engine->bAutoActivate = false;
 
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationPitch = false;
@@ -260,6 +261,13 @@ void AMythVehicle::Tick(float DeltaSeconds)
 	}
 	else Speed = FMath::FInterpConstantTo(Speed, 0.f, Dt, 320.f);
 
+	if (!bOccupied && FMath::IsNearlyZero(Speed, 1.f))
+	{
+		Speed = 0.f;
+		UpdateGround(Dt);
+		return;
+	}
+
 	// ---- steering (kinematic bicycle model)
 	const float SpeedFrac = FMath::Clamp(FMath::Abs(Speed) / MaxFwd, 0.f, 1.f);
 	const float TargetSteer = Steer * FMath::Lerp(34.f, 8.f, SpeedFrac);
@@ -293,6 +301,8 @@ void AMythVehicle::Tick(float DeltaSeconds)
 		}
 		Speed *= (Impact > 0.6f) ? -0.15f : 0.85f;
 	}
+	// undo the step-up before following the ground
+	SetActorLocation(GetActorLocation() - FVector(0, 0, 30.f), true);
 	UpdateGround(Dt);
 
 	// ---- visual suspension, steering wheels, lights

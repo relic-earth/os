@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/HUD.h"
+#include "Engine/Canvas.h"
 #include "MythHUD.generated.h"
 
 class AMythPlayerController;

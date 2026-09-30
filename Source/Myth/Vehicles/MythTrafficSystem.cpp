@@ -20,6 +20,7 @@ AMythTrafficSystem::AMythTrafficSystem()
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.TickGroup = TG_PrePhysics;
 	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("TrafficRoot"));
+	RootComponent->SetMobility(EComponentMobility::Static); // static signal poles attach here; movable children are fine
 	Rng.Initialize(4242);
 }
 
@@ -358,7 +359,11 @@ void AMythTrafficSystem::StepCar(FMythTrafficCar& C, float Dt, int32 Index)
 		if (!C.bEmergency && !IsGreen(C.BI, C.BJ, bNS) && C.S < StopS + 20.f && C.S > StopS - 3500.f)
 		{
 			const bool bCommitted = C.S > StopS - 120.f && C.Speed > 600.f && IsGreen(C.BI, C.BJ, bNS, -3.f); // amber, too close to stop
-			if (!bCommitted) Target = FMath::Min(Target, FMath::Sqrt(FMath::Max(0.f, 2.f * 650.f * (StopS - C.S))));
+			if (!bCommitted)
+			{
+				Target = FMath::Min(Target, FMath::Sqrt(FMath::Max(0.f, 2.f * 650.f * (StopS - C.S))));
+				if (C.S > StopS) { C.S = StopS; C.Speed = 0.f; }
+			}
 		}
 		// car following (same segment + lane, or just past the next intersection)
 		float Gap = 1e9f;
@@ -386,7 +391,7 @@ void AMythTrafficSystem::StepCar(FMythTrafficCar& C, float Dt, int32 Index)
 		if (Ahead > 0.f && Ahead < 1600.f && Side < 230.f) Target = FMath::Min(Target, FMath::Max(0.f, (Ahead - HalfLen - 250.f) * 1.5f));
 	}
 
-	if (C.bTurning) Target = FMath::Min(Target, (C.P0 - C.P2).GetSafeNormal2D().Equals((C.P1 - C.P0).GetSafeNormal2D(), 0.05f) ? C.MaxSpeed : 700.f);
+	if (C.bTurning) Target = FMath::Min(Target, (C.P2 - C.P0).GetSafeNormal2D().Equals((C.P1 - C.P0).GetSafeNormal2D(), 0.05f) ? C.MaxSpeed : 700.f);
 	const float Accel = Target < C.Speed ? 1100.f : 380.f;
 	C.bBraking = Target < C.Speed - 60.f || C.Speed < 40.f;
 	C.Speed = FMath::FInterpConstantTo(C.Speed, Target, Dt, Accel);

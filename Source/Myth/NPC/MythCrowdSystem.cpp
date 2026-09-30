@@ -477,6 +477,7 @@ void AMythCrowdSystem::Think(AMythNPC& N, float Dt)
 			N.State = EMythNPCState::Walking;
 			N.Activity = EMythActivity::LeaveBuilding;
 			N.CurrentNode = City->FindNearestWalkNode(N.Pos);
+			if (N.CurrentNode == INDEX_NONE) { ChooseNext(N); break; }
 			N.Path = { City->WalkNodes[N.CurrentNode].Pos }; N.PathEdges = { INDEX_NONE }; N.PathNodes = { N.CurrentNode }; N.PathIndex = 0;
 			N.TargetYaw = N.Yaw + 180.f;
 		}
@@ -565,7 +566,7 @@ void AMythCrowdSystem::Render()
 void AMythCrowdSystem::Recycle()
 {
 	APlayerCameraManager* Cam = UGameplayStatics::GetPlayerCameraManager(this, 0);
-	if (!Cam || City->WalkNodes.Num() == 0) return;
+	if (!Cam || City->WalkNodes.Num() == 0 || NPCs.Num() == 0) return;
 	const FVector CamLoc = Cam->GetCameraLocation();
 	const FVector Fwd = Cam->GetCameraRotation().Vector().GetSafeNormal2D();
 
