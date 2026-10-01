@@ -460,8 +460,15 @@ def build_carpaint(mpc):
     g.custom("BaseColor", "return CA.rgb * float3(CD0, CD1, CD2) * lerp(1.0, 0.85, Wet);", F3, P.MP_BASE_COLOR)
     g.custom("Metallic", "return PA.y;", F1, P.MP_METALLIC)
     g.custom("Roughness", CARPAINT_DROPS + "return saturate(lerp(PA.x, 0.08, drop));", F1, P.MP_ROUGHNESS)
-    g.custom("ClearCoat", "return 1.0;", F1, P.MP_CUSTOM_DATA0)
-    g.custom("ClearCoatRoughness", CARPAINT_DROPS + "return lerp(0.035, 0.25, drop);", F1, P.MP_CUSTOM_DATA1)
+    # clear coat inputs are named differently across engine versions
+    cc = next((getattr(P, n) for n in ("MP_CUSTOM_DATA0", "MP_CUSTOMDATA0", "MP_CLEAR_COAT") if hasattr(P, n)), None)
+    ccr = next((getattr(P, n) for n in ("MP_CUSTOM_DATA1", "MP_CUSTOMDATA1", "MP_CLEAR_COAT_ROUGHNESS") if hasattr(P, n)), None)
+    if cc is not None and ccr is not None:
+        g.custom("ClearCoat", "return 1.0;", F1, cc)
+        g.custom("ClearCoatRoughness", CARPAINT_DROPS + "return lerp(0.035, 0.25, drop);", F1, ccr)
+    else:
+        log("clear coat inputs not exposed to Python here; car paint uses default lit")
+        set_prop(m, "shading_model", unreal.MaterialShadingModel.MSM_DEFAULT_LIT)
     g.custom("Normal", CARPAINT_DROPS + "return normalize(nrm + float3(fd * drop * 1.5, 0.0));", F3, P.MP_NORMAL)
     finish(m)
 
@@ -538,7 +545,6 @@ def build_text():
         MEL.connect_material_expressions(node, "", mul, "A")
         MEL.connect_material_property(mul, "", P.MP_EMISSIVE_COLOR)
         set_prop(mat, "shading_model", unreal.MaterialShadingModel.MSM_UNLIT)
-        set_prop(mat, "used_as_special_engine_material", False)
         finish(mat)
     except Exception as e:
         log("text material skipped: %s" % e)
