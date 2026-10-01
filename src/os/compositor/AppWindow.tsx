@@ -86,15 +86,15 @@ export function AppWindow({ win, children }: { win: RelicWindow; children: React
       onPointerDown={() => !win.focused && relicRuntime.windows.focus(win.id)}
     >
       <div
-        className={`relative flex h-full flex-col overflow-hidden border bg-[rgba(14,12,12,0.96)] backdrop-blur-xl transition-[border-color,box-shadow] duration-300 ${win.maximized ? 'rounded-none' : 'rounded-[18px]'} ${
+        className={`relative flex h-full flex-col overflow-hidden border bg-[linear-gradient(180deg,rgba(18,8,9,0.97),rgba(6,3,3,0.97))] backdrop-blur-xl transition-[border-color,box-shadow] duration-300 ${win.maximized ? 'rounded-none' : 'rounded-[18px]'} ${
           win.focused
-            ? 'border-[rgba(232,36,43,0.32)] shadow-[0_30px_90px_rgba(0,0,0,0.8),0_0_0_1px_rgba(232,36,43,0.12),0_0_60px_rgba(232,36,43,0.16)]'
+            ? 'border-[rgba(176,138,82,0.4)] shadow-[inset_0_1px_0_rgba(216,179,122,0.2),0_30px_90px_rgba(0,0,0,0.85),0_0_60px_rgba(200,24,32,0.18)]'
             : 'border-[var(--line-faint)] shadow-[0_20px_60px_rgba(0,0,0,0.55)]'
         }`}
       >
         {/* title bar — lights on the left, title centred */}
         <div
-          className={`group/title relative flex h-[44px] shrink-0 items-center gap-3 border-b px-4 ${win.focused ? 'border-[rgba(245,240,235,0.1)] bg-[rgba(34,27,27,0.55)]' : 'border-[var(--line-faint)] bg-[rgba(24,20,20,0.5)]'} ${dragging ? 'cursor-grabbing' : ''}`}
+          className={`group/title relative flex h-[44px] shrink-0 items-center gap-3 border-b px-4 ${win.focused ? 'border-[rgba(176,138,82,0.28)] bg-[linear-gradient(180deg,rgba(40,14,16,0.7),rgba(18,6,8,0.6))]' : 'border-[rgba(176,138,82,0.12)] bg-[rgba(14,6,7,0.5)]'} ${dragging ? 'cursor-grabbing' : ''}`}
           onPointerDown={(e) => onDown(e)}
           onPointerMove={onMove}
           onPointerUp={onUp}

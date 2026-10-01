@@ -90,8 +90,8 @@ export function TopBar({ compact }: { compact?: boolean }) {
   const [menu, setMenu] = useState(false)
 
   return (
-    <header className="relative z-[6000] flex h-10 shrink-0 items-center gap-1 bg-[rgba(10,8,8,0.55)] px-3 backdrop-blur-2xl">
-      <span className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-[rgba(232,36,43,0.45)] to-transparent" />
+    <header className="relative z-[6000] flex h-10 shrink-0 items-center gap-1 bg-[linear-gradient(180deg,rgba(14,5,6,0.82),rgba(6,2,3,0.7))] px-3 backdrop-blur-2xl">
+      <span className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-[rgba(176,138,82,0.55)] to-transparent" />
       <div className="relative">
         <button onClick={() => setMenu((m) => !m)} className="group flex h-8 items-center rounded-full px-3 hover:bg-white/10" aria-label="Relic menu">
           <ScarabMark size={20} glow className="text-signal transition-transform group-hover:scale-110" />

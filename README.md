@@ -60,9 +60,9 @@ The UI never calls a model directly. Set `VITE_CLAUDE_PROVIDER=anthropic`, or pi
 
 ## Interface
 
-**Type**: Gill Sans SemiBold. The system copy on Mac and iPhone is used first; for other machines, put `GillSans-SemiBold.ttf` in `public/fonts/` (git-ignored — the face is Monotype-licensed and is not redistributed here).
+**Type**: Gill Sans SemiBold for display (headings, labels, buttons); Fira Sans for text — Erik Spiekermann's open-licensed descendant of FF Meta, bundled via `@fontsource/fira-sans`. If FF Meta Pro is installed it is used instead. Gill Sans: The system copy on Mac and iPhone is used first; for other machines, put `GillSans-SemiBold.ttf` in `public/fonts/` (git-ignored — the face is Monotype-licensed and is not redistributed here).
 
-Minimal and Mac-proportioned: a menu bar, the time, one *Ask Claude* field, four widgets and a dock. The scarab and striped wordmark are the Relic marks from relic.earth.
+Palpatine's office, Episode III: crimson lacquer walls, bronze reliefs and filigree, Coruscant at dusk through the great window (`src/ui/ChancellorOffice.tsx`). Minimal and Mac-proportioned: a menu bar, the time, one *Ask Claude* field, four widgets and a dock. The scarab and striped wordmark are the Relic marks from relic.earth.
 
 - **Type anywhere** to talk to Claude. The prompt runs one second after you stop typing. Hold the spacebar to keep it waiting, press Enter to run at once, Esc to close.
 - If the page is framed (for example in a preview) and has no keyboard focus, Home shows *Click anywhere, then type*.

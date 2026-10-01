@@ -1,5 +1,6 @@
 import { useOS } from '../runtime/store'
 import { Art } from '../../ui/Art'
+import { ChancellorOffice } from '../../ui/ChancellorOffice'
 
 /** Atmospheric layer. Never louder than the interface above it. */
 export function Background({ variant }: { variant?: string }) {
@@ -7,6 +8,7 @@ export function Background({ variant }: { variant?: string }) {
   const v = variant ?? bg
   return (
     <div className="pointer-events-none absolute inset-0 overflow-clip bg-void">
+      {v === 'chancellor' && <ChancellorOffice className="absolute inset-0 h-full w-full opacity-[0.62]" />}
       {v === 'horizon' && (
         <>
           <Art variant="horizon" seed={4} className="absolute inset-0 h-full w-full opacity-80" />

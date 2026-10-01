@@ -6,7 +6,10 @@
    One red family only. Bright red is reserved for active state.
    ─────────────────────────────────────────────────────────── */
 @theme {
-  --font-sans: "Relic Gill", "Gill Sans", "Gill Sans Nova", "Gill Sans MT", "Helvetica Neue", Arial, sans-serif;
+  /* text: Meta (FF Meta Pro) when present, else Fira Sans — Spiekermann's open descendant of Meta.
+     display: Gill Sans SemiBold, applied to headings, labels, buttons and every semibold run. */
+  --font-sans: "Relic Meta", "Fira Sans", "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Relic Gill", "Gill Sans", "Gill Sans Nova", "Gill Sans MT", "Fira Sans", sans-serif;
   --font-mono: "SF Mono", "JetBrains Mono", "Menlo", "Consolas", monospace;
 
   --color-void: #030303;
@@ -23,6 +26,9 @@
   --color-ash: #d4ccc7;
   --color-smoke: #9e9690;
   --color-soot: #554e4a;
+  /* the Chancellor's bronze: reliefs, filigree, small caps */
+  --color-bronze: #b08a52;
+  --color-brass: #d8b37a;
 }
 
 :root {
@@ -49,6 +55,18 @@
 
 /* Gill Sans SemiBold — the installed system face first (Mac, iPhone), then a local
    copy in public/fonts (git-ignored: the font is Monotype-licensed). */
+/* FF Meta Pro, if the machine has it (licensed; not bundled) */
+@font-face {
+  font-family: "Relic Meta";
+  font-weight: 100 450;
+  src: local("FFMetaPro-Normal"), local("FF Meta Pro"), local("MetaPro-Normal"), local("Meta Pro"), local("FFMetaWebPro-Normal");
+}
+@font-face {
+  font-family: "Relic Meta";
+  font-weight: 451 1000;
+  src: local("FFMetaPro-Medium"), local("FF Meta Pro Medium"), local("MetaPro-Medium"), local("Meta Pro Medium");
+}
+
 @font-face {
   font-family: "Relic Gill";
   font-weight: 500 900;
@@ -116,8 +134,8 @@ button {
 }
 
 /* every heading, button, label and semibold run speaks Gill Sans SemiBold */
-h1, h2, h3, h4, h5, h6, button, .font-semibold, .font-bold, .label, .label-sm, .btn, .wordmark {
-  font-family: "Relic Gill", var(--font-sans);
+h1, h2, h3, h4, h5, h6, button, .font-semibold, .font-bold, .label, .label-sm, .btn, .wordmark, .t-display, .t-title, .t-section {
+  font-family: var(--font-display);
 }
 
 button:focus-visible,
@@ -161,7 +179,7 @@ a:focus-visible {
   font-weight: 600;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--color-smoke);
+  color: var(--color-bronze);
 }
 .label-sm {
   font-size: 10px;
@@ -194,17 +212,18 @@ a:focus-visible {
 /* ── Surfaces ─────────────────────────────────────────── */
 /* depth: lit from above — a lighter top, a hairline highlight, a soft cast shadow */
 .panel {
-  background: linear-gradient(180deg, rgba(38, 30, 30, 0.74) 0%, rgba(16, 13, 13, 0.74) 100%);
-  border: 1px solid rgba(245, 240, 235, 0.08);
+  /* black lacquer, bronze-edged */
+  background: linear-gradient(180deg, rgba(24, 10, 11, 0.8) 0%, rgba(7, 3, 4, 0.84) 100%);
+  border: 1px solid rgba(176, 138, 82, 0.2);
   border-radius: var(--radius);
   backdrop-filter: blur(24px) saturate(1.2);
   -webkit-backdrop-filter: blur(24px) saturate(1.2);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07), 0 1px 2px rgba(0, 0, 0, 0.45), 0 14px 34px rgba(0, 0, 0, 0.38);
+  box-shadow: inset 0 1px 0 rgba(216, 179, 122, 0.14), 0 1px 2px rgba(0, 0, 0, 0.5), 0 16px 40px rgba(0, 0, 0, 0.5);
   position: relative;
 }
 .panel-solid {
-  background: linear-gradient(180deg, #1a1515 0%, #0f0c0c 100%);
-  border: 1px solid rgba(245, 240, 235, 0.08);
+  background: linear-gradient(180deg, #170809 0%, #070304 100%);
+  border: 1px solid rgba(176, 138, 82, 0.2);
   border-radius: var(--radius);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 1px 2px rgba(0, 0, 0, 0.45), 0 10px 26px rgba(0, 0, 0, 0.32);
   position: relative;
@@ -258,8 +277,9 @@ a:focus-visible {
 /* active illuminated panel */
 .lit {
   border-radius: 10px;
-  background: linear-gradient(180deg, rgba(200, 24, 32, 0.34) 0%, rgba(125, 15, 20, 0.26) 100%);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), inset 0 0 0 1px rgba(232, 36, 43, 0.28), 0 0 18px rgba(232, 36, 43, 0.16);
+  /* crimson velvet, bronze-trimmed */
+  background: linear-gradient(180deg, rgba(160, 18, 26, 0.55) 0%, rgba(90, 8, 14, 0.5) 100%);
+  box-shadow: inset 0 1px 0 rgba(216, 179, 122, 0.3), inset 0 0 0 1px rgba(176, 138, 82, 0.35), 0 0 18px rgba(200, 24, 32, 0.2);
   color: #fff;
 }
 

@@ -106,7 +106,7 @@ export interface KernelState {
   }
   volume: number
   theme: 'relic' | 'dim'
-  background: 'horizon' | 'volcanic' | 'topographic' | 'architecture'
+  background: 'chancellor' | 'horizon' | 'volcanic' | 'topographic' | 'architecture'
   notifications: RelicNotification[]
   toasts: string[]
   notificationCenterOpen: boolean
@@ -183,7 +183,7 @@ export const initialKernelState = (): KernelState => ({
   thermostat: { target: 68, indoor: 68, humidity: 41, mode: 'HEAT', fan: 'AUTO' },
   volume: 62,
   theme: 'relic',
-  background: 'horizon',
+  background: 'chancellor',
   notifications: [],
   toasts: [],
   notificationCenterOpen: false,

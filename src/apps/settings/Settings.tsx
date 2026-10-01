@@ -11,6 +11,7 @@ import { claudeGateway } from '../../agent/relicAgent'
 import { cloud } from '../../cloud'
 import { fmtAgo } from '../../os/files/service'
 import { Art } from '../../ui/Art'
+import { ChancellorOffice } from '../../ui/ChancellorOffice'
 import { Icon, deviceIcon } from '../../ui/Icon'
 import { Bar, Range, statusText, Toggle, useMesh } from '../../ui/primitives'
 import { ArchitectureDiagram } from './Architecture'
@@ -159,10 +160,10 @@ function Display() {
       <H>DISPLAY & SOUND</H>
       <div className="label-sm mb-3">BACKGROUND</div>
       <div className="grid grid-cols-4 gap-3">
-        {(['horizon', 'volcanic', 'topographic', 'architecture'] as const).map((b) => (
+        {(['chancellor', 'horizon', 'volcanic', 'topographic', 'architecture'] as const).map((b) => (
           <button key={b} onClick={() => relicRuntime.settings.set('background', b)} className={`border ${bg === b ? 'border-red shadow-[var(--glow)]' : 'hair'}`}>
             <div className="aspect-video">
-              <Art variant={b === 'volcanic' ? 'volcano' : b === 'topographic' ? 'topo' : b === 'architecture' ? 'spire' : 'horizon'} className="h-full w-full" />
+              {b === 'chancellor' ? <ChancellorOffice className="h-full w-full" /> : <Art variant={b === 'volcanic' ? 'volcano' : b === 'topographic' ? 'topo' : b === 'architecture' ? 'spire' : 'horizon'} className="h-full w-full" />}
             </div>
             <div className={`py-2 text-[10px] tracking-[0.13em] font-semibold ${bg === b ? 'text-bone' : 'text-ash'}`}>{b.toUpperCase()}</div>
           </button>

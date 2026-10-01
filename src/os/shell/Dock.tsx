@@ -46,7 +46,7 @@ export function Dock() {
   }
 
   return (
-    <div className="relative z-[5000] shrink-0 border-t border-[rgba(245,240,235,0.08)] bg-[rgba(12,9,9,0.72)] px-4 pb-3 pt-2 backdrop-blur-2xl" data-profile={profile}>
+    <div className="relative z-[5000] shrink-0 border-t border-[rgba(176,138,82,0.3)] bg-[linear-gradient(180deg,rgba(14,5,6,0.86),rgba(4,1,2,0.92))] shadow-[inset_0_1px_0_rgba(216,179,122,0.12)] px-4 pb-3 pt-2 backdrop-blur-2xl" data-profile={profile}>
       <nav className="no-scrollbar flex items-center justify-center gap-1 overflow-x-auto" aria-label="Apps">
         {SURFACES.map((s) => (
           <Tab key={s.id} label={s.name} active={section === s.id && !anyFocused} onClick={() => surface(s.id)} />
@@ -69,7 +69,7 @@ export function Dock() {
 }
 
 function Divider() {
-  return <span className="mx-1.5 h-4 w-px shrink-0 bg-[rgba(245,240,235,0.14)]" />
+  return <span className="mx-1.5 h-4 w-px shrink-0 bg-[rgba(176,138,82,0.45)]" />
 }
 
 function Tab({ label, active, running, onClick }: { label: string; active: boolean; running?: boolean; onClick: () => void }) {
@@ -77,7 +77,7 @@ function Tab({ label, active, running, onClick }: { label: string; active: boole
     <button
       onClick={onClick}
       className={`relative h-7 shrink-0 rounded-full px-3 text-[11px] font-semibold uppercase tracking-[0.18em] transition-colors ${
-        active ? 'bg-gradient-to-b from-[#e8242b] to-[#a3121a] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.25),0_0_16px_rgba(232,36,43,0.45)]' : 'text-smoke hover:bg-white/[0.07] hover:text-bone'
+        active ? 'bg-gradient-to-b from-[#b81620] to-[#6e0a10] text-white shadow-[inset_0_1px_0_rgba(216,179,122,0.45),inset_0_0_0_1px_rgba(176,138,82,0.5),0_0_16px_rgba(200,24,32,0.4)]' : 'text-smoke hover:bg-white/[0.07] hover:text-bone'
       }`}
     >
       {label}
