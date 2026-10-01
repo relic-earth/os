@@ -37,12 +37,12 @@ export function OSShell({ compact }: { compact?: boolean }) {
             </motion.div>
           </AnimatePresence>
           <WindowManager />
-          <Dock />
           {profile === 'relic-desktop' && (
             <div className="label-sm pointer-events-none absolute left-4 top-3 z-[4000] text-red">RELIC DESKTOP · OFFICE</div>
           )}
         </main>
       </div>
+      <Dock />
     </div>
   )
 }

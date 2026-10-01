@@ -11,23 +11,23 @@ import { Art } from '../ui/Art'
 import { fmtClock, statusText, useNow, Wordmark } from '../ui/primitives'
 import { Background } from '../os/shell/Background'
 import { DeviceSwitcher } from '../os/shell/TopBar'
-import { ClaudeInput, ClaudeTranscript, Suggestions } from '../apps/claude/ClaudePanel'
+import { ClaudeTranscript, Suggestions } from '../apps/claude/ClaudePanel'
 import { DeviceControl } from '../apps/devices/DeviceManager'
 import { DocPreview } from '../apps/viewer/DocPreview'
 import { AppSurface } from '../apps'
 import type { RelicFile } from '../sdk/types'
-import { AppIcon, Glyph } from '../ui/AppIcon'
+import { AppIcon } from '../ui/AppIcon'
 
 type Tab = 'home' | 'claude' | 'apps' | 'files' | 'devices'
 type Sheet = { kind: 'file'; file: RelicFile } | { kind: 'remote'; windowId: string } | { kind: 'device'; id: string } | null
 
 const PHONE = 'relic-phone'
-const TABS: { id: Tab; label: string; glyph: string }[] = [
-  { id: 'home', label: 'HOME', glyph: 'home' },
-  { id: 'claude', label: 'CLAUDE', glyph: 'claude' },
-  { id: 'apps', label: 'APPS', glyph: 'apps' },
-  { id: 'files', label: 'FILES', glyph: 'files' },
-  { id: 'devices', label: 'DEVICES', glyph: 'devices' },
+const TABS: { id: Tab; label: string }[] = [
+  { id: 'home', label: 'Home' },
+  { id: 'claude', label: 'Claude' },
+  { id: 'apps', label: 'Apps' },
+  { id: 'files', label: 'Files' },
+  { id: 'devices', label: 'Devices' },
 ]
 
 /** RELIC PHONE — mobile shell. Same environment, different body. */
@@ -90,17 +90,46 @@ function PhoneShell({ framed }: { framed: boolean }) {
         {tab === 'devices' && <PhoneDevices setSheet={setSheet} />}
       </div>
       {here && <MiniPlayer sessionId={here.id} />}
-      <nav className="relative z-40 grid shrink-0 grid-cols-5 border-t hair bg-[rgba(8,6,6,0.85)] pt-2 backdrop-blur-xl" style={{ paddingBottom: 'max(16px, env(safe-area-inset-bottom))' }} >
-        {TABS.map((t) => (
-          <button key={t.id} onClick={() => { setTab(t.id); setSheet(null) }} className="flex flex-col items-center gap-1 py-1">
-            <Glyph id={t.glyph} size={26} className={tab === t.id ? 'text-signal drop-shadow-[0_0_6px_rgba(232,36,43,0.8)]' : 'text-ash'} />
-            <span className={`text-[10px] tracking-[0.12em] font-semibold ${tab === t.id ? 'text-bone' : 'text-smoke'}`}>{t.label}</span>
-            <span className={`h-[2px] w-4 ${tab === t.id ? 'bg-signal shadow-[0_0_8px_rgba(232,36,43,0.9)]' : 'bg-transparent'}`} />
-          </button>
-        ))}
-      </nav>
+      {/* iOS-familiar: small text tabs, then a full-width Ask Claude field */}
+      <div className="relative z-40 shrink-0 border-t border-[rgba(245,240,235,0.08)] bg-[rgba(10,8,8,0.82)] px-4 pt-2 backdrop-blur-xl" style={{ paddingBottom: 'max(12px, env(safe-area-inset-bottom))' }}>
+        <nav className="flex items-center justify-between">
+          {TABS.map((t) => (
+            <button
+              key={t.id}
+              onClick={() => { setTab(t.id); setSheet(null) }}
+              className={`h-7 rounded-full px-2.5 text-[13px] font-semibold transition-colors ${tab === t.id ? 'bg-red text-white shadow-[0_0_14px_rgba(232,36,43,0.55)]' : 'text-ash'}`}
+            >
+              {t.label}
+            </button>
+          ))}
+        </nav>
+        <PhoneAsk onAsk={() => { setTab('claude'); setSheet(null) }} />
+      </div>
       <AnimatePresence>{sheet && <PhoneSheet sheet={sheet} close={() => setSheet(null)} />}</AnimatePresence>
     </div>
+  )
+}
+
+/** The Ask Claude field: a real input; sending shows the conversation. */
+function PhoneAsk({ onAsk }: { onAsk: () => void }) {
+  const [text, setText] = useState('')
+  const busy = useOS((s) => s.agentBusy)
+  const send = () => {
+    if (!text.trim() || busy) return
+    void relicRuntime.ai.ask(text)
+    setText('')
+    onAsk()
+  }
+  return (
+    <input
+      value={text}
+      onChange={(e) => setText(e.target.value)}
+      onKeyDown={(e) => e.key === 'Enter' && send()}
+      enterKeyHint="send"
+      placeholder={busy ? 'Working…' : 'Ask Claude'}
+      aria-label="Ask Claude"
+      className="mt-2 h-11 w-full rounded-[12px] bg-[rgba(118,110,110,0.2)] px-4 text-[17px] text-bone caret-[#e8242b] outline-none placeholder:text-smoke focus:shadow-[0_0_0_1px_rgba(232,36,43,0.5),0_0_20px_rgba(232,36,43,0.25)]"
+    />
   )
 }
 
@@ -199,9 +228,6 @@ function PhoneClaude() {
       <div className="label-sm mt-1">SAME CONVERSATION ON EVERY DEVICE</div>
       <div className="mt-4 flex-1">
         {count ? <ClaudeTranscript compact /> : <div className="mt-6 border hair"><Suggestions items={['What devices are online?', 'Set the thermostat to 70', 'Show me recent files', 'Send this to the TV']} /></div>}
-      </div>
-      <div className="sticky bottom-0 bg-void/95 pt-3">
-        <ClaudeInput />
       </div>
     </div>
   )

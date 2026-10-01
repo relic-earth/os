@@ -102,10 +102,13 @@ function Prompt({ seed }: { seed: string }) {
   }, [reply, busy, text])
 
   const route = text.trim().length > 2 ? classify(text) : null
+  // on the desktop shell the prompt opens in place of the bottom "Ask Claude" field, answers rising above it
+  const profile = useOS((s) => s.profile)
+  const docked = (profile === 'relic-laptop' || profile === 'relic-desktop') && window.innerWidth >= 700
 
   return (
     <motion.div
-      className="fixed inset-0 z-[9000] flex flex-col items-center bg-black/40 pt-[20vh] backdrop-blur-[2px]"
+      className={`fixed inset-0 z-[9000] flex items-center bg-black/40 backdrop-blur-[2px] ${docked ? 'flex-col-reverse px-4 pb-3' : 'flex-col pt-[20vh]'}`}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0, transition: { duration: 0.35 } }}
@@ -113,14 +116,16 @@ function Prompt({ seed }: { seed: string }) {
       onMouseDown={close}
     >
       <motion.div
-        initial={{ y: -8, scale: 0.98 }}
+        initial={{ y: docked ? 8 : -8, scale: docked ? 1 : 0.98 }}
         animate={{ y: 0, scale: 1 }}
         transition={{ duration: 0.2, ease: [0.2, 0, 0, 1] }}
-        className="w-[min(680px,92vw)] overflow-hidden rounded-[24px] border border-[rgba(232,36,43,0.35)] bg-[rgba(22,17,17,0.85)] shadow-[0_30px_90px_rgba(0,0,0,0.75),0_0_70px_rgba(232,36,43,0.25)] backdrop-blur-2xl"
+        className={`flex overflow-hidden border border-[rgba(232,36,43,0.35)] bg-[rgba(22,17,17,0.9)] shadow-[0_30px_90px_rgba(0,0,0,0.75),0_0_70px_rgba(232,36,43,0.25)] backdrop-blur-2xl ${
+          docked ? 'w-full flex-col-reverse rounded-[16px] [&>*+*]:border-b [&>*+*]:border-t-0' : 'w-[min(680px,92vw)] flex-col rounded-[24px]'
+        }`}
         onMouseDown={(e) => e.stopPropagation()}
       >
-        <div className="relative flex h-16 items-center gap-3 pl-3 pr-5">
-          <AppIcon id="claude" size={40} live />
+        <div className={`relative flex shrink-0 items-center gap-3 ${docked ? 'h-11 px-4' : 'h-16 pl-3 pr-5'}`}>
+          {!docked && <AppIcon id="claude" size={40} live />}
           <input
             ref={input}
             value={text}
@@ -153,7 +158,7 @@ function Prompt({ seed }: { seed: string }) {
             placeholder={busy ? 'Working…' : 'Ask Claude'}
             spellCheck={false}
             autoComplete="off"
-            className="min-w-0 flex-1 bg-transparent text-[22px] font-semibold text-bone caret-[#e8242b] outline-none placeholder:font-semibold placeholder:text-smoke"
+            className={`min-w-0 flex-1 bg-transparent text-bone caret-[#e8242b] outline-none placeholder:text-smoke ${docked ? 'text-[16px]' : 'text-[22px] font-semibold placeholder:font-semibold'}`}
             aria-label="Ask Claude"
           />
           <span className="shrink-0 text-[11px] font-semibold tracking-[0.12em] text-smoke">
@@ -206,7 +211,7 @@ function Prompt({ seed }: { seed: string }) {
           )}
         </AnimatePresence>
       </motion.div>
-      <div className="mt-3 text-[11px] font-semibold tracking-[0.12em] text-smoke/80" onMouseDown={(e) => e.stopPropagation()}>
+      <div className={`text-[11px] font-semibold tracking-[0.12em] text-smoke/80 ${docked ? 'mb-3' : 'mt-3'}`} onMouseDown={(e) => e.stopPropagation()}>
         RUNS 1 SECOND AFTER YOU STOP · HOLD SPACE TO WAIT · ESC TO CLOSE
       </div>
     </motion.div>

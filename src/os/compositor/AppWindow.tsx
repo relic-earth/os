@@ -71,8 +71,8 @@ export function AppWindow({ win, children }: { win: RelicWindow; children: React
     setDragging(false)
   }
 
-  // maximized windows stop above the dock, like a zoomed window on a desktop with a visible dock
-  const rect = win.maximized ? { x: 0, y: 0, width: area.width, height: area.height - (win.deviceId === 'relic-tv' ? 0 : 84) } : { x: win.x, y: win.y, width: win.width, height: win.height }
+  // the bottom bar sits outside the work area, so a maximized window fills it
+  const rect = win.maximized ? { x: 0, y: 0, width: area.width, height: area.height } : { x: win.x, y: win.y, width: win.width, height: win.height }
   const isForeign = app && app.runtime !== 'relic'
 
   return (

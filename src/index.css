@@ -6,7 +6,7 @@
    One red family only. Bright red is reserved for active state.
    ─────────────────────────────────────────────────────────── */
 @theme {
-  --font-sans: "Gill Sans", "Gill Sans Nova", "Gill Sans MT", "Helvetica Neue", Arial, sans-serif;
+  --font-sans: "Relic Gill", "Gill Sans", "Gill Sans Nova", "Gill Sans MT", "Helvetica Neue", Arial, sans-serif;
   --font-mono: "SF Mono", "JetBrains Mono", "Menlo", "Consolas", monospace;
 
   --color-void: #030303;
@@ -45,6 +45,16 @@
   --glow: 0 0 10px rgba(200, 22, 30, 0.12);
   --glow-strong: 0 0 14px rgba(232, 36, 43, 0.2);
   --red-intensity: 0.7;
+}
+
+/* Gill Sans SemiBold — the installed system face first (Mac, iPhone), then a local
+   copy in public/fonts (git-ignored: the font is Monotype-licensed). */
+@font-face {
+  font-family: "Relic Gill";
+  font-weight: 500 900;
+  font-style: normal;
+  font-display: swap;
+  src: local("GillSans-SemiBold"), local("Gill Sans SemiBold"), url("/fonts/GillSans-SemiBold.ttf") format("truetype");
 }
 
 @layer base {
@@ -103,6 +113,11 @@ button {
   background: none;
   border: 0;
   padding: 0;
+}
+
+/* every heading, button, label and semibold run speaks Gill Sans SemiBold */
+h1, h2, h3, h4, h5, h6, button, .font-semibold, .font-bold, .label, .label-sm, .btn, .wordmark {
+  font-family: "Relic Gill", var(--font-sans);
 }
 
 button:focus-visible,

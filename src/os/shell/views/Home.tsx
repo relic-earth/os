@@ -3,8 +3,8 @@ import { Minus, Plus } from 'lucide-react'
 import { useOS } from '../../runtime/store'
 import { relicRuntime } from '../../runtime/relicRuntime'
 import { Art } from '../../../ui/Art'
-import { AppIcon, Glyph } from '../../../ui/AppIcon'
-import { fmtClock, fmtDate, useMesh, useNow, useWindowFocus } from '../../../ui/primitives'
+import { Glyph } from '../../../ui/AppIcon'
+import { fmtClock, fmtDate, useMesh, useNow } from '../../../ui/primitives'
 import { ContinuityActions } from '../Continuity'
 import { fmtAgo } from '../../files/service'
 import { fmtTime, getMedia } from '../../media/library'
@@ -15,34 +15,18 @@ import { fmtTime, getMedia } from '../../media/library'
  */
 export function Home({ compact }: { compact?: boolean }) {
   const now = useNow(15_000)
-  const hasFocus = useWindowFocus()
   const hour = new Date(now).getHours()
   const greeting = hour < 5 ? 'Good night' : hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening'
 
   return (
     <div className="h-full overflow-y-auto">
-      <div className="mx-auto flex min-h-full w-full max-w-[1040px] flex-col px-6 pb-28 pt-[9vh]">
+      <div className="mx-auto flex min-h-full w-full max-w-[1040px] flex-col px-6 pb-8 pt-[10vh]">
         <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: [0.2, 0, 0, 1] }} className="text-center">
           <div className="num text-[clamp(80px,11vw,148px)] font-semibold leading-none tracking-[-0.02em] text-bone [text-shadow:0_0_60px_rgba(232,36,43,0.35)]">{fmtClock(now).replace(/ (AM|PM)/, '')}</div>
           <div className="mt-4 text-[18px] font-semibold text-ash">
             {greeting} · {fmtDate(now).toLowerCase().replace(/(^|\s)\w/g, (c) => c.toUpperCase())}
           </div>
         </motion.div>
-
-        <motion.button
-          initial={{ opacity: 0, y: 6 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.15, duration: 0.7, ease: [0.2, 0, 0, 1] }}
-          onClick={() => relicRuntime.shell.openCommand()}
-          className="group mx-auto mt-12 flex h-14 w-full max-w-[600px] items-center gap-3 rounded-full border border-[rgba(232,36,43,0.3)] bg-[rgba(30,22,22,0.6)] pl-2.5 pr-6 text-left shadow-[0_0_40px_rgba(232,36,43,0.18)] backdrop-blur-xl transition-all hover:border-[rgba(232,36,43,0.6)] hover:shadow-[0_0_60px_rgba(232,36,43,0.32)]"
-        >
-          <AppIcon id="claude" size={38} live />
-          <span className="flex-1 text-[18px] font-semibold text-bone">Ask Claude</span>
-          <span className="text-[13px] font-semibold text-smoke">or just start typing</span>
-        </motion.button>
-        <div className="mt-3 h-4 text-center">
-          {!hasFocus && <span className="pulse text-[12px] font-semibold tracking-[0.14em] text-signal">CLICK ANYWHERE, THEN TYPE</span>}
-        </div>
 
         <div className={`mt-auto grid gap-3 pt-14 ${compact ? 'grid-cols-2' : 'grid-cols-2 lg:grid-cols-4'}`}>
           <NowPlayingWidget />

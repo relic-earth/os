@@ -1,3 +1,6 @@
 node_modules
 dist
 *.tsbuildinfo
+
+# licensed fonts (Monotype) — kept local, never committed
+public/fonts/
