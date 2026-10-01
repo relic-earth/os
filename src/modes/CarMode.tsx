@@ -29,7 +29,7 @@ export function CarMode() {
       <nav className="relative z-10 flex w-[150px] shrink-0 flex-col border-r hair bg-void/80">
         <div className="px-6 pb-8 pt-7"><Wordmark size={12} /><div className="label-sm mt-2 text-red">DRIVE</div></div>
         {RAIL.map((p) => (
-          <button key={p} onClick={() => setPane(p)} className={`relative flex h-12 items-center px-6 text-left text-[11px] tracking-[0.34em] ${pane === p ? 'lit text-bone' : 'text-ash hover:text-bone'}`}>
+          <button key={p} onClick={() => setPane(p)} className={`relative flex h-12 items-center px-6 text-left text-[11px] tracking-[0.15em] font-semibold ${pane === p ? 'lit text-bone' : 'text-ash hover:text-bone'}`}>
             {p.toUpperCase()}
           </button>
         ))}
@@ -41,7 +41,7 @@ export function CarMode() {
         <div className="flex h-14 shrink-0 items-center gap-8 border-b hair px-8">
           <span className="num text-[26px] font-light">38</span>
           <span className="label-sm -ml-6">MPH</span>
-          <span className="text-[13px] tracking-[0.3em] text-signal">D</span>
+          <span className="text-[13px] tracking-[0.14em] font-semibold text-signal">D</span>
           <span className="label-sm">RANGE <span className="num text-bone">{String(st.range)} MI</span></span>
           <span className="label-sm">CHARGE <span className="num text-bone">{Math.round((car.battery ?? 0) * 100)}%</span></span>
           <span className="label-sm ml-auto flex items-center gap-2"><span className="dot" /> RELIC CAR · CONNECTED</span>
@@ -109,7 +109,7 @@ function MapPane({ detailed }: { detailed: boolean }) {
       <div className="panel absolute bottom-6 left-6 flex gap-8 px-5 py-3">
         <div><div className="label-sm">ARRIVAL</div><div className="num mt-1 text-[15px]">7:52</div></div>
         <div><div className="label-sm">REMAINING</div><div className="num mt-1 text-[15px]">14 MIN</div></div>
-        <div><div className="label-sm">DESTINATION</div><div className="mt-1 text-[11px] tracking-[0.24em]">RELIC HOUSE</div></div>
+        <div><div className="label-sm">DESTINATION</div><div className="mt-1 text-[11px] tracking-[0.11em] font-semibold">RELIC HOUSE</div></div>
       </div>
     </div>
   )
@@ -128,7 +128,7 @@ function NowPlaying() {
           <div className="mt-5 text-[20px] font-light tracking-[0.06em]">{m.title}</div>
           <div className="mt-1 text-[12px] tracking-[0.14em] text-ash">{m.subtitle}</div>
           <div className="bar mt-5"><i style={{ width: `${((audio.position ?? 0) / m.duration) * 100}%` }} /></div>
-          <div className="mt-2 flex justify-between"><span className="num text-[10px] text-ash">{fmtTime(audio.position ?? 0)}</span><span className="num text-[10px] text-smoke">{fmtTime(m.duration)}</span></div>
+          <div className="mt-2 flex justify-between"><span className="num text-[11px] text-ash">{fmtTime(audio.position ?? 0)}</span><span className="num text-[11px] text-smoke">{fmtTime(m.duration)}</span></div>
           <div className="mt-5 flex items-center justify-center gap-8">
             <button onClick={() => relicRuntime.media.seek(audio.id, 0)} aria-label="Restart"><SkipBack size={18} strokeWidth={1.25} className="text-ash" /></button>
             <button onClick={() => relicRuntime.media.toggle(audio.id)} className="flex h-12 w-12 items-center justify-center border border-red/70 hover:shadow-[var(--glow)]" aria-label="Play or pause">
@@ -157,7 +157,7 @@ function ClimateBar() {
   const btn = (label: string, on: boolean, onClick: () => void, IconC: typeof Wind) => (
     <button onClick={onClick} className={`flex h-full flex-1 flex-col items-center justify-center gap-1.5 border-l hair ${on ? 'bg-burgundy/60 text-bone' : 'text-ash hover:text-bone'}`}>
       <IconC size={17} strokeWidth={1.25} className={on ? 'text-signal' : ''} />
-      <span className="text-[9px] tracking-[0.32em]">{label}</span>
+      <span className="text-[10px] tracking-[0.14em] font-semibold">{label}</span>
     </button>
   )
   return (
@@ -223,7 +223,7 @@ function AppsPane() {
         {list.map((a) => (
           <div key={a.id} className="panel flex aspect-[4/3] flex-col items-center justify-center gap-3">
             <Icon name={a.icon} size={24} />
-            <span className="text-[10px] tracking-[0.3em]">{a.name.replace('Relic ', '').toUpperCase()}</span>
+            <span className="text-[11px] tracking-[0.14em] font-semibold">{a.name.replace('Relic ', '').toUpperCase()}</span>
           </div>
         ))}
       </div>
@@ -237,7 +237,7 @@ function VehiclePane() {
   return (
     <div className="h-full overflow-y-auto p-8">
       <div className="label text-red">VEHICLE</div>
-      <div className="mt-6 grid grid-cols-3 gap-px border hair bg-[var(--line-faint)]">
+      <div className="mt-6 grid grid-cols-3 gap-px overflow-hidden rounded-[12px] border hair bg-[var(--line-faint)]">
         {[['CHARGE', `${Math.round((car.battery ?? 0) * 100)}%`], ['RANGE', `${st.range} MI`], ['CABIN', `${st.cabin}°`], ['TIRES', '42 · 42 · 41 · 42 PSI'], ['ODOMETER', '8,214 MI'], ['SOFTWARE', 'RELIC DRIVE 0.1']].map(([k, v]) => (
           <div key={k} className="bg-ink px-5 py-5"><div className="label-sm">{k}</div><div className="num mt-2 text-[16px] font-light">{v}</div></div>
         ))}

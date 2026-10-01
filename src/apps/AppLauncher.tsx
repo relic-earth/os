@@ -28,7 +28,7 @@ export function AppLauncher({ compact }: { compact?: boolean }) {
     <div className="flex h-full flex-col">
       <div className="flex items-center gap-1 border-b hair px-4">
         {FILTERS.map((f) => (
-          <button key={f.id} onClick={() => setFilter(f.id)} className={`relative px-4 py-3 text-[10px] tracking-[0.32em] ${filter === f.id ? 'text-bone' : 'text-smoke hover:text-ash'}`}>
+          <button key={f.id} onClick={() => setFilter(f.id)} className={`relative px-4 py-3 text-[11px] tracking-[0.14em] font-semibold ${filter === f.id ? 'text-bone' : 'text-smoke hover:text-ash'}`}>
             {f.label} <span className="num text-soot">{counts(f.id)}</span>
             {filter === f.id && <span className="absolute inset-x-3 bottom-0 h-[2px] bg-signal shadow-[0_0_8px_rgba(232,36,43,0.8)]" />}
           </button>
@@ -53,7 +53,7 @@ export function AppLauncher({ compact }: { compact?: boolean }) {
                 {!isInstalled && <Download size={13} strokeWidth={1.25} className="text-smoke" />}
               </div>
               <div>
-                <div className="text-[12px] tracking-[0.3em] text-bone">{a.name.toUpperCase()}</div>
+                <div className="text-[12px] tracking-[0.14em] font-semibold text-bone">{a.name.toUpperCase()}</div>
                 <div className={`label-sm mt-1 ${a.runtime === 'windows' ? 'text-red' : ''}`}>
                   {runtimeLabel[a.runtime]}
                   {!isInstalled && ' · INSTALL'}

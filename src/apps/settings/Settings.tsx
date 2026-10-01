@@ -60,7 +60,7 @@ export function Settings({ win }: { win: RelicWindow }) {
     <div className="flex h-full">
       <nav className="w-[190px] shrink-0 border-r hair bg-void/50 py-4">
         {SECTIONS.map((s) => (
-          <button key={s.id} onClick={() => { setSection(s.id); setSub(undefined) }} className={`relative flex h-9 w-full items-center px-5 text-left text-[10px] tracking-[0.3em] ${section === s.id ? 'lit text-bone' : 'text-ash hover:bg-burgundy/40 hover:text-bone'}`}>
+          <button key={s.id} onClick={() => { setSection(s.id); setSub(undefined) }} className={`relative flex h-9 w-full items-center px-5 text-left text-[11px] tracking-[0.14em] font-semibold ${section === s.id ? 'lit text-bone' : 'text-ash hover:bg-burgundy/40 hover:text-bone'}`}>
             {s.label}
           </button>
         ))}
@@ -84,7 +84,7 @@ export function Settings({ win }: { win: RelicWindow }) {
 function H({ children, sub }: { children: ReactNode; sub?: ReactNode }) {
   return (
     <div className="mb-6">
-      <div className="text-[18px] font-light tracking-[0.36em] text-bone">{children}</div>
+      <div className="text-[18px] tracking-[0.16em] font-semibold text-bone">{children}</div>
       {sub && <div className="mt-1.5 text-[11px] text-ash">{sub}</div>}
     </div>
   )
@@ -94,7 +94,7 @@ function Row({ k, v, hot, children }: { k: string; v?: ReactNode; hot?: boolean;
   return (
     <div className="flex items-center justify-between gap-4 border-b hair-faint py-3">
       <span className="label">{k}</span>
-      {children ?? <span className={`text-[10px] tracking-[0.26em] ${hot ? 'text-signal' : 'text-bone'}`}>{v}</span>}
+      {children ?? <span className={`text-[11px] tracking-[0.12em] font-semibold ${hot ? 'text-signal' : 'text-bone'}`}>{v}</span>}
     </div>
   )
 }
@@ -103,7 +103,7 @@ function Tabs({ items, value, onChange }: { items: [string, string][]; value: st
   return (
     <div className="mb-6 flex gap-1 border-b hair">
       {items.map(([id, label]) => (
-        <button key={id} onClick={() => onChange(id)} className={`relative px-4 py-2.5 text-[10px] tracking-[0.3em] ${value === id ? 'text-bone' : 'text-smoke hover:text-ash'}`}>
+        <button key={id} onClick={() => onChange(id)} className={`relative px-4 py-2.5 text-[11px] tracking-[0.14em] font-semibold ${value === id ? 'text-bone' : 'text-smoke hover:text-ash'}`}>
           {label}
           {value === id && <span className="absolute inset-x-3 bottom-0 h-[2px] bg-signal shadow-[0_0_8px_rgba(232,36,43,0.8)]" />}
         </button>
@@ -114,11 +114,11 @@ function Tabs({ items, value, onChange }: { items: [string, string][]; value: st
 
 function StatusGrid({ items }: { items: [string, string, boolean?][] }) {
   return (
-    <div className="grid grid-cols-2 gap-px border hair bg-[var(--line-faint)] md:grid-cols-4">
+    <div className="grid grid-cols-2 gap-px overflow-hidden rounded-[12px] border hair bg-[var(--line-faint)] md:grid-cols-4">
       {items.map(([k, v, warn]) => (
         <div key={k} className="bg-ink px-4 py-4">
           <div className="label-sm">{k}</div>
-          <div className={`mt-2 flex items-center gap-2 text-[11px] tracking-[0.26em] ${warn ? 'text-signal' : 'text-bone'}`}>
+          <div className={`mt-2 flex items-center gap-2 text-[11px] tracking-[0.12em] font-semibold ${warn ? 'text-signal' : 'text-bone'}`}>
             <span className={`dot ${warn ? 'pulse' : ''}`} /> {v}
           </div>
         </div>
@@ -161,7 +161,7 @@ function Display() {
             <div className="aspect-video">
               <Art variant={b === 'volcanic' ? 'volcano' : b === 'topographic' ? 'topo' : b === 'architecture' ? 'spire' : 'horizon'} className="h-full w-full" />
             </div>
-            <div className={`py-2 text-[9px] tracking-[0.28em] ${bg === b ? 'text-bone' : 'text-ash'}`}>{b.toUpperCase()}</div>
+            <div className={`py-2 text-[10px] tracking-[0.13em] font-semibold ${bg === b ? 'text-bone' : 'text-ash'}`}>{b.toUpperCase()}</div>
           </button>
         ))}
       </div>
@@ -207,10 +207,10 @@ function Network() {
       </div>
       <button className="btn mt-5" disabled={!connected} onClick={() => void cloud.sync.syncNow()}>SYNC NOW</button>
       <div className="label-sm mt-8 mb-3">RELIC CLOUD SERVICES</div>
-      <div className="grid grid-cols-4 gap-px border hair bg-[var(--line-faint)]">
+      <div className="grid grid-cols-4 gap-px overflow-hidden rounded-[12px] border hair bg-[var(--line-faint)]">
         {cloud.services.map((s) => (
           <div key={s} className="bg-ink px-3 py-3">
-            <div className="text-[9px] tracking-[0.24em] text-bone">{s}</div>
+            <div className="text-[10px] tracking-[0.11em] font-semibold text-bone">{s}</div>
             <div className={`label-sm mt-1 ${connected ? '' : 'text-signal'}`}>{connected ? 'AVAILABLE' : 'QUEUED'}</div>
           </div>
         ))}
@@ -228,7 +228,7 @@ function Devices() {
       {devices.map((d) => (
         <div key={d.id} className="flex items-center gap-4 border-b hair-faint py-3">
           <Icon name={deviceIcon[d.type]} size={15} className={d.status === 'online' ? 'text-red' : 'text-soot'} />
-          <span className="w-44 text-[10px] tracking-[0.26em] text-bone">{d.name.toUpperCase()}</span>
+          <span className="w-44 text-[11px] tracking-[0.12em] font-semibold text-bone">{d.name.toUpperCase()}</span>
           <span className="label-sm w-28">{statusText(d)}</span>
           <span className="label-sm flex-1 truncate">{d.capabilities.slice(0, 5).join(' · ').toUpperCase()}</span>
           <span className="label-sm">{d.identity.trust.toUpperCase()}</span>
@@ -262,14 +262,14 @@ function ClaudeSettings() {
       </Row>
       <Row k="ACTIVE ROUTE" v={claudeGateway.active().label} />
       <div className="label-sm mt-8 mb-3">PERMISSION MODEL</div>
-      <div className="grid grid-cols-4 gap-px border hair bg-[var(--line-faint)]">
+      <div className="grid grid-cols-4 gap-px overflow-hidden rounded-[12px] border hair bg-[var(--line-faint)]">
         {levels.map((l) => (
           <div key={l} className="bg-ink p-4">
-            <div className={`text-[10px] tracking-[0.3em] ${l === 'system' ? 'text-signal' : l === 'sensitive' ? 'text-red' : 'text-bone'}`}>{riskMeta[l].label}</div>
+            <div className={`text-[11px] tracking-[0.14em] font-semibold ${l === 'system' ? 'text-signal' : l === 'sensitive' ? 'text-red' : 'text-bone'}`}>{riskMeta[l].label}</div>
             <div className="label-sm mt-1">{l === 'read' || l === 'low' ? 'RUNS · LOGGED' : 'REQUIRES CONFIRMATION'}</div>
             <div className="mt-3 space-y-1">
               {toolDefinitions.filter((t) => t.risk === l).map((t) => (
-                <div key={t.name} className="mono text-[10px] text-ash">{t.name}</div>
+                <div key={t.name} className="mono text-[11px] text-ash">{t.name}</div>
               ))}
             </div>
           </div>
@@ -315,11 +315,11 @@ function Security() {
   return (
     <div>
       <H sub="Every application runs sandboxed. Every device proves its identity.">SECURITY CENTER</H>
-      <div className="grid grid-cols-5 gap-px border hair bg-[var(--line-faint)]">
+      <div className="grid grid-cols-5 gap-px overflow-hidden rounded-[12px] border hair bg-[var(--line-faint)]">
         {[['DEVICE IDENTITY', 'SECURE'], ['ENCRYPTION', 'ACTIVE'], ['APPLICATION SANDBOX', 'ACTIVE'], ['CLAUDE PERMISSIONS', `${grants} ACTIVE`], ['NETWORK', 'SECURE']].map(([k, v]) => (
           <div key={k} className="bg-ink px-4 py-4">
             <div className="label-sm">{k}</div>
-            <div className="mt-2 flex items-center gap-2 text-[11px] tracking-[0.26em] text-bone"><span className="dot" />{v}</div>
+            <div className="mt-2 flex items-center gap-2 text-[11px] tracking-[0.12em] font-semibold text-bone"><span className="dot" />{v}</div>
           </div>
         ))}
       </div>
@@ -327,13 +327,13 @@ function Security() {
         <div className="w-[200px] shrink-0">
           <div className="label-sm mb-2">APPLICATIONS</div>
           {list.map((a) => (
-            <button key={a.id} onClick={() => setApp(a.id)} className={`relative flex h-8 w-full items-center gap-2 px-3 text-left text-[10px] tracking-[0.26em] ${app === a.id ? 'lit text-bone' : 'text-ash hover:text-bone'}`}>
+            <button key={a.id} onClick={() => setApp(a.id)} className={`relative flex h-8 w-full items-center gap-2 px-3 text-left text-[11px] tracking-[0.12em] font-semibold ${app === a.id ? 'lit text-bone' : 'text-ash hover:text-bone'}`}>
               <Icon name={a.icon} size={12} /> {a.name.toUpperCase()}
             </button>
           ))}
         </div>
         <div className="flex-1">
-          <div className="text-[14px] tracking-[0.34em] text-bone">{getApp(app)?.name.toUpperCase()}</div>
+          <div className="text-[14px] tracking-[0.15em] font-semibold text-bone">{getApp(app)?.name.toUpperCase()}</div>
           <div className="label-sm mt-1">{getApp(app)?.runtime === 'windows' ? 'WINDOWS · WINE PREFIX SANDBOX' : 'SANDBOXED'} · CLICK A STATE TO CHANGE</div>
           <div className="mt-4">
             {(['files', 'gpu', 'network', 'camera', 'microphone', 'location'] as AppPermission[]).map((k) => {
@@ -341,7 +341,7 @@ function Security() {
               return (
                 <div key={k} className="flex items-center justify-between border-b hair-faint py-2.5">
                   <span className="label">{permissionLabels[k]}</span>
-                  <button onClick={() => relicRuntime.permissions.set(app, k, cycle[v])} className={`w-24 border px-2 py-1 text-center text-[9px] tracking-[0.28em] ${v === 'allowed' ? 'border-red/70 text-bone' : v === 'ask' ? 'hair text-ash' : 'hair-faint text-smoke'}`}>
+                  <button onClick={() => relicRuntime.permissions.set(app, k, cycle[v])} className={`w-24 border px-2 py-1 text-center text-[10px] tracking-[0.13em] font-semibold ${v === 'allowed' ? 'border-red/70 text-bone' : v === 'ask' ? 'hair text-ash' : 'hair-faint text-smoke'}`}>
                     {v.toUpperCase()}
                   </button>
                 </div>
@@ -365,7 +365,7 @@ function Compatibility() {
         {windowsModes.map((m) => (
           <button key={m.mode} onClick={() => relicRuntime.settings.set('windowsMode', m.mode)} className={`border p-4 text-left transition-colors ${mode === m.mode ? 'border-red bg-burgundy/40 shadow-[var(--glow)]' : 'hair hover:border-[var(--line)]'}`}>
             <div className="flex items-center justify-between">
-              <span className="text-[11px] tracking-[0.3em] text-bone">{m.label}</span>
+              <span className="text-[11px] tracking-[0.14em] font-semibold text-bone">{m.label}</span>
               <span className={`dot ${mode === m.mode ? '' : 'dot-off'}`} />
             </div>
             <div className="mt-2 text-[11px] leading-snug text-ash">{m.detail}</div>
@@ -377,7 +377,7 @@ function Compatibility() {
       {running.length === 0 && <div className="label-sm text-soot">NONE</div>}
       {running.map(([id, c]) => (
         <Row key={id} k={getApp(c.appId)?.name.toUpperCase() ?? c.appId}>
-          <span className="text-[10px] tracking-[0.24em] text-bone">{c.mode.toUpperCase()} · {c.gpu} · {c.status.toUpperCase()} · {c.deviceId.replace('relic-', '').toUpperCase()}</span>
+          <span className="text-[11px] tracking-[0.11em] font-semibold text-bone">{c.mode.toUpperCase()} · {c.gpu} · {c.status.toUpperCase()} · {c.deviceId.replace('relic-', '').toUpperCase()}</span>
         </Row>
       ))}
     </div>
@@ -411,7 +411,7 @@ function SystemSection({ sub, setSub }: { sub: string; setSub: (s: string) => vo
               ].map(([k, v]) => (
                 <div key={k} className="border-b hair-faint py-3">
                   <div className="label-sm">{k}</div>
-                  <div className="mt-1 text-[11px] tracking-[0.26em] text-bone">{v}</div>
+                  <div className="mt-1 text-[11px] tracking-[0.12em] font-semibold text-bone">{v}</div>
                 </div>
               ))}
             </div>
@@ -457,9 +457,9 @@ function About({ sub, setSub }: { sub: string; setSub: (s: string) => void }) {
             <div className="absolute left-[6%] top-[30px] h-px w-[37%] bg-signal shadow-[0_0_10px_rgba(232,36,43,0.8)]" />
             {ROADMAP.map(([label, done], i) => (
               <div key={label} className="relative flex flex-col items-center text-center">
-                <span className="num text-[10px] text-smoke">{String(i + 1).padStart(2, '0')}</span>
+                <span className="num text-[11px] text-smoke">{String(i + 1).padStart(2, '0')}</span>
                 <span className={`relative mt-3 h-[14px] w-[14px] rounded-full border ${done ? 'border-signal bg-signal shadow-[0_0_12px_rgba(232,36,43,0.9)]' : 'border-soot bg-void'}`} />
-                <span className={`mt-4 px-1 text-[9px] leading-relaxed tracking-[0.26em] ${done ? 'text-bone' : 'text-smoke'}`}>{label}</span>
+                <span className={`mt-4 px-1 text-[10px] leading-relaxed tracking-[0.12em] font-semibold ${done ? 'text-bone' : 'text-smoke'}`}>{label}</span>
                 <span className={`label-sm mt-1 ${done ? 'text-red' : 'text-soot'}`}>{done ? (i === 2 ? 'CURRENT' : 'BUILT') : 'NEXT'}</span>
               </div>
             ))}

@@ -37,7 +37,7 @@ export function ContinuityActions({ sessionId, size = 'md', only }: { sessionId:
             key={t.id}
             disabled={busy}
             onClick={() => void relicRuntime.continuity.transfer(sessionId, t.id)}
-            className={`btn ${size === 'sm' ? 'h-6 px-2 text-[8px]' : ''}`}
+            className={`btn ${size === 'sm' ? 'h-6 px-2 text-[10px]' : ''}`}
             title={d?.status !== 'online' ? `${d?.name} is asleep — will wake over the mesh` : undefined}
           >
             <t.Icon size={size === 'sm' ? 10 : 12} strokeWidth={1.25} />

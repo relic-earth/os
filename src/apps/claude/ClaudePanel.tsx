@@ -94,7 +94,7 @@ export function ClaudeInput({ autoFocus, onSubmitted, placeholder = 'ASK CLAUDEâ
             if (e.key === 'Enter') submit()
           }}
           placeholder={placeholder}
-          className={`min-w-0 flex-1 bg-transparent text-bone outline-none placeholder:text-smoke placeholder:tracking-[0.3em] ${size === 'lg' ? 'text-[15px]' : 'text-[13px]'} tracking-[0.02em] placeholder:text-[10px]`}
+          className={`min-w-0 flex-1 bg-transparent text-bone outline-none placeholder:text-smoke placeholder:tracking-[0.14em] font-semibold ${size === 'lg' ? 'text-[15px]' : 'text-[13px]'} tracking-[0.02em] placeholder:text-[11px]`}
           aria-label="Ask Claude"
         />
         <button onClick={submit} className="text-ash hover:text-bone" aria-label="Send">
@@ -148,7 +148,7 @@ export function Suggestions({ onPick, items = SUGGESTIONS }: { onPick?: () => vo
           }}
           className="group flex items-center justify-between bg-ink px-4 py-3 text-left transition-colors hover:bg-burgundy disabled:opacity-40"
         >
-          <span className="text-[10px] uppercase tracking-[0.26em] text-ash group-hover:text-bone">{s}</span>
+          <span className="text-[11px] uppercase tracking-[0.12em] font-semibold text-ash group-hover:text-bone">{s}</span>
           <span className="h-px w-4 bg-red/40 transition-all group-hover:w-6 group-hover:bg-signal" />
         </button>
       ))}

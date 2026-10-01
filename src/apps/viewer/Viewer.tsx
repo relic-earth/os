@@ -22,7 +22,7 @@ export function Viewer({ win, tv }: { win: RelicWindow; tv?: boolean }) {
           {file.meta?.revision && <span className="label-sm text-red">REV {String(file.meta.revision)} · {String(file.meta.issued ?? '')}</span>}
           <div className="ml-auto flex items-center gap-1">
             <button className="p-1 text-ash hover:text-bone" onClick={() => setZoom((z) => Math.max(0.6, z - 0.2))} aria-label="Zoom out"><ZoomOut size={13} strokeWidth={1.25} /></button>
-            <span className="num w-10 text-center text-[10px] text-ash">{Math.round(zoom * 100)}%</span>
+            <span className="num w-10 text-center text-[11px] text-ash">{Math.round(zoom * 100)}%</span>
             <button className="p-1 text-ash hover:text-bone" onClick={() => setZoom((z) => Math.min(2, z + 0.2))} aria-label="Zoom in"><ZoomIn size={13} strokeWidth={1.25} /></button>
           </div>
           {win.sessionId && <ContinuityActions sessionId={win.sessionId} size="sm" />}
@@ -50,7 +50,7 @@ export function Viewer({ win, tv }: { win: RelicWindow; tv?: boolean }) {
           {pages > 1 && (
             <div className="panel absolute bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-3 px-3 py-1">
               <button onClick={() => setPage((p) => Math.max(0, p - 1))} className="text-ash hover:text-bone" aria-label="Previous page"><ChevronLeft size={14} /></button>
-              <span className="num text-[10px] tracking-[0.2em] text-bone">{page + 1} / {pages}</span>
+              <span className="num text-[11px] tracking-[0.09em] font-semibold text-bone">{page + 1} / {pages}</span>
               <button onClick={() => setPage((p) => Math.min(pages - 1, p + 1))} className="text-ash hover:text-bone" aria-label="Next page"><ChevronRight size={14} /></button>
             </div>
           )}

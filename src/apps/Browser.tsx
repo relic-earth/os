@@ -66,7 +66,7 @@ export function Browser({ win, chrome }: { win: RelicWindow; chrome?: boolean })
           return (
             <div key={t.id} onClick={() => setActive(t.id)} className={`group relative flex h-full w-[180px] items-center gap-2 px-3 ${on ? 'bg-coal' : 'hover:bg-coal/60'}`}>
               {on && <span className="absolute inset-x-0 top-0 h-px bg-red" />}
-              <span className={`flex-1 truncate text-[9px] tracking-[0.26em] ${on ? 'text-bone' : 'text-smoke'}`}>{title(u)}</span>
+              <span className={`flex-1 truncate text-[10px] tracking-[0.12em] font-semibold ${on ? 'text-bone' : 'text-smoke'}`}>{title(u)}</span>
               {tabs.length > 1 && (
                 <button onClick={(e) => { e.stopPropagation(); closeTab(t.id) }} className="text-smoke opacity-0 hover:text-bone group-hover:opacity-100" aria-label="Close tab">
                   <X size={10} />
@@ -116,9 +116,9 @@ function Page({ url, go }: { url: string; go: (u: string) => void }) {
             className="field mt-8 h-10 w-full"
             onKeyDown={(e) => e.key === 'Enter' && go(normalize((e.target as HTMLInputElement).value))}
           />
-          <div className="mt-6 grid grid-cols-4 gap-px border hair bg-[var(--line-faint)]">
+          <div className="mt-6 grid grid-cols-4 gap-px overflow-hidden rounded-[12px] border hair bg-[var(--line-faint)]">
             {['relic.earth', 'en.wikipedia.org/wiki/Operating_system', 'anthropic.com', 'github.com'].map((s) => (
-              <button key={s} onClick={() => go(normalize(s))} className="bg-ink px-3 py-4 text-[9px] tracking-[0.24em] text-ash hover:bg-burgundy hover:text-bone">
+              <button key={s} onClick={() => go(normalize(s))} className="bg-ink px-3 py-4 text-[10px] tracking-[0.11em] font-semibold text-ash hover:bg-burgundy hover:text-bone">
                 {host('https://' + s).replace('en.', '').toUpperCase()}
               </button>
             ))}

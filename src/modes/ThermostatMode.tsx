@@ -151,7 +151,7 @@ export function ThermostatMode() {
               <motion.div key="settings" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="w-full space-y-2">
                 <div className="label mb-3 text-red">SETTINGS</div>
                 {[['HUMIDITY', `${th.humidity}%`], ['SCHEDULE', 'COMFORT 68–70°'], ['MESH', 'THREAD · ONLINE'], ['CLAUDE', 'HOME COMFORT GRANT']].map(([k, v]) => (
-                  <div key={k} className="flex justify-between border-b hair-faint pb-1.5"><span className="label-sm">{k}</span><span className="text-[9px] tracking-[0.22em] text-bone">{v}</span></div>
+                  <div key={k} className="flex justify-between border-b hair-faint pb-1.5"><span className="label-sm">{k}</span><span className="text-[10px] tracking-[0.1em] font-semibold text-bone">{v}</span></div>
                 ))}
               </motion.div>
             )}
@@ -160,7 +160,7 @@ export function ThermostatMode() {
 
         <div className="absolute bottom-[9%] left-1/2 flex -translate-x-1/2 gap-5">
           {(['fan', 'climate', 'settings'] as Panel[]).map((p) => (
-            <button key={p} onClick={() => setPanel(panel === p ? 'main' : p)} className={`text-[9px] tracking-[0.34em] ${panel === p ? 'text-signal' : 'text-ash hover:text-bone'}`}>
+            <button key={p} onClick={() => setPanel(panel === p ? 'main' : p)} className={`text-[10px] tracking-[0.15em] font-semibold ${panel === p ? 'text-signal' : 'text-ash hover:text-bone'}`}>
               {p.toUpperCase()}
             </button>
           ))}

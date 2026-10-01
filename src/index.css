@@ -20,16 +20,18 @@
   --color-red: #b3141b;
   --color-signal: #e8242b;
   --color-bone: #ebe5df;
-  --color-ash: #a39b96;
-  --color-smoke: #6d6561;
-  --color-soot: #3b3634;
+  --color-ash: #c4bcb7;
+  --color-smoke: #8d8580;
+  --color-soot: #4a4441;
 }
 
 :root {
-  --line: rgba(179, 20, 27, 0.32);
-  --line-soft: rgba(179, 20, 27, 0.16);
+  --line: rgba(179, 20, 27, 0.4);
+  --line-soft: rgba(235, 229, 223, 0.1);
   --line-faint: rgba(235, 229, 223, 0.06);
-  --glass: rgba(9, 7, 7, 0.78);
+  --glass: rgba(18, 15, 15, 0.72);
+  --radius: 12px;
+  --radius-sm: 8px;
   --glass-deep: rgba(5, 4, 4, 0.9);
   --glow: 0 0 18px rgba(200, 22, 30, 0.22);
   --glow-strong: 0 0 22px rgba(232, 36, 43, 0.35);
@@ -53,12 +55,12 @@ body,
   margin: 0;
   background: #030303;
   color: var(--color-bone);
-  overflow: hidden;
+  overflow: clip; /* clip, not hidden: focus() must never scroll the OS surface */
 }
 
 body {
   font-family: var(--font-sans);
-  font-size: 13px;
+  font-size: 14px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
@@ -114,14 +116,16 @@ a:focus-visible {
 @layer components {
 /* ── Typography ───────────────────────────────────────── */
 .label {
-  font-size: 10px;
-  letter-spacing: 0.32em;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--color-ash);
 }
 .label-sm {
-  font-size: 9px;
-  letter-spacing: 0.3em;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--color-smoke);
 }
@@ -133,9 +137,9 @@ a:focus-visible {
   letter-spacing: 0.24em;
 }
 .wordmark {
-  letter-spacing: 0.62em;
+  letter-spacing: 0.42em;
   text-transform: uppercase;
-  font-weight: 400;
+  font-weight: 600;
 }
 .num {
   font-variant-numeric: tabular-nums;
@@ -150,13 +154,15 @@ a:focus-visible {
 .panel {
   background: var(--glass);
   border: 1px solid var(--line-soft);
-  backdrop-filter: blur(14px) saturate(0.8);
-  -webkit-backdrop-filter: blur(14px) saturate(0.8);
+  border-radius: var(--radius);
+  backdrop-filter: blur(24px) saturate(1.2);
+  -webkit-backdrop-filter: blur(24px) saturate(1.2);
   position: relative;
 }
 .panel-solid {
-  background: linear-gradient(180deg, #0b0909 0%, #070606 100%);
+  background: #0e0c0c;
   border: 1px solid var(--line-soft);
+  border-radius: var(--radius);
   position: relative;
 }
 .hair {
@@ -169,10 +175,10 @@ a:focus-visible {
   border-color: var(--line-faint);
 }
 
-/* corner ticks — the HUD bracket motif */
+/* corner ticks — retired for the minimal shell; class kept as a no-op */
 .ticks::before,
 .ticks::after {
-  content: "";
+  content: none;
   position: absolute;
   width: 9px;
   height: 9px;
@@ -216,31 +222,34 @@ a:focus-visible {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  height: 30px;
-  padding: 0 14px;
-  border: 1px solid var(--line);
-  background: rgba(20, 4, 6, 0.6);
-  font-size: 10px;
-  letter-spacing: 0.28em;
+  height: 32px;
+  padding: 0 16px;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-sm);
+  background: rgba(235, 229, 223, 0.06);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--color-bone);
   transition: background 0.2s, border-color 0.2s, box-shadow 0.2s, color 0.2s;
   white-space: nowrap;
 }
 .btn:hover {
-  background: rgba(90, 12, 16, 0.45);
-  border-color: rgba(200, 22, 30, 0.7);
-  box-shadow: var(--glow);
+  background: rgba(235, 229, 223, 0.12);
+  border-color: rgba(235, 229, 223, 0.18);
 }
 .btn:active {
   background: rgba(125, 15, 20, 0.6);
 }
 .btn-primary {
-  background: linear-gradient(180deg, rgba(150, 16, 22, 0.75), rgba(95, 10, 14, 0.75));
-  border-color: rgba(232, 36, 43, 0.7);
+  background: var(--color-red);
+  border-color: transparent;
+  color: #fff;
 }
 .btn-primary:hover {
-  background: linear-gradient(180deg, rgba(185, 20, 27, 0.85), rgba(115, 12, 17, 0.85));
+  background: var(--color-signal);
+  border-color: transparent;
 }
 .btn-ghost {
   border-color: var(--line-faint);
@@ -256,30 +265,30 @@ a:focus-visible {
 }
 
 .field {
-  background: rgba(3, 3, 3, 0.7);
+  background: rgba(235, 229, 223, 0.06);
   border: 1px solid var(--line-soft);
+  border-radius: var(--radius-sm);
   color: var(--color-bone);
   outline: none;
-  height: 32px;
+  height: 34px;
   padding: 0 12px;
-  font-size: 12px;
-  letter-spacing: 0.06em;
+  font-size: 13px;
+  letter-spacing: 0.01em;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 .field::placeholder {
   color: var(--color-smoke);
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-  font-size: 10px;
+  letter-spacing: 0.01em;
 }
 .field:focus {
-  border-color: rgba(200, 22, 30, 0.7);
-  box-shadow: 0 0 0 1px rgba(200, 22, 30, 0.15), var(--glow);
+  border-color: rgba(232, 36, 43, 0.6);
+  box-shadow: 0 0 0 3px rgba(232, 36, 43, 0.15);
 }
 
 /* progress */
 .bar {
-  height: 2px;
+  height: 3px;
+  border-radius: 2px;
   background: rgba(235, 229, 223, 0.07);
   position: relative;
   overflow: hidden;
@@ -287,14 +296,14 @@ a:focus-visible {
 .bar > i {
   position: absolute;
   inset: 0 auto 0 0;
-  background: linear-gradient(90deg, var(--color-blood), var(--color-signal));
-  box-shadow: 0 0 8px rgba(232, 36, 43, 0.6);
+  border-radius: 2px;
+  background: var(--color-signal);
 }
 
 /* status dot */
 .dot {
-  width: 5px;
-  height: 5px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   background: var(--color-signal);
   box-shadow: 0 0 6px rgba(232, 36, 43, 0.8);
@@ -448,38 +457,6 @@ input[type='range']::-moz-range-thumb {
   border: 0;
   border-radius: 0;
   background: var(--color-signal);
-}
-
-/* ── Recede ───────────────────────────────────────────────
-   Chrome waits in the dark until you reach for its area.
-   Fades out slowly, returns quickly. Touch screens keep it visible. */
-.recede {
-  opacity: 0;
-  transition: opacity 0.9s cubic-bezier(0.2, 0, 0, 1) 0.35s;
-}
-.recede:hover,
-.recede:focus-within {
-  opacity: 1;
-  transition-duration: 0.25s;
-  transition-delay: 0s;
-}
-.whisper {
-  opacity: 0.4;
-  transition: opacity 0.9s cubic-bezier(0.2, 0, 0, 1) 0.35s;
-}
-.group\/top:hover .whisper,
-.group\/top:focus-within .whisper,
-.group\/top:hover .recede,
-.group\/top:focus-within .recede {
-  opacity: 1;
-  transition-duration: 0.25s;
-  transition-delay: 0s;
-}
-@media (hover: none) {
-  .recede,
-  .whisper {
-    opacity: 1;
-  }
 }
 
 @keyframes drain {

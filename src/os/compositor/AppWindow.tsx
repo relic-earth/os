@@ -71,7 +71,8 @@ export function AppWindow({ win, children }: { win: RelicWindow; children: React
     setDragging(false)
   }
 
-  const rect = win.maximized ? { x: 0, y: 0, width: area.width, height: area.height } : { x: win.x, y: win.y, width: win.width, height: win.height }
+  // maximized windows stop above the dock, like a zoomed window on a desktop with a visible dock
+  const rect = win.maximized ? { x: 0, y: 0, width: area.width, height: area.height - (win.deviceId === 'relic-tv' ? 0 : 84) } : { x: win.x, y: win.y, width: win.width, height: win.height }
   const isForeign = app && app.runtime !== 'relic'
 
   return (
@@ -85,26 +86,25 @@ export function AppWindow({ win, children }: { win: RelicWindow; children: React
       onPointerDown={() => !win.focused && relicRuntime.windows.focus(win.id)}
     >
       <div
-        className={`relative flex h-full flex-col border bg-[rgba(6,5,5,0.94)] backdrop-blur-xl transition-[border-color,box-shadow] duration-300 ${
-          win.focused ? 'border-[var(--line)] shadow-[0_30px_90px_rgba(0,0,0,0.75),0_0_0_1px_rgba(0,0,0,0.6),0_0_28px_rgba(125,15,20,0.18)]' : 'border-[var(--line-faint)] shadow-[0_20px_60px_rgba(0,0,0,0.6)]'
-        } ${win.maximized ? '' : 'ticks'}`}
+        className={`relative flex h-full flex-col overflow-hidden border bg-[rgba(14,12,12,0.96)] backdrop-blur-xl transition-[border-color,box-shadow] duration-300 ${win.maximized ? 'rounded-none' : 'rounded-[12px]'} ${
+          win.focused ? 'border-[rgba(235,229,223,0.16)] shadow-[0_30px_90px_rgba(0,0,0,0.75)]' : 'border-[var(--line-faint)] shadow-[0_20px_60px_rgba(0,0,0,0.55)]'
+        }`}
       >
         {/* title bar */}
         <div
-          className={`relative flex h-[34px] shrink-0 items-center gap-3 border-b pl-3.5 pr-1 ${win.focused ? 'hair' : 'hair-faint'} ${dragging ? 'cursor-grabbing' : ''}`}
+          className={`relative flex h-[38px] shrink-0 items-center gap-2.5 border-b bg-[rgba(30,25,25,0.5)] pl-3.5 pr-1.5 ${win.focused ? 'hair' : 'hair-faint'} ${dragging ? 'cursor-grabbing' : ''}`}
           onPointerDown={(e) => onDown(e)}
           onPointerMove={onMove}
           onPointerUp={onUp}
           onDoubleClick={() => relicRuntime.windows.toggleMaximize(win.id)}
         >
-          {win.focused && <span className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-red/80 to-transparent" />}
-          <Icon name={app?.icon} size={13} className={win.focused ? 'text-red' : 'text-smoke'} />
-          <span className={`truncate text-[10px] tracking-[0.32em] ${win.focused ? 'text-bone' : 'text-ash'}`}>{win.title.toUpperCase()}</span>
+          <Icon name={app?.icon} size={14} strokeWidth={1.75} className={win.focused ? 'text-signal' : 'text-smoke'} />
+          <span className={`truncate text-[13px] font-semibold ${win.focused ? 'text-bone' : 'text-smoke'}`}>{win.title}</span>
           {isForeign && (
             <button
               onPointerDown={(e) => e.stopPropagation()}
               onClick={() => setShowCompat((v) => !v)}
-              className={`flex h-[18px] items-center gap-1.5 border px-2 text-[8px] tracking-[0.26em] transition-colors ${showCompat ? 'border-red text-bone' : 'hair text-ash hover:text-bone'}`}
+              className={`flex h-[20px] items-center gap-1.5 rounded-full border px-2.5 text-[10px] tracking-[0.1em] font-semibold transition-colors ${showCompat ? 'border-red text-bone' : 'hair text-ash hover:text-bone'}`}
               title="Runtime details"
             >
               <Cpu size={10} strokeWidth={1.25} />
@@ -143,7 +143,7 @@ export function AppWindow({ win, children }: { win: RelicWindow; children: React
 
 function WinBtn({ children, onClick, label, danger }: { children: ReactNode; onClick: () => void; label: string; danger?: boolean }) {
   return (
-    <button onClick={onClick} aria-label={label} className={`flex h-[30px] w-[34px] items-center justify-center text-ash transition-colors ${danger ? 'hover:bg-blood hover:text-bone' : 'hover:bg-burgundy hover:text-bone'}`}>
+    <button onClick={onClick} aria-label={label} className={`flex h-[28px] w-[30px] items-center justify-center rounded-md text-ash transition-colors ${danger ? 'hover:bg-red hover:text-white' : 'hover:bg-white/10 hover:text-bone'}`}>
       {children}
     </button>
   )

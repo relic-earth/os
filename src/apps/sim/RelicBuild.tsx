@@ -39,7 +39,7 @@ export function RelicBuild() {
             return (
               <button key={d.id} onClick={() => setTargets((t) => (on ? t.filter((x) => x !== d.id) : [...t, d.id]))} className={`relative flex w-full items-center gap-3 px-3 py-2 text-left ${on ? 'lit' : 'hover:bg-burgundy/30'}`}>
                 <Icon name={deviceIcon[d.type]} size={13} className={on ? 'text-signal' : 'text-smoke'} />
-                <span className="flex-1 text-[10px] tracking-[0.24em] text-bone">{d.name.toUpperCase()}</span>
+                <span className="flex-1 text-[11px] tracking-[0.11em] font-semibold text-bone">{d.name.toUpperCase()}</span>
                 <span className="label-sm">{d.type === 'tv' ? '10-FT' : d.type === 'phone' ? 'MOBILE' : d.type === 'car' ? 'DRIVE' : 'DESKTOP'}</span>
               </button>
             )
@@ -57,7 +57,7 @@ export function RelicBuild() {
                 {i < stage || stage === STAGES.length ? <Check size={11} className="text-signal" /> : i === stage ? <Loader size={11} className="animate-spin text-ash" /> : <span className="dot dot-off" />}
                 <span className="label-sm">{String(i + 1).padStart(2, '0')}</span>
               </div>
-              <div className={`mt-2 text-[9px] tracking-[0.22em] ${i <= stage ? 'text-bone' : 'text-smoke'}`}>{s}</div>
+              <div className={`mt-2 text-[10px] tracking-[0.1em] font-semibold ${i <= stage ? 'text-bone' : 'text-smoke'}`}>{s}</div>
             </div>
           ))}
         </div>

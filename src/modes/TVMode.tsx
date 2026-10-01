@@ -123,7 +123,7 @@ export function TVMode() {
             <motion.div key="app" className="absolute inset-0 z-30 flex flex-col bg-void" initial={{ opacity: 0, scale: 1.02 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}>
               <div className="flex items-center gap-4 border-b hair bg-void px-10 py-4">
                 <Icon name={getApp(w.appId)?.icon} size={18} className="text-red" />
-                <span className="text-[14px] tracking-[0.4em] text-bone">{getApp(w.appId)?.name.toUpperCase()}</span>
+                <span className="text-[14px] tracking-[0.18em] font-semibold text-bone">{getApp(w.appId)?.name.toUpperCase()}</span>
                 <span className="label-sm">SESSION CONTINUED FROM {from?.replace('relic-', 'RELIC ').toUpperCase()} · STATE SYNCHRONIZED</span>
                 <span className="label-sm ml-auto text-smoke">ESC · RELIC TV HOME</span>
                 <span className="label-sm flex items-center gap-2"><span className="dot pulse" /> ON RELIC TV</span>
@@ -161,7 +161,7 @@ export function TVMode() {
         <div className="mt-auto">
           <div className="label text-red">{screen.kind === 'grid' ? screen.title : 'RELIC TV'}</div>
           <div className="mt-3 text-[clamp(34px,5vw,72px)] font-light leading-none tracking-[0.12em] text-bone">{hero?.label}</div>
-          {hero?.sub && <div className="mt-4 text-[clamp(12px,1.2vw,16px)] tracking-[0.3em] text-ash">{hero.sub}</div>}
+          {hero?.sub && <div className="mt-4 text-[clamp(12px,1.2vw,16px)] tracking-[0.14em] font-semibold text-ash">{hero.sub}</div>}
         </div>
 
         <div className={`mt-[5vh] grid gap-[1.4vw] ${screen.kind === 'grid' ? 'grid-cols-4' : ''}`} style={screen.kind === 'grid' ? undefined : { gridTemplateColumns: `repeat(${items.length}, minmax(0, 1fr))` }}>
@@ -180,7 +180,7 @@ export function TVMode() {
                 <div className="absolute inset-0 bg-gradient-to-t from-void via-void/30 to-transparent" />
                 {t.icon && <Icon name={t.icon} size={22} className="absolute right-3 top-3 text-bone/80" />}
                 <div className="absolute bottom-[8%] left-[7%] right-[7%]">
-                  <div className={`truncate text-[clamp(10px,1vw,15px)] tracking-[0.34em] ${on ? 'text-bone' : 'text-ash'}`}>{t.short ?? t.label}</div>
+                  <div className={`truncate text-[clamp(10px,1vw,15px)] tracking-[0.15em] font-semibold ${on ? 'text-bone' : 'text-ash'}`}>{t.short ?? t.label}</div>
                 </div>
               </motion.button>
             )

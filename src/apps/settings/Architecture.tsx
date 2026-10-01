@@ -90,13 +90,13 @@ export function ArchitectureDiagram() {
             const on = node.id === hover
             return (
               <g key={node.id} onMouseEnter={() => setHover(node.id)} onClick={() => setHover(node.id)} style={{ cursor: 'pointer' }}>
-                <rect x={node.x - w / 2} y={node.y - 14} width={w} height="28" fill={on ? '#2a0609' : '#0a0808'} stroke={on ? '#e8242b' : '#b3141b'} strokeOpacity={on ? 1 : 0.5} strokeWidth="1" />
+                <rect x={node.x - w / 2} y={node.y - 14} width={w} height="28" rx="6" fill={on ? '#2a0609' : '#0a0808'} stroke={on ? '#e8242b' : '#b3141b'} strokeOpacity={on ? 1 : 0.5} strokeWidth="1" />
                 {on && <rect x={node.x - w / 2} y={node.y - 14} width="2" height="28" fill="#e8242b" />}
-                <text x={node.x} y={node.y + 3.5} textAnchor="middle" fill={on ? '#ebe5df' : '#a39b96'} fontSize="10" letterSpacing="3.2">
+                <text x={node.x} y={node.y + 3.5} textAnchor="middle" fill={on ? '#ebe5df' : '#a39b96'} fontSize="10" fontWeight="600" letterSpacing="1.6">
                   {node.label}
                 </text>
                 {live[node.id] && (
-                  <text x={node.x + w / 2 + 8} y={node.y + 3} fill="#b3141b" fontSize="7.5" letterSpacing="1.6">
+                  <text x={node.x + w / 2 + 8} y={node.y + 3} fill="#e8242b" fontSize="7.5" fontWeight="600" letterSpacing="0.8">
                     {live[node.id]}
                   </text>
                 )}
@@ -109,11 +109,11 @@ export function ArchitectureDiagram() {
       <div className="grid grid-cols-[1fr_1.4fr] gap-4">
         <div className="panel-solid ticks p-4">
           <div className="label-sm text-red">SELECTED</div>
-          <div className="mt-2 text-[13px] tracking-[0.3em] text-bone">{n.label}</div>
+          <div className="mt-2 text-[13px] tracking-[0.14em] font-semibold text-bone">{n.label}</div>
           <div className="mt-3 space-y-2">
-            <div><div className="label-sm">MODULE</div><div className="mono mt-0.5 text-[10px] text-ash">src/{n.module}</div></div>
+            <div><div className="label-sm">MODULE</div><div className="mono mt-0.5 text-[11px] text-ash">src/{n.module}</div></div>
             <div><div className="label-sm">PRODUCTION</div><div className="mt-0.5 text-[11px] leading-snug text-bone/85">{n.impl}</div></div>
-            <div><div className="label-sm">PROTOTYPE</div><div className="mt-0.5 text-[10px] tracking-[0.22em] text-signal">{n.now}</div></div>
+            <div><div className="label-sm">PROTOTYPE</div><div className="mt-0.5 text-[11px] tracking-[0.1em] font-semibold text-signal">{n.now}</div></div>
           </div>
         </div>
         <div className="panel-solid p-4">
@@ -122,7 +122,7 @@ export function ArchitectureDiagram() {
           {LAYERS.map(([k, v]) => (
             <div key={k} className="relative border-l hair-strong py-1.5 pl-3">
               <span className="absolute -left-[3px] top-3 h-[5px] w-[5px] bg-red" />
-              <div className="text-[9px] tracking-[0.24em] text-bone">{k}</div>
+              <div className="text-[10px] tracking-[0.11em] font-semibold text-bone">{k}</div>
               <div className="label-sm mt-0.5 text-soot">{v}</div>
             </div>
           ))}

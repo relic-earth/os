@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Check, Loader, X } from 'lucide-react'
+import { Check, Loader, Search, X } from 'lucide-react'
 import { getOS, useOS } from '../runtime/store'
 import { relicRuntime } from '../runtime/relicRuntime'
 import { classify, routeLabel } from '../../agent/intent'
@@ -104,81 +104,91 @@ function Prompt({ seed }: { seed: string }) {
 
   return (
     <motion.div
-      className="fixed inset-0 z-[9000] flex flex-col items-center bg-void/90 pt-[30vh] backdrop-blur-[8px]"
+      className="fixed inset-0 z-[9000] flex flex-col items-center bg-black/40 pt-[20vh] backdrop-blur-[2px]"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      exit={{ opacity: 0, transition: { duration: 0.5 } }}
-      transition={{ duration: 0.18 }}
+      exit={{ opacity: 0, transition: { duration: 0.35 } }}
+      transition={{ duration: 0.15 }}
       onMouseDown={close}
     >
-      <div className="w-[min(680px,88vw)]" onMouseDown={(e) => e.stopPropagation()}>
-        <input
-          ref={input}
-          value={text}
-          onChange={(e) => {
-            setText(e.target.value)
-            if (!heldRef.current) arm(e.target.value)
-          }}
-          onKeyDown={(e) => {
-            if (e.key === ' ') {
-              if (e.repeat) e.preventDefault()
-              else {
-                heldRef.current = true
-                setHeld(true)
-                clearTimeout(timer.current)
+      <motion.div
+        initial={{ y: -8, scale: 0.98 }}
+        animate={{ y: 0, scale: 1 }}
+        transition={{ duration: 0.2, ease: [0.2, 0, 0, 1] }}
+        className="w-[min(640px,92vw)] overflow-hidden rounded-[16px] border border-[rgba(235,229,223,0.14)] bg-[rgba(24,20,20,0.82)] shadow-[0_30px_90px_rgba(0,0,0,0.7)] backdrop-blur-2xl"
+        onMouseDown={(e) => e.stopPropagation()}
+      >
+        <div className="relative flex h-14 items-center gap-3 px-4">
+          <Search size={20} strokeWidth={2} className="shrink-0 text-signal" />
+          <input
+            ref={input}
+            value={text}
+            onChange={(e) => {
+              setText(e.target.value)
+              if (!heldRef.current) arm(e.target.value)
+            }}
+            onKeyDown={(e) => {
+              if (e.key === ' ') {
+                if (e.repeat) e.preventDefault()
+                else {
+                  heldRef.current = true
+                  setHeld(true)
+                  clearTimeout(timer.current)
+                }
               }
-            }
-            if (e.key === 'Enter') {
-              clearTimeout(timer.current)
-              run(text)
-            }
-            if (e.key === 'Escape') close()
-          }}
-          onKeyUp={(e) => {
-            if (e.key === ' ') {
-              heldRef.current = false
-              setHeld(false)
-              arm(e.currentTarget.value)
-            }
-          }}
-          placeholder={busy ? '' : 'Ask anything'}
-          spellCheck={false}
-          autoComplete="off"
-          className="w-full bg-transparent text-center text-[clamp(20px,2.4vw,30px)] font-light tracking-[0.02em] text-bone caret-[#e8242b] outline-none placeholder:text-soot"
-          aria-label="Ask Claude"
-        />
+              if (e.key === 'Enter') {
+                clearTimeout(timer.current)
+                run(text)
+              }
+              if (e.key === 'Escape') close()
+            }}
+            onKeyUp={(e) => {
+              if (e.key === ' ') {
+                heldRef.current = false
+                setHeld(false)
+                arm(e.currentTarget.value)
+              }
+            }}
+            placeholder={busy ? 'Working…' : 'Ask Claude'}
+            spellCheck={false}
+            autoComplete="off"
+            className="min-w-0 flex-1 bg-transparent text-[20px] text-bone caret-[#e8242b] outline-none placeholder:font-semibold placeholder:text-smoke"
+            aria-label="Ask Claude"
+          />
+          <span className="shrink-0 text-[11px] font-semibold tracking-[0.12em] text-smoke">
+            {held ? <span className="text-signal">HOLDING</span> : armed > 0 ? 'SENDING' : busy ? 'WORKING' : 'ENTER'}
+          </span>
+          {/* the second: a line that drains while Relic waits for you to finish typing */}
+          <div className="absolute inset-x-0 bottom-0 h-[2px] overflow-hidden">
+            {held ? (
+              <span className="pulse absolute inset-0 bg-signal/70" />
+            ) : armed > 0 ? (
+              <span key={armed} className="absolute inset-0 origin-left bg-signal" style={{ animation: `drain ${IDLE_MS}ms linear forwards` }} />
+            ) : busy ? (
+              <span className="sweep" />
+            ) : null}
+          </div>
+        </div>
 
-        {/* the second: a hairline that drains while Relic waits for you to finish */}
-        <div className="relative mx-auto mt-4 h-px w-full overflow-hidden bg-[var(--line-faint)]">
-          {held ? (
-            <span className="pulse absolute inset-0 bg-red/70" />
-          ) : armed > 0 ? (
-            <span key={armed} className="absolute inset-0 origin-center bg-signal shadow-[0_0_10px_rgba(232,36,43,0.8)]" style={{ animation: `drain ${IDLE_MS}ms linear forwards` }} />
-          ) : busy ? (
-            <span className="sweep" />
-          ) : null}
-        </div>
-        <div className="mt-2 flex h-4 items-center justify-center gap-3">
-          {held ? (
-            <span className="label-sm text-red">HOLDING · RELEASE TO SEND</span>
-          ) : route ? (
-            <span className="label-sm text-smoke">{routeLabel[route.route]} · {route.preview}</span>
-          ) : null}
-        </div>
+        {(route || held) && !reply && (
+          <div className="border-t border-[var(--line-soft)] px-4 py-2.5 text-[11px] font-semibold tracking-[0.12em] text-smoke">
+            {held ? 'RELEASE SPACE TO SEND' : `${routeLabel[route!.route]} · ${route!.preview}`}
+          </div>
+        )}
 
         <AnimatePresence>
           {reply && (
-            <motion.div key={reply.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="mx-auto mt-8 max-w-[560px] text-center">
+            <motion.div key={reply.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="max-h-[50vh] overflow-y-auto border-t border-[var(--line-soft)] px-5 py-4">
               {(!!reply.activity || !!reply.steps?.length) && (
-                <div className="mb-4 inline-flex flex-col items-start gap-1 text-left">
-                  {reply.activity && <div className="label-sm mb-1 text-red">{reply.activity}</div>}
+                <div className="mb-3 space-y-1">
+                  {reply.activity && <div className="text-[11px] font-semibold tracking-[0.12em] text-signal">{reply.activity.toUpperCase()}</div>}
                   {reply.steps?.map((s) => (
-                    <div key={s.id} className="flex items-center gap-2 text-[11px] tracking-[0.04em] text-ash">
-                      <span className="flex w-3 justify-center">
-                        {s.state === 'done' && <Check size={10} className="text-signal" strokeWidth={2} />}
-                        {s.state === 'running' && <Loader size={10} className="animate-spin" />}
+                    <div key={s.id} className="flex items-center gap-2 text-[13px] text-ash">
+                      <span className="flex w-3.5 justify-center">
+                        {s.state === 'done' && <Check size={12} className="text-signal" strokeWidth={2.5} />}
+                        {s.state === 'running' && <Loader size={12} className="animate-spin" />}
                         {s.state === 'waiting' && <span className="dot pulse" />}
-                        {s.state === 'failed' && <X size={10} strokeWidth={2} />}
+                        {s.state === 'failed' && <X size={12} strokeWidth={2.5} />}
                       </span>
                       {s.label}
                     </div>
@@ -186,7 +196,7 @@ function Prompt({ seed }: { seed: string }) {
                 </div>
               )}
               {reply.text && (
-                <div className="whitespace-pre-wrap text-[14px] leading-[1.7] text-bone/85">
+                <div className="whitespace-pre-wrap text-[15px] leading-[1.6] text-bone">
                   {reply.text}
                   {reply.streaming && <span className="caret" />}
                 </div>
@@ -194,6 +204,9 @@ function Prompt({ seed }: { seed: string }) {
             </motion.div>
           )}
         </AnimatePresence>
+      </motion.div>
+      <div className="mt-3 text-[11px] font-semibold tracking-[0.12em] text-smoke/80" onMouseDown={(e) => e.stopPropagation()}>
+        RUNS 1 SECOND AFTER YOU STOP · HOLD SPACE TO WAIT · ESC TO CLOSE
       </div>
     </motion.div>
   )

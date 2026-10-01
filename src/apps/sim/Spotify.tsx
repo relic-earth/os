@@ -25,7 +25,7 @@ export function Spotify() {
           <div className="flex items-end gap-5">
             <div className="h-28 w-28 border border-black"><Art variant="eclipse" className="h-full w-full" /></div>
             <div>
-              <div className="text-[10px] tracking-[0.2em] text-smoke">SOUNDTRACK</div>
+              <div className="text-[11px] tracking-[0.09em] font-semibold text-smoke">SOUNDTRACK</div>
               <div className="text-[26px] font-light text-bone">Episode III OST</div>
               <div>John Williams · London Symphony Orchestra</div>
             </div>
@@ -37,8 +37,8 @@ export function Spotify() {
               return (
                 <button key={t.id} onClick={() => (on ? relicRuntime.media.pause(s!.id) : relicRuntime.media.play(t.id, s?.deviceId))} className={`grid w-full grid-cols-[24px_1fr_120px_50px] items-center gap-3 px-2 py-2 text-left hover:bg-burgundy/40 ${on ? 'text-signal' : 'text-bone/85'}`}>
                   <span className="num text-smoke">{on ? '▶' : i + 1}</span>
-                  <span>{t.title}<span className="block text-[10px] text-smoke">{t.subtitle}</span></span>
-                  <span className="text-[10px] text-smoke">{s ? devices.find((d) => d.id === s.deviceId)?.name : ''}</span>
+                  <span>{t.title}<span className="block text-[11px] text-smoke">{t.subtitle}</span></span>
+                  <span className="text-[11px] text-smoke">{s ? devices.find((d) => d.id === s.deviceId)?.name : ''}</span>
                   <span className="num text-smoke">{fmtTime(t.duration)}</span>
                 </button>
               )
@@ -53,7 +53,7 @@ export function Spotify() {
           </button>
           <div className="min-w-0">
             <div className="truncate text-bone">{cur.title}</div>
-            <div className="text-[10px]">{devices.find((d) => d.id === current.deviceId)?.name} · {fmtTime(current.position ?? 0)}</div>
+            <div className="text-[11px]">{devices.find((d) => d.id === current.deviceId)?.name} · {fmtTime(current.position ?? 0)}</div>
           </div>
           <div className="ml-auto"><ContinuityActions sessionId={current.id} size="sm" /></div>
         </div>

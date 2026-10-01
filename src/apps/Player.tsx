@@ -24,7 +24,7 @@ export function Player({ win, tv }: { win: RelicWindow; tv?: boolean }) {
         {remote && (
           <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
             <div className="label text-red">PLAYING ON</div>
-            <div className="mt-2 text-[26px] font-light tracking-[0.4em] text-bone">{device?.name.toUpperCase()}</div>
+            <div className="mt-2 text-[26px] tracking-[0.18em] font-semibold text-bone">{device?.name.toUpperCase()}</div>
             <div className="label-sm mt-2">{device?.location.toUpperCase()} · THIS SCREEN IS A REMOTE</div>
           </div>
         )}

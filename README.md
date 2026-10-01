@@ -56,18 +56,19 @@ The UI never calls a model directly. Set `VITE_CLAUDE_PROVIDER=anthropic`, or pi
 
 ## Interface
 
-At rest the desktop shows only the time and *START TYPING*. Everything else waits in the dark:
+Minimal and Apple-proportioned: a menu bar, the time, one *Ask Claude* field, four widgets and a dock.
 
-- **Type anywhere** to talk to Claude. The prompt runs one second after you stop typing. Hold the spacebar to keep it waiting, press Enter to run at once, or Esc to dismiss.
-- **Left edge**: the sidebar slides in. **Bottom edge**: the dock. **Top**: the status bar. The tiles and status panels on Home appear when the pointer reaches their area.
-- Hidden chrome takes no clicks, so it never blocks the windows underneath it.
+- **Type anywhere** to talk to Claude. The prompt runs one second after you stop typing. Hold the spacebar to keep it waiting, press Enter to run at once, Esc to close.
+- If the page is framed (for example in a preview) and has no keyboard focus, Home shows *Click anywhere, then type*.
+- **Menu bar**: Home, TV, Movies, Games, Apps, Files, Devices, then status, search, notifications, device switcher and the clock.
+- **Dock**: pinned system apps plus running apps; names appear on hover.
 
 ## Demo script
 
 1. Load `/?boot`. The boot sequence runs.
 2. Just start typing *"Find my latest Relic House permit plans"*. The prompt appears as you type and runs one second after you stop. Claude searches Files and opens *Relic House Permit Plans.pdf* (Rev C).
 3. Type *"Open Photoshop"*. Photoshop launches through the Wine compatibility layer. The **WINDOWS APP** badge on the title bar opens the compatibility panel.
-4. Move the pointer to the left edge and open **Devices**: laptop, desktop, TV, phone, car, home, thermostat.
+4. Open **Devices** from the menu bar: laptop, desktop, TV, phone, car, home, thermostat.
 5. Type *"Send this to the TV"*. Claude locates the TV, authenticates it and transfers the Photoshop session.
 6. Press **Alt+T** (or use DEVICE → RELIC TV). TV mode shows the Photoshop session continued there.
 7. Switch to DEVICE → **RELIC PHONE**, then **RELIC CAR**, then **RELIC THERMOSTAT**.

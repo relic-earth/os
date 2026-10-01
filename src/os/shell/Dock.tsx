@@ -3,14 +3,12 @@ import { useOS, useOSShallow } from '../runtime/store'
 import { relicRuntime } from '../runtime/relicRuntime'
 import { getApp } from '../apps/registry'
 import { Icon } from '../../ui/Icon'
-import { revealClass, useEdgeReveal } from '../../ui/primitives'
 
 const PINNED = ['claude', 'files', 'web', 'apps', 'devices', 'settings']
 
-/** Dock / taskbar — pinned system apps plus every running app on this device. */
+/** Dock — pinned system apps plus every running app on this device. Names appear on hover. */
 export function Dock() {
   const profile = useOS((s) => s.profile)
-  const { ref, shown } = useEdgeReveal<HTMLDivElement>((_, y) => y >= window.innerHeight - 28, 24)
   const wins = useOSShallow((s) => s.windows.filter((w) => w.deviceId === s.profile))
   const running = Array.from(new Set(wins.map((w) => w.appId)))
   const items = [...PINNED, ...running.filter((id) => !PINNED.includes(id))]
@@ -24,13 +22,12 @@ export function Dock() {
   }
 
   return (
-    <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[5000] flex justify-center" data-profile={profile}>
-      <div ref={ref} data-shown={shown ? '1' : '0'} className={`${revealClass(shown)} pb-3`}>
+    <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[5000] flex justify-center pb-2.5" data-profile={profile}>
       <motion.div
-        initial={{ y: 20, opacity: 0 }}
+        initial={{ y: 24, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.2, duration: 0.5, ease: [0.2, 0, 0, 1] }}
-        className="panel flex items-stretch"
+        className="pointer-events-auto flex items-end gap-1.5 rounded-[20px] border border-[var(--line-soft)] bg-[rgba(22,18,18,0.6)] p-1.5 shadow-[0_20px_60px_rgba(0,0,0,0.6)] backdrop-blur-2xl"
       >
         {items.map((id, i) => {
           const app = getApp(id)
@@ -38,25 +35,27 @@ export function Dock() {
           const isRunning = mine.length > 0
           const focused = mine.some((w) => w.focused && !w.minimized)
           const separator = i === PINNED.length && running.some((r) => !PINNED.includes(r))
+          const name = (app?.name ?? id).replace('Relic ', '')
           return (
-            <div key={id} className="flex">
-              {separator && <span className="my-2 w-px bg-[var(--line)]" />}
-              <button
-                onClick={() => click(id)}
-                title={app?.name}
-                className={`group relative flex h-[46px] min-w-[74px] flex-col items-center justify-center gap-1 px-3 transition-colors ${focused ? 'bg-burgundy/70' : 'hover:bg-burgundy/40'}`}
-              >
-                <Icon name={app?.icon} size={15} className={focused ? 'text-signal' : isRunning ? 'text-bone' : 'text-ash group-hover:text-bone'} />
-                <span className={`max-w-[88px] truncate text-[8px] tracking-[0.28em] ${focused ? 'text-bone' : 'text-smoke group-hover:text-ash'}`}>
-                  {(app?.name ?? id).replace('Relic ', '').toUpperCase()}
+            <div key={id} className="flex items-end gap-1.5">
+              {separator && <span className="mx-1 mb-2 h-9 w-px bg-[var(--line-soft)]" />}
+              <button onClick={() => click(id)} aria-label={name} className="group relative flex flex-col items-center">
+                <span className="pointer-events-none absolute -top-9 whitespace-nowrap rounded-md border border-[var(--line-soft)] bg-[rgba(22,18,18,0.92)] px-2.5 py-1 text-[11px] font-semibold tracking-[0.1em] text-bone opacity-0 transition-opacity group-hover:opacity-100">
+                  {name.toUpperCase()}
                 </span>
-                {isRunning && <span className={`absolute bottom-0 left-1/2 h-[2px] -translate-x-1/2 ${focused ? 'w-6 bg-signal shadow-[0_0_8px_rgba(232,36,43,0.9)]' : 'w-2 bg-red/70'}`} />}
+                <span
+                  className={`flex h-11 w-11 items-center justify-center rounded-[12px] border transition-all duration-200 group-hover:-translate-y-0.5 ${
+                    focused ? 'border-red/60 bg-gradient-to-b from-[#3a0c10] to-[#1a0607]' : 'border-[var(--line-soft)] bg-gradient-to-b from-[#221c1c] to-[#121010] group-hover:from-[#2c2424]'
+                  }`}
+                >
+                  <Icon name={app?.icon} size={20} strokeWidth={1.5} className={focused ? 'text-signal' : 'text-bone/90'} />
+                </span>
+                <span className={`mt-1 h-1 w-1 rounded-full ${isRunning ? (focused ? 'bg-signal' : 'bg-bone/60') : 'bg-transparent'}`} />
               </button>
             </div>
           )
         })}
       </motion.div>
-      </div>
     </div>
   )
 }

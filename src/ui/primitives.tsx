@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react'
+import { useEffect, useState, type ReactNode } from 'react'
 import { useOS } from '../os/runtime/store'
 import type { RelicDevice } from '../sdk/types'
 
@@ -89,42 +89,20 @@ export function Range({ value, onChange, label, className = '' }: { value: numbe
   )
 }
 
-const noHover = () => typeof window !== 'undefined' && window.matchMedia?.('(hover: none)').matches
-
-/**
- * Edge reveal for chrome that floats over content. Hidden chrome takes no
- * pointer events, so it never blocks what is underneath; it appears when the
- * pointer reaches its edge and stays while the pointer is over it.
- */
-export function useEdgeReveal<T extends HTMLElement>(atEdge: (x: number, y: number) => boolean, margin = 12) {
-  const ref = useRef<T>(null)
-  const [shown, setShown] = useState(noHover)
+/** Whether this page has keyboard focus (false when e.g. it is framed and the host page holds focus). */
+export function useWindowFocus() {
+  const [focused, setFocused] = useState(() => typeof document === 'undefined' || document.hasFocus())
   useEffect(() => {
-    if (noHover()) return
-    let hide: ReturnType<typeof setTimeout> | undefined
-    const onMove = (e: PointerEvent) => {
-      const r = ref.current?.getBoundingClientRect()
-      const inside = !!r && r.width > 0 && e.clientX >= r.left - margin && e.clientX <= r.right + margin && e.clientY >= r.top - margin && e.clientY <= r.bottom + margin
-      if (atEdge(e.clientX, e.clientY) || (inside && ref.current?.dataset.shown === '1')) {
-        clearTimeout(hide)
-        hide = undefined
-        setShown(true)
-      } else if (!hide) {
-        hide = setTimeout(() => {
-          hide = undefined
-          setShown(false)
-        }, 420)
-      }
-    }
-    window.addEventListener('pointermove', onMove)
+    const on = () => setFocused(true)
+    const off = () => setFocused(false)
+    window.addEventListener('focus', on)
+    window.addEventListener('blur', off)
+    const t = setInterval(() => setFocused(document.hasFocus()), 1000)
     return () => {
-      window.removeEventListener('pointermove', onMove)
-      clearTimeout(hide)
+      window.removeEventListener('focus', on)
+      window.removeEventListener('blur', off)
+      clearInterval(t)
     }
-    // atEdge is a stable inline predicate per call site
-  }, [margin])
-  return { ref, shown }
+  }, [])
+  return focused
 }
-
-export const revealClass = (shown: boolean) =>
-  `transition-opacity ${shown ? 'pointer-events-auto opacity-100 duration-200' : 'pointer-events-none opacity-0 duration-700 delay-200'}`

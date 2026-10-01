@@ -16,7 +16,7 @@ function Card({ n, onClose }: { n: RelicNotification; onClose?: () => void }) {
           <span className="label-sm truncate text-ash">{n.source}</span>
           <span className="label-sm num text-soot">{fmtClock(n.at)}</span>
         </div>
-        <div className="mt-1 text-[11px] tracking-[0.2em] text-bone">{n.title}</div>
+        <div className="mt-1 text-[11px] tracking-[0.09em] font-semibold text-bone">{n.title}</div>
         {n.body && <div className="mt-1 truncate text-[11px] tracking-[0.02em] text-ash">{n.body}</div>}
       </div>
       {onClose && (

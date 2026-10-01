@@ -115,7 +115,7 @@ export function BootSequence() {
                 const active = i === shown && phase === 1
                 if (!done && !active) return null
                 return (
-                  <motion.div key={l.k} initial={{ opacity: 0, x: -6 }} animate={{ opacity: 1, x: 0 }} className="flex items-baseline gap-3 text-[10px] tracking-[0.3em]">
+                  <motion.div key={l.k} initial={{ opacity: 0, x: -6 }} animate={{ opacity: 1, x: 0 }} className="flex items-baseline gap-3 text-[11px] tracking-[0.14em] font-semibold">
                     <span className="w-[190px] text-ash">{l.k}</span>
                     <span className="flex-1 overflow-hidden whitespace-nowrap text-soot">
                       {i === 0 && active ? '.'.repeat(discovery) : ''}
@@ -130,7 +130,7 @@ export function BootSequence() {
             {phase >= 2 && (
               <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} className="mt-10 text-center">
                 <div className="label text-ash">RELIC OS</div>
-                <div className="mt-2 text-[13px] tracking-[0.5em] text-signal" style={{ textShadow: '0 0 12px rgba(232,36,43,0.6)' }}>
+                <div className="mt-2 text-[13px] tracking-[0.23em] font-semibold text-signal" style={{ textShadow: '0 0 12px rgba(232,36,43,0.6)' }}>
                   READY
                 </div>
               </motion.div>

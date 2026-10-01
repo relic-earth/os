@@ -19,23 +19,23 @@ export function ComputerUseOverlay({ windowId }: { windowId: string }) {
           <div className="panel absolute left-3 top-3 w-[210px] px-4 py-3">
             <div className="label-sm text-red">CLAUDE</div>
             <div className="label mt-0.5 text-bone">COMPUTER USE</div>
-            <div className="mt-2 text-[10px] tracking-[0.26em] text-bone">{getApp(cu.appId)?.name.toUpperCase()}</div>
+            <div className="mt-2 text-[11px] tracking-[0.12em] font-semibold text-bone">{getApp(cu.appId)?.name.toUpperCase()}</div>
             <div className="mt-3 space-y-1.5">
               {['SCREEN', 'MOUSE', 'KEYBOARD'].map((k) => (
                 <div key={k} className="flex items-center justify-between">
                   <span className="label-sm">{k}</span>
-                  <span className={`text-[9px] tracking-[0.22em] ${cu.phase === 'connecting' ? 'pulse text-ash' : 'text-bone'}`}>{cu.phase === 'connecting' ? 'CONNECTING' : cu.phase === 'done' ? 'RELEASED' : 'CONNECTED'}</span>
+                  <span className={`text-[10px] tracking-[0.1em] font-semibold ${cu.phase === 'connecting' ? 'pulse text-ash' : 'text-bone'}`}>{cu.phase === 'connecting' ? 'CONNECTING' : cu.phase === 'done' ? 'RELEASED' : 'CONNECTED'}</span>
                 </div>
               ))}
             </div>
-            {cu.task && <div className="mt-3 border-t hair pt-2 text-[10px] leading-snug tracking-[0.04em] text-ash">{cu.task}</div>}
+            {cu.task && <div className="mt-3 border-t hair pt-2 text-[11px] leading-snug tracking-[0.04em] text-ash">{cu.task}</div>}
             <div className="label-sm mt-2 text-soot">SIMULATED DRIVER</div>
           </div>
 
           {/* log */}
           <div className="panel absolute bottom-3 left-3 max-h-[40%] w-[230px] overflow-hidden px-4 py-2">
             {cu.log.slice(-6).map((l, i) => (
-              <div key={i} className="mono truncate text-[10px] leading-5 text-ash">
+              <div key={i} className="mono truncate text-[11px] leading-5 text-ash">
                 <span className="text-red">›</span> {l}
               </div>
             ))}

@@ -23,7 +23,7 @@ function Poster({ id, i, wide }: { id: string; i: number; wide?: boolean }) {
       <Art variant={m.art} seed={i + 2} className="absolute inset-0 h-full w-full transition-transform duration-[1.2s] group-hover:scale-105" />
       <div className="absolute inset-0 bg-gradient-to-t from-void via-transparent to-transparent" />
       <div className="absolute bottom-3 left-3 right-3">
-        <div className="text-[11px] tracking-[0.3em] text-bone">{m.title.toUpperCase()}</div>
+        <div className="text-[11px] tracking-[0.14em] font-semibold text-bone">{m.title.toUpperCase()}</div>
         <div className="label-sm mt-1">{m.subtitle}</div>
         {sess && m.duration > 0 && <div className="bar mt-2"><i style={{ width: `${((sess.position ?? 0) / m.duration) * 100}%` }} /></div>}
       </div>
@@ -82,7 +82,7 @@ export function TVSection() {
           <span className={`dot ${tv?.status === 'online' ? '' : 'dot-off'}`} />
           <div>
             <div className="label-sm">RELIC TV · LIVING ROOM</div>
-            <div className="mt-1 text-[10px] tracking-[0.24em] text-bone">{onTv ? relicRuntime.continuity.describe(onTv).toUpperCase() : 'IDLE'}</div>
+            <div className="mt-1 text-[11px] tracking-[0.11em] font-semibold text-bone">{onTv ? relicRuntime.continuity.describe(onTv).toUpperCase() : 'IDLE'}</div>
           </div>
           <button className="btn h-7" onClick={() => relicRuntime.shell.setProfile('relic-tv')}>TV MODE</button>
         </div>
@@ -94,7 +94,7 @@ export function TVSection() {
             <div className="absolute inset-0 bg-gradient-to-t from-void to-transparent" />
             <span className="label-sm absolute left-3 top-3 flex items-center gap-1.5 text-bone"><span className="dot pulse" /> LIVE</span>
             <div className="absolute bottom-3 left-3">
-              <div className="text-[12px] tracking-[0.3em] text-bone">{c.title.toUpperCase()}</div>
+              <div className="text-[12px] tracking-[0.14em] font-semibold text-bone">{c.title.toUpperCase()}</div>
               <div className="label-sm mt-1">{c.subtitle}</div>
             </div>
             <span className="label-sm absolute bottom-3 right-3 opacity-0 transition-opacity group-hover:opacity-100">PLAY ON TV</span>
@@ -130,7 +130,7 @@ export function Games() {
             <Art variant={g.art} seed={i + 4} className="absolute inset-0 h-full w-full transition-transform duration-[1.2s] group-hover:scale-105" />
             <div className="absolute inset-0 bg-gradient-to-t from-void via-void/20 to-transparent" />
             <div className="absolute bottom-4 left-4">
-              <div className="text-[15px] tracking-[0.36em] text-bone">{g.title.toUpperCase()}</div>
+              <div className="text-[15px] tracking-[0.16em] font-semibold text-bone">{g.title.toUpperCase()}</div>
               <div className={`label-sm mt-1.5 ${/proton|wine/i.test(g.subtitle) ? 'text-red' : ''}`}>{g.subtitle.toUpperCase()}</div>
             </div>
           </motion.button>

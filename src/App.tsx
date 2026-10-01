@@ -63,7 +63,7 @@ function ProfileFlash() {
         <motion.div className="pointer-events-none fixed inset-0 z-[9900] flex items-center justify-center bg-void" initial={{ opacity: 1 }} animate={{ opacity: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.9, ease: [0.6, 0, 0.4, 1] }}>
           <div className="text-center">
             <div className="label text-red">{p.mode}</div>
-            <div className="mt-3 text-[18px] tracking-[0.6em] text-bone">{p.label}</div>
+            <div className="mt-3 text-[18px] tracking-[0.27em] font-semibold text-bone">{p.label}</div>
             <div className="mx-auto mt-4 h-px w-40 bg-gradient-to-r from-transparent via-signal to-transparent" />
           </div>
         </motion.div>

@@ -39,7 +39,7 @@ export function AutoCAD() {
         <div className="pointer-events-none absolute h-px w-full bg-bone/30" style={{ top: cursor.y }} />
         <div className="pointer-events-none absolute h-3 w-3 border border-bone/70" style={{ left: cursor.x - 6, top: cursor.y - 6 }} />
       </div>
-      <div className="border-t border-black bg-[#101010] px-3 py-1.5 font-mono text-[10px]">
+      <div className="border-t border-black bg-[#101010] px-3 py-1.5 font-mono text-[11px]">
         {log.slice(-3).map((l, i) => (
           <div key={i} className="text-smoke">{l}</div>
         ))}
@@ -157,7 +157,7 @@ export default relic.app({
   return (
     <div className="flex h-full bg-[#0b0a0a] text-[12px]" style={{ fontFamily: 'var(--font-mono)' }}>
       <div className="w-[180px] border-r border-black bg-[#121010] p-3 text-[11px] text-ash" style={{ fontFamily: seg }}>
-        <div className="mb-2 text-[10px] tracking-[0.2em] text-smoke">EXPLORER · RELIC-OS</div>
+        <div className="mb-2 text-[11px] tracking-[0.09em] font-semibold text-smoke">EXPLORER · RELIC-OS</div>
         {['src/', '  os/', '  agent/', '  mesh/', '  sdk/', 'relic.manifest.json', 'house.app.ts'].map((f) => (
           <div key={f} className={`whitespace-pre py-0.5 ${f === 'house.app.ts' ? 'text-bone' : ''}`}>{f}</div>
         ))}
@@ -191,7 +191,7 @@ export function Steam() {
   return (
     <div className="flex h-full bg-[#0a0909] text-[11px] text-ash" style={{ fontFamily: seg }}>
       <div className="w-[200px] border-r border-black bg-[#121010] py-2">
-        <div className="px-3 pb-2 text-[10px] tracking-[0.2em] text-smoke">LIBRARY</div>
+        <div className="px-3 pb-2 text-[11px] tracking-[0.09em] font-semibold text-smoke">LIBRARY</div>
         {games.map((x, i) => (
           <button key={x.t} onClick={() => setSel(i)} className={`block w-full px-3 py-1.5 text-left ${i === sel ? 'bg-oxblood/60 text-bone' : 'hover:text-bone'}`}>{x.t}</button>
         ))}
@@ -200,7 +200,7 @@ export function Steam() {
         <Art variant={g.art} className="absolute inset-0 h-full w-full opacity-80" />
         <div className="absolute inset-0 bg-gradient-to-t from-void via-void/40 to-transparent" />
         <div className="absolute bottom-6 left-6 right-6">
-          <div className="text-[28px] font-light tracking-[0.2em] text-bone">{g.t.toUpperCase()}</div>
+          <div className="text-[28px] tracking-[0.09em] font-semibold text-bone">{g.t.toUpperCase()}</div>
           <div className="mt-2 flex items-center gap-4">
             <button className="btn btn-primary">PLAY</button>
             <span className="label-sm">{g.r} · {g.h} HRS PLAYED · CLOUD SAVES SYNCED</span>

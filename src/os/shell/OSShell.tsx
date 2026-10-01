@@ -2,7 +2,6 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { useOS } from '../runtime/store'
 import { Background } from './Background'
 import { TopBar } from './TopBar'
-import { Sidebar } from './Sidebar'
 import { Dock } from './Dock'
 import { WindowManager } from '../compositor/WindowManager'
 import { Home } from './views/Home'
@@ -11,7 +10,7 @@ import { Games, Movies, TVSection } from './views/MediaViews'
 /**
  * OS SHELL — the desktop profile (Relic Laptop / Relic Desktop).
  * Surface (sections) underneath, compositor windows above, dock on top.
- * `compact` is the tablet-width layout: icon sidebar, single content column.
+ * `compact` is the tablet-width layout: tighter menu bar, single content column.
  */
 export function OSShell({ compact }: { compact?: boolean }) {
   const section = useOS((s) => s.section)
@@ -21,7 +20,6 @@ export function OSShell({ compact }: { compact?: boolean }) {
       <Background />
       <TopBar compact={compact} />
       <div className="relative flex min-h-0 flex-1">
-        <Sidebar compact={compact} />
         <main className="relative min-w-0 flex-1 overflow-clip">
           <AnimatePresence mode="wait">
             <motion.div

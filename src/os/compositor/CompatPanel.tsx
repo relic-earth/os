@@ -50,14 +50,14 @@ export function CompatPanel({ win, onClose }: { win: RelicWindow; onClose: () =>
         {rows.map(([k, v, hot]) => (
           <div key={k} className="flex items-baseline justify-between gap-3 border-b hair-faint py-[7px]">
             <span className="label-sm">{k}</span>
-            <span className={`truncate text-right text-[9px] tracking-[0.2em] ${hot ? 'text-signal' : 'text-bone'}`}>{v}</span>
+            <span className={`truncate text-right text-[10px] tracking-[0.09em] font-semibold ${hot ? 'text-signal' : 'text-bone'}`}>{v}</span>
           </div>
         ))}
         <div className="label-sm mt-5 mb-2 text-ash">PERMISSIONS</div>
         {(['files', 'gpu', 'network', 'camera', 'microphone'] as const).map((p) => (
           <div key={p} className="flex items-center justify-between py-[5px]">
             <span className="label-sm">{permissionLabels[p]}</span>
-            <span className={`text-[9px] tracking-[0.22em] ${perms[p] === 'allowed' ? 'text-bone' : perms[p] === 'denied' ? 'text-smoke' : 'text-ash'}`}>
+            <span className={`text-[10px] tracking-[0.1em] font-semibold ${perms[p] === 'allowed' ? 'text-bone' : perms[p] === 'denied' ? 'text-smoke' : 'text-ash'}`}>
               {(perms[p] ?? 'denied').toUpperCase()}
             </span>
           </div>

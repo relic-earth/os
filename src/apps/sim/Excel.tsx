@@ -47,7 +47,7 @@ export function Excel() {
               <th className="w-8 border border-[#1e1a1a] bg-[#141212]" />
               {['Line Item', 'Phase 1 · 2026', 'Phase 2 · 2027', 'Phase 3 · 2028', 'Total', 'Share', ''].map((h, i) => (
                 <th key={i} className="border border-[#1e1a1a] bg-[#141212] px-2 py-1 text-left font-normal text-ash">
-                  <span className="block text-[9px] text-smoke">{COLS[i]}</span>
+                  <span className="block text-[10px] text-smoke">{COLS[i]}</span>
                   {h}
                 </th>
               ))}
@@ -103,7 +103,7 @@ export function Excel() {
             return (
               <div key={r[0]} className="flex flex-1 flex-col items-center gap-1">
                 <div className="w-full bg-gradient-to-t from-blood to-red" style={{ height: `${(t / 700000) * 120}px` }} />
-                <span className="w-full truncate text-center text-[8px] text-smoke">{r[0]}</span>
+                <span className="w-full truncate text-center text-[10px] text-smoke">{r[0]}</span>
               </div>
             )
           })}

@@ -70,7 +70,7 @@ export function FileManager({ compact }: { compact?: boolean }) {
                 className={`relative flex h-8 w-full items-center gap-2.5 px-4 text-left ${active ? 'lit' : 'hover:bg-burgundy/40'}`}
               >
                 {p.id === 'recent' ? <Clock size={12} strokeWidth={1.25} className={active ? 'text-signal' : 'text-smoke'} /> : <Folder size={12} strokeWidth={1.25} className={active ? 'text-signal' : 'text-smoke'} />}
-                <span className={`text-[10px] tracking-[0.28em] ${active ? 'text-bone' : 'text-ash'}`}>{p.name.toUpperCase()}</span>
+                <span className={`text-[11px] tracking-[0.13em] font-semibold ${active ? 'text-bone' : 'text-ash'}`}>{p.name.toUpperCase()}</span>
               </button>
             )
           })}
@@ -79,7 +79,7 @@ export function FileManager({ compact }: { compact?: boolean }) {
             className={`relative mt-3 flex h-8 w-full items-center gap-2.5 border-t hair px-4 pt-1 text-left ${view.folder === 'trash' ? 'lit' : 'hover:bg-burgundy/40'}`}
           >
             <Trash2 size={12} strokeWidth={1.25} className="text-smoke" />
-            <span className="text-[10px] tracking-[0.28em] text-ash">TRASH</span>
+            <span className="text-[11px] tracking-[0.13em] font-semibold text-ash">TRASH</span>
           </button>
           <div className="mx-4 mt-4 border-t hair pt-3">
             <div className="label-sm">STORAGE</div>
@@ -92,7 +92,7 @@ export function FileManager({ compact }: { compact?: boolean }) {
       {/* listing */}
       <section className="flex min-w-0 flex-1 flex-col">
         <div className="flex items-center gap-3 border-b hair px-4 py-2">
-          <div className="flex min-w-0 flex-1 items-center gap-1 text-[10px] tracking-[0.24em] text-ash">
+          <div className="flex min-w-0 flex-1 items-center gap-1 text-[11px] tracking-[0.11em] font-semibold text-ash">
             {view.query ? (
               <span className="text-bone">SEARCH · “{view.query.toUpperCase()}”</span>
             ) : view.folder === 'recent' ? (
@@ -172,7 +172,7 @@ export function FileManager({ compact }: { compact?: boolean }) {
                   {view.query && <span className="label-sm truncate text-soot">{relicRuntime.files.path(f.parent ?? 'root')}</span>}
                 </span>
                 <span className="label-sm">{kindLabel(f)}</span>
-                <span className="num text-[10px] text-ash">{f.kind === 'folder' ? `${relicRuntime.files.children(f.id).length} ITEMS` : fmtSize(f.size)}</span>
+                <span className="num text-[11px] text-ash">{f.kind === 'folder' ? `${relicRuntime.files.children(f.id).length} ITEMS` : fmtSize(f.size)}</span>
                 <span className="label-sm">{fmtAgo(f.modified)}</span>
               </div>
             )
@@ -206,7 +206,7 @@ export function FileManager({ compact }: { compact?: boolean }) {
                   ].map(([k, v]) => (
                     <div key={k} className="flex justify-between gap-3 border-b hair-faint pb-1.5">
                       <span className="label-sm">{k}</span>
-                      <span className="truncate text-right text-[9px] tracking-[0.18em] text-bone">{v}</span>
+                      <span className="truncate text-right text-[10px] tracking-[0.08em] font-semibold text-bone">{v}</span>
                     </div>
                   ))}
                 </div>
@@ -242,7 +242,7 @@ export function FileManager({ compact }: { compact?: boolean }) {
                 ;(fn as () => void)()
                 setMenu(null)
               }}
-              className="block w-full px-3 py-1.5 text-left text-[10px] tracking-[0.24em] text-ash hover:bg-burgundy/60 hover:text-bone"
+              className="block w-full px-3 py-1.5 text-left text-[11px] tracking-[0.11em] font-semibold text-ash hover:bg-burgundy/60 hover:text-bone"
             >
               {l as string}
             </button>
@@ -255,7 +255,7 @@ export function FileManager({ compact }: { compact?: boolean }) {
           <div className="panel ticks w-[280px] p-4" onClick={(e) => e.stopPropagation()}>
             <div className="label text-red">{dest.op === 'move' ? 'MOVE TO' : 'COPY TO'}</div>
             <div className="mt-1 truncate text-[12px] text-bone">{relicRuntime.files.get(dest.id)?.name}</div>
-            <div className="mt-3 grid grid-cols-2 gap-px border hair bg-[var(--line-faint)]">
+            <div className="mt-3 grid grid-cols-2 gap-px overflow-hidden rounded-[12px] border hair bg-[var(--line-faint)]">
               {ROOT_FOLDERS.map((id) => (
                 <button
                   key={id}
@@ -264,7 +264,7 @@ export function FileManager({ compact }: { compact?: boolean }) {
                     else relicRuntime.files.copy(dest.id, id)
                     setDest(null)
                   }}
-                  className="bg-ink px-3 py-2 text-left text-[10px] tracking-[0.24em] text-ash hover:bg-burgundy hover:text-bone"
+                  className="bg-ink px-3 py-2 text-left text-[11px] tracking-[0.11em] font-semibold text-ash hover:bg-burgundy hover:text-bone"
                 >
                   {relicRuntime.files.get(id)?.name.toUpperCase()}
                 </button>

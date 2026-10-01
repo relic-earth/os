@@ -21,11 +21,11 @@ export function Developer() {
       <div>
         <div className="label text-red">RELIC SDK</div>
         <div className="mt-1 text-[11px] text-ash">@relic/sdk {relic.version} · the stable API every Relic application builds against.</div>
-        <div className="mt-4 grid grid-cols-5 gap-px border hair bg-[var(--line-faint)]">
+        <div className="mt-4 grid grid-cols-5 gap-px overflow-hidden rounded-[12px] border hair bg-[var(--line-faint)]">
           {READY.map((k) => (
             <div key={k} className="bg-ink px-3 py-3">
               <div className="label-sm">{k}</div>
-              <div className="mt-1.5 flex items-center gap-1.5 text-[10px] tracking-[0.24em] text-bone"><span className="dot" /> READY</div>
+              <div className="mt-1.5 flex items-center gap-1.5 text-[11px] tracking-[0.11em] font-semibold text-bone"><span className="dot" /> READY</div>
             </div>
           ))}
         </div>
@@ -33,7 +33,7 @@ export function Developer() {
       <div className="grid grid-cols-2 gap-5">
         <div>
           <div className="label-sm mb-2 text-ash">EXAMPLE APIS · CLICK TO RUN AGAINST THIS SYSTEM</div>
-          <div className="space-y-px border hair bg-[var(--line-faint)]">
+          <div className="space-y-px overflow-hidden rounded-[12px] border hair bg-[var(--line-faint)]">
             {SAMPLES.map((s) => (
               <button
                 key={s.code}
@@ -56,7 +56,7 @@ export function Developer() {
         </div>
         <div>
           <div className="label-sm mb-2 text-ash">CONSOLE</div>
-          <div className="mono h-[300px] overflow-y-auto border hair bg-void p-3 text-[10.5px] leading-5">
+          <div className="mono h-[300px] overflow-y-auto border hair bg-void p-3 text-[11px] leading-5">
             {out.length === 0 && <div className="text-soot">› waiting for a call</div>}
             {out.map((o, i) => (
               <div key={i} className="mb-3">

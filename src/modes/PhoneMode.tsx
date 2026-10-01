@@ -76,7 +76,7 @@ function PhoneShell() {
           <Signal size={13} strokeWidth={1.5} />
           <Wifi size={13} strokeWidth={1.5} />
           <BatteryMedium size={16} strokeWidth={1.25} />
-          <span className="num text-[10px]">{Math.round(battery * 100)}</span>
+          <span className="num text-[11px]">{Math.round(battery * 100)}</span>
         </span>
       </div>
       <div className="relative min-h-0 flex-1 overflow-y-auto px-5 pb-4">
@@ -91,7 +91,7 @@ function PhoneShell() {
         {TABS.map((t) => (
           <button key={t.id} onClick={() => { setTab(t.id); setSheet(null) }} className="flex flex-col items-center gap-1 py-1">
             <Icon name={t.icon} size={17} className={tab === t.id ? 'text-signal' : 'text-ash'} />
-            <span className={`text-[7.5px] tracking-[0.26em] ${tab === t.id ? 'text-bone' : 'text-smoke'}`}>{t.label}</span>
+            <span className={`text-[10px] tracking-[0.12em] font-semibold ${tab === t.id ? 'text-bone' : 'text-smoke'}`}>{t.label}</span>
             <span className={`h-[2px] w-4 ${tab === t.id ? 'bg-signal shadow-[0_0_8px_rgba(232,36,43,0.9)]' : 'bg-transparent'}`} />
           </button>
         ))}
@@ -126,9 +126,9 @@ function PhoneHome({ setSheet, setTab }: { setSheet: (s: Sheet) => void; setTab:
         <div className="label-sm mt-1">{devices.filter((d) => d.status === 'online').length} DEVICES · ONE RELIC</div>
       </div>
 
-      <button onClick={() => setTab('claude')} className="flex h-11 w-full items-center gap-3 border border-[var(--line)] bg-ink/80 px-4 text-left">
+      <button onClick={() => setTab('claude')} className="flex h-11 w-full items-center gap-3 rounded-[12px] border border-[var(--line-soft)] bg-white/[0.06] px-4 text-left">
         <span className="dot" />
-        <span className="text-[9px] tracking-[0.32em] text-ash">ASK CLAUDE…</span>
+        <span className="text-[10px] tracking-[0.14em] font-semibold text-ash">ASK CLAUDE…</span>
       </button>
 
       <div className="label-sm px-1 pt-2 text-red">ACTIVE ACROSS RELIC</div>
@@ -145,17 +145,17 @@ function PhoneHome({ setSheet, setTab }: { setSheet: (s: Sheet) => void; setTab:
               <div className="min-w-0 flex-1">
                 <div className="label-sm flex items-center gap-1.5"><Icon name={deviceIcon[d?.type ?? 'laptop']} size={10} /> {d?.name.toUpperCase()}</div>
                 <div className="mt-1 truncate text-[13px] text-bone">{relicRuntime.continuity.describe(s)}</div>
-                {m && <div className="num mt-0.5 text-[10px] text-ash">{s.state.playing ? 'PLAYING' : 'PAUSED'} · {fmtTime(s.position ?? 0)}</div>}
+                {m && <div className="num mt-0.5 text-[11px] text-ash">{s.state.playing ? 'PLAYING' : 'PAUSED'} · {fmtTime(s.position ?? 0)}</div>}
                 {!m && <div className="label-sm mt-0.5">{runtimeLabel[getApp(s.appId ?? '')?.runtime ?? 'relic']} · RUNNING</div>}
               </div>
             </div>
             <div className="mt-3 flex gap-2">
               {m ? (
-                <button disabled={transferring} className="btn h-7 flex-1 text-[8px]" onClick={() => void relicRuntime.continuity.transfer(s.id, PHONE)}>CONTINUE HERE</button>
+                <button disabled={transferring} className="btn h-7 flex-1 text-[10px]" onClick={() => void relicRuntime.continuity.transfer(s.id, PHONE)}>CONTINUE HERE</button>
               ) : (
-                w && <button className="btn h-7 flex-1 text-[8px]" onClick={() => setSheet({ kind: 'remote', windowId: w.id })}>VIEW REMOTELY</button>
+                w && <button className="btn h-7 flex-1 text-[10px]" onClick={() => setSheet({ kind: 'remote', windowId: w.id })}>VIEW REMOTELY</button>
               )}
-              {m && <button className="btn btn-ghost h-7 px-3 text-[8px]" onClick={() => relicRuntime.media.toggle(s.id)}>{s.state.playing ? 'PAUSE' : 'PLAY'}</button>}
+              {m && <button className="btn btn-ghost h-7 px-3 text-[10px]" onClick={() => relicRuntime.media.toggle(s.id)}>{s.state.playing ? 'PAUSE' : 'PLAY'}</button>}
             </div>
           </Card>
         )
@@ -222,8 +222,8 @@ function PhoneApps({ setSheet }: { setSheet: (s: Sheet) => void }) {
         {list.map((a) => (
           <button key={a.id} onClick={() => void open(a.id)} className="panel flex aspect-square flex-col items-center justify-center gap-2 p-2">
             <Icon name={a.icon} size={20} className="text-bone" />
-            <span className="w-full truncate text-center text-[8px] tracking-[0.2em] text-bone">{a.name.replace('Relic ', '').toUpperCase()}</span>
-            <span className={`text-[7px] tracking-[0.2em] ${a.runtime === 'windows' ? 'text-red' : 'text-smoke'}`}>{a.runtime === 'windows' ? 'WINDOWS' : a.runtime.toUpperCase()}</span>
+            <span className="w-full truncate text-center text-[10px] tracking-[0.09em] font-semibold text-bone">{a.name.replace('Relic ', '').toUpperCase()}</span>
+            <span className={`text-[10px] tracking-[0.09em] font-semibold ${a.runtime === 'windows' ? 'text-red' : 'text-smoke'}`}>{a.runtime === 'windows' ? 'WINDOWS' : a.runtime.toUpperCase()}</span>
           </button>
         ))}
       </div>
@@ -269,7 +269,7 @@ function PhoneDevices({ setSheet }: { setSheet: (s: Sheet) => void }) {
           <button key={d.id} onClick={() => setSheet({ kind: 'device', id: d.id })} className={`panel flex w-full items-center gap-4 px-4 py-3.5 text-left ${d.id === PHONE ? 'border-red/70' : ''}`}>
             <Icon name={deviceIcon[d.type]} size={18} className={d.status === 'online' ? 'text-bone' : 'text-soot'} />
             <div className="flex-1">
-              <div className="text-[11px] tracking-[0.26em] text-bone">{d.id === PHONE ? 'THIS PHONE' : d.name.toUpperCase()}</div>
+              <div className="text-[11px] tracking-[0.12em] font-semibold text-bone">{d.id === PHONE ? 'THIS PHONE' : d.name.toUpperCase()}</div>
               <div className="label-sm mt-0.5">{d.location.toUpperCase()}</div>
             </div>
             <span className={`label-sm ${d.status === 'online' ? 'text-red' : ''}`}>{statusText(d)}</span>
@@ -308,7 +308,7 @@ function PhoneSheet({ sheet, close }: { sheet: NonNullable<Sheet>; close: () => 
     <motion.div className="absolute inset-0 z-[60] flex flex-col bg-void" initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '100%' }} transition={{ duration: 0.35, ease: [0.2, 0, 0, 1] }}>
       <div className="flex h-12 shrink-0 items-center gap-3 border-b hair px-4 pt-6">
         <button onClick={close} className="text-ash" aria-label="Back"><ChevronLeft size={18} /></button>
-        <span className="truncate text-[10px] tracking-[0.3em] text-bone">
+        <span className="truncate text-[11px] tracking-[0.14em] font-semibold text-bone">
           {sheet.kind === 'file' ? sheet.file.name.toUpperCase() : sheet.kind === 'remote' ? getApp(win?.appId ?? '')?.name.toUpperCase() : device?.name.toUpperCase()}
         </span>
       </div>

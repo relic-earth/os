@@ -20,13 +20,13 @@ export function Photoshop({ win, tv }: { win: RelicWindow; tv?: boolean }) {
     <div className="flex h-full flex-col bg-[#0d0c0c] text-[11px] text-ash" style={{ fontFamily: 'Segoe UI, Helvetica Neue, Arial, sans-serif' }}>
       {!tv && (
         <div className="flex h-7 items-center gap-4 border-b border-black bg-[#151313] px-3">
-          <span className="text-[10px] font-semibold tracking-[0.2em] text-red">Ps</span>
+          <span className="text-[11px] font-semibold tracking-[0.09em] font-semibold text-red">Ps</span>
           {MENUS.map((m) => (
             <span key={m} className="text-[11px] text-ash hover:text-bone">{m}</span>
           ))}
         </div>
       )}
-      <div className="flex h-8 items-center gap-4 border-b border-black bg-[#121010] px-3 text-[10px]">
+      <div className="flex h-8 items-center gap-4 border-b border-black bg-[#121010] px-3 text-[11px]">
         <span>Auto-Select: Layer</span>
         <span className="text-soot">|</span>
         <span>Exposure <span className="num text-bone">{exposure >= 0 ? '+' : ''}{exposure.toFixed(2)}</span></span>
@@ -43,7 +43,7 @@ export function Photoshop({ win, tv }: { win: RelicWindow; tv?: boolean }) {
           ))}
         </div>
         <div className="relative flex min-w-0 flex-1 flex-col bg-[#080707]">
-          <div className="flex h-6 items-center border-b border-black bg-[#141212] px-3 text-[10px]">
+          <div className="flex h-6 items-center border-b border-black bg-[#141212] px-3 text-[11px]">
             <span className="border-b border-red pb-[3px] pt-1 text-bone">{fileName} @ 33.3% (RGB/16)</span>
           </div>
           <div className="flex flex-1 items-center justify-center p-6">
@@ -54,7 +54,7 @@ export function Photoshop({ win, tv }: { win: RelicWindow; tv?: boolean }) {
               {tool === 2 && <div className="absolute inset-[8%] border border-dashed border-bone/60" />}
             </div>
           </div>
-          <div className="flex h-6 items-center gap-4 border-t border-black bg-[#121010] px-3 text-[10px]">
+          <div className="flex h-6 items-center gap-4 border-t border-black bg-[#121010] px-3 text-[11px]">
             <span>33.33%</span>
             <span>8000 px × 4500 px (300 ppi)</span>
             <span className="ml-auto text-smoke">GPU · ACCELERATED</span>

@@ -30,12 +30,12 @@ export function ConfirmDialog() {
                 <span className="label-sm border hair px-2 py-0.5">{riskMeta[c.risk].label}</span>
               </div>
               <div className="mt-5 text-[13px] tracking-[0.02em] text-ash">{c.title}</div>
-              <div className="mt-2 text-[20px] tracking-[0.3em] text-bone">{c.subject}</div>
+              <div className="mt-2 text-[20px] tracking-[0.14em] font-semibold text-bone">{c.subject}</div>
               {c.detail && <div className="mt-4 whitespace-pre-line text-[11px] leading-relaxed tracking-[0.12em] text-ash">{c.detail}</div>}
               {c.permissions && c.permissions.length > 0 && (
-                <div className="mt-4 grid grid-cols-3 gap-px border hair bg-[var(--line-faint)]">
+                <div className="mt-4 grid grid-cols-3 gap-px overflow-hidden rounded-[12px] border hair bg-[var(--line-faint)]">
                   {c.permissions.map((p) => (
-                    <div key={p} className="bg-ink px-3 py-2.5 text-center text-[10px] tracking-[0.28em] text-bone">
+                    <div key={p} className="bg-ink px-3 py-2.5 text-center text-[11px] tracking-[0.13em] font-semibold text-bone">
                       {p}
                     </div>
                   ))}
@@ -60,12 +60,12 @@ export function ConfirmDialog() {
 function StageRow({ label, state }: { label: string; state: 'pending' | 'running' | 'done' }) {
   return (
     <div className="flex items-center gap-4 py-[5px]">
-      <span className={`w-[150px] text-[10px] tracking-[0.3em] ${state === 'pending' ? 'text-soot' : 'text-ash'}`}>{label}</span>
+      <span className={`w-[150px] text-[11px] tracking-[0.14em] font-semibold ${state === 'pending' ? 'text-soot' : 'text-ash'}`}>{label}</span>
       <span className="relative h-px flex-1 overflow-hidden bg-graphite">
         {state === 'running' && <span className="sweep" />}
         {state === 'done' && <span className="absolute inset-0 bg-red/60" />}
       </span>
-      <span className={`w-[64px] text-right text-[10px] tracking-[0.3em] ${state === 'done' ? 'text-bone' : 'text-soot'}`}>
+      <span className={`w-[64px] text-right text-[11px] tracking-[0.14em] font-semibold ${state === 'done' ? 'text-bone' : 'text-soot'}`}>
         {state === 'done' ? 'READY' : state === 'running' ? '···' : ''}
       </span>
     </div>
@@ -95,18 +95,18 @@ export function LaunchOverlay() {
                   <Icon name={app.icon} size={20} className="text-bone" />
                 </div>
                 <div>
-                  <div className="text-[20px] tracking-[0.34em] text-bone">{app.name.toUpperCase()}</div>
+                  <div className="text-[20px] tracking-[0.15em] font-semibold text-bone">{app.name.toUpperCase()}</div>
                   <div className="label-sm mt-1 text-ash">{l.platform}</div>
                 </div>
               </div>
-              <div className="mt-6 grid grid-cols-2 gap-px border hair bg-[var(--line-faint)]">
+              <div className="mt-6 grid grid-cols-2 gap-px overflow-hidden rounded-[12px] border hair bg-[var(--line-faint)]">
                 <div className="bg-ink px-4 py-3">
                   <div className="label-sm">RUNTIME</div>
-                  <div className="mt-1 text-[10px] tracking-[0.24em] text-bone">{l.runtimeLabel}</div>
+                  <div className="mt-1 text-[11px] tracking-[0.11em] font-semibold text-bone">{l.runtimeLabel}</div>
                 </div>
                 <div className="bg-ink px-4 py-3">
                   <div className="label-sm">VERSION</div>
-                  <div className="mt-1 text-[10px] tracking-[0.24em] text-bone">{app.version} · {app.publisher.toUpperCase()}</div>
+                  <div className="mt-1 text-[11px] tracking-[0.11em] font-semibold text-bone">{app.version} · {app.publisher.toUpperCase()}</div>
                 </div>
               </div>
               <div className="mt-6">
@@ -143,15 +143,15 @@ export function TransferOverlay() {
             <div className="mt-4 grid grid-cols-3 gap-4">
               <div>
                 <div className="label-sm">{t.kind === 'media' ? 'MEDIA' : 'APPLICATION'}</div>
-                <div className="mt-1 truncate text-[10px] tracking-[0.2em] text-bone">{t.subject.toUpperCase()}</div>
+                <div className="mt-1 truncate text-[11px] tracking-[0.09em] font-semibold text-bone">{t.subject.toUpperCase()}</div>
               </div>
               <div>
                 <div className="label-sm">STATE</div>
-                <div className={`mt-1 text-[10px] tracking-[0.2em] ${t.done ? 'text-bone' : 'text-ash'}`}>{t.done ? 'SYNCHRONIZED' : 'SYNCING'}</div>
+                <div className={`mt-1 text-[11px] tracking-[0.09em] font-semibold ${t.done ? 'text-bone' : 'text-ash'}`}>{t.done ? 'SYNCHRONIZED' : 'SYNCING'}</div>
               </div>
               <div>
                 <div className="label-sm">DESTINATION</div>
-                <div className="mt-1 truncate text-[10px] tracking-[0.2em] text-signal">{t.to.toUpperCase()}</div>
+                <div className="mt-1 truncate text-[11px] tracking-[0.09em] font-semibold text-signal">{t.to.toUpperCase()}</div>
               </div>
             </div>
             <div className="mt-4 space-y-1">
@@ -185,7 +185,7 @@ export function TaskSwitcher() {
           return (
             <div key={w.id} className={`flex w-[118px] flex-col items-center gap-3 px-3 py-5 ${active ? 'lit bg-burgundy/40' : ''}`}>
               <Icon name={app?.icon} size={22} className={active ? 'text-signal' : 'text-ash'} />
-              <span className="w-full truncate text-center text-[9px] tracking-[0.26em] text-bone">{(app?.name ?? w.title).toUpperCase()}</span>
+              <span className="w-full truncate text-center text-[10px] tracking-[0.12em] font-semibold text-bone">{(app?.name ?? w.title).toUpperCase()}</span>
             </div>
           )
         })}
