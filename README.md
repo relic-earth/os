@@ -16,6 +16,10 @@ npm run dev        # http://localhost:5173  (add ?boot to replay the boot sequen
 npm run build      # typecheck + production build → dist/
 ```
 
+### On iPhone
+
+`npm run dev` listens on your network. Open the scarab menu → **Open on iPhone…** and scan the QR code with the iPhone camera (same Wi-Fi). Screens narrower than 700 pt get the phone shell; Share → **Add to Home Screen** runs Relic full-screen with the scarab icon.
+
 ## Architecture
 
 ```
@@ -56,19 +60,21 @@ The UI never calls a model directly. Set `VITE_CLAUDE_PROVIDER=anthropic`, or pi
 
 ## Interface
 
-Minimal and Apple-proportioned: a menu bar, the time, one *Ask Claude* field, four widgets and a dock.
+Minimal and Mac-proportioned: a menu bar, the time, one *Ask Claude* field, four widgets and a dock. The scarab and striped wordmark are the Relic marks from relic.earth.
 
 - **Type anywhere** to talk to Claude. The prompt runs one second after you stop typing. Hold the spacebar to keep it waiting, press Enter to run at once, Esc to close.
 - If the page is framed (for example in a preview) and has no keyboard focus, Home shows *Click anywhere, then type*.
-- **Menu bar**: Home, TV, Movies, Games, Apps, Files, Devices, then status, search, notifications, device switcher and the clock.
-- **Dock**: pinned system apps plus running apps; names appear on hover.
+- **Menu bar**: the scarab menu (About, Architecture, Open on iPhone, Settings, Restart), the frontmost app's name, then status, search, notifications, device switcher and the clock.
+- **Dock**: pinned system apps, TV · Movies · Games, then running apps. Names appear on hover.
+- **Icons**: a Relic-drawn set (`src/ui/AppIcon.tsx`). Each glyph has its own CSS motion that plays on hover and stays running for the focused app; reduced-motion is respected.
+- **Windows**: red, oxblood and bone lights on the left; the title is centred.
 
 ## Demo script
 
 1. Load `/?boot`. The boot sequence runs.
 2. Just start typing *"Find my latest Relic House permit plans"*. The prompt appears as you type and runs one second after you stop. Claude searches Files and opens *Relic House Permit Plans.pdf* (Rev C).
 3. Type *"Open Photoshop"*. Photoshop launches through the Wine compatibility layer. The **WINDOWS APP** badge on the title bar opens the compatibility panel.
-4. Open **Devices** from the menu bar: laptop, desktop, TV, phone, car, home, thermostat.
+4. Open **Devices** from the dock: laptop, desktop, TV, phone, car, home, thermostat.
 5. Type *"Send this to the TV"*. Claude locates the TV, authenticates it and transfers the Photoshop session.
 6. Press **Alt+T** (or use DEVICE → RELIC TV). TV mode shows the Photoshop session continued there.
 7. Switch to DEVICE → **RELIC PHONE**, then **RELIC CAR**, then **RELIC THERMOSTAT**.

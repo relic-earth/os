@@ -10,6 +10,7 @@ import { fmtClock, useNow, Wordmark } from '../ui/primitives'
 import { DeviceSwitcher } from '../os/shell/TopBar'
 import { AppSurface } from '../apps'
 import { Player } from '../apps/Player'
+import { AppIcon } from '../ui/AppIcon'
 
 type Screen = { kind: 'home' } | { kind: 'grid'; title: string; items: Tile[] } | { kind: 'player'; sessionId: string } | { kind: 'app'; windowId: string }
 type Tile = { id: string; label: string; short?: string; sub?: string; art: string; icon?: string; action: () => void }
@@ -122,7 +123,7 @@ export function TVMode() {
           return (
             <motion.div key="app" className="absolute inset-0 z-30 flex flex-col bg-void" initial={{ opacity: 0, scale: 1.02 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}>
               <div className="flex items-center gap-4 border-b hair bg-void px-10 py-4">
-                <Icon name={getApp(w.appId)?.icon} size={18} className="text-red" />
+                <AppIcon id={w.appId} size={36} live />
                 <span className="text-[14px] tracking-[0.18em] font-semibold text-bone">{getApp(w.appId)?.name.toUpperCase()}</span>
                 <span className="label-sm">SESSION CONTINUED FROM {from?.replace('relic-', 'RELIC ').toUpperCase()} · STATE SYNCHRONIZED</span>
                 <span className="label-sm ml-auto text-smoke">ESC · RELIC TV HOME</span>

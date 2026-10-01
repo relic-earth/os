@@ -16,22 +16,23 @@ import { DeviceControl } from '../apps/devices/DeviceManager'
 import { DocPreview } from '../apps/viewer/DocPreview'
 import { AppSurface } from '../apps'
 import type { RelicFile } from '../sdk/types'
+import { AppIcon, Glyph } from '../ui/AppIcon'
 
 type Tab = 'home' | 'claude' | 'apps' | 'files' | 'devices'
 type Sheet = { kind: 'file'; file: RelicFile } | { kind: 'remote'; windowId: string } | { kind: 'device'; id: string } | null
 
 const PHONE = 'relic-phone'
-const TABS: { id: Tab; label: string; icon: string }[] = [
-  { id: 'home', label: 'HOME', icon: 'home' },
-  { id: 'claude', label: 'CLAUDE', icon: 'sparkle' },
-  { id: 'apps', label: 'APPS', icon: 'grid' },
-  { id: 'files', label: 'FILES', icon: 'folder' },
-  { id: 'devices', label: 'DEVICES', icon: 'devices' },
+const TABS: { id: Tab; label: string; glyph: string }[] = [
+  { id: 'home', label: 'HOME', glyph: 'home' },
+  { id: 'claude', label: 'CLAUDE', glyph: 'claude' },
+  { id: 'apps', label: 'APPS', glyph: 'apps' },
+  { id: 'files', label: 'FILES', glyph: 'files' },
+  { id: 'devices', label: 'DEVICES', glyph: 'devices' },
 ]
 
 /** RELIC PHONE — mobile shell. Same environment, different body. */
 export function PhoneMode({ framed }: { framed: boolean }) {
-  const screen = <PhoneShell />
+  const screen = <PhoneShell framed={framed} />
   if (!framed) return <div className="relative h-full w-full overflow-clip bg-void">{screen}</div>
   return (
     <div className="relative flex h-full w-full items-center justify-center overflow-clip">
@@ -61,7 +62,8 @@ export function PhoneMode({ framed }: { framed: boolean }) {
   )
 }
 
-function PhoneShell() {
+/** On a real phone (unframed) the OS status bar is the device's own; content sits inside the safe area. */
+function PhoneShell({ framed }: { framed: boolean }) {
   const [tab, setTab] = useState<Tab>('home')
   const [sheet, setSheet] = useState<Sheet>(null)
   const now = useNow(15_000)
@@ -70,7 +72,8 @@ function PhoneShell() {
   return (
     <div className="relative flex h-full flex-col">
       <Art variant="topo" className="pointer-events-none absolute inset-0 h-full w-full opacity-40" />
-      <div className="relative z-40 flex h-11 shrink-0 items-center justify-between px-7 pt-2">
+      {!framed && <div className="shrink-0" style={{ height: 'max(12px, env(safe-area-inset-top))' }} />}
+      {framed && <div className="relative z-40 flex h-11 shrink-0 items-center justify-between px-7 pt-2">
         <span className="num text-[13px] text-bone">{fmtClock(now).replace(/ (AM|PM)/, '')}</span>
         <span className="flex items-center gap-1.5 text-bone">
           <Signal size={13} strokeWidth={1.5} />
@@ -78,7 +81,7 @@ function PhoneShell() {
           <BatteryMedium size={16} strokeWidth={1.25} />
           <span className="num text-[11px]">{Math.round(battery * 100)}</span>
         </span>
-      </div>
+      </div>}
       <div className="relative min-h-0 flex-1 overflow-y-auto px-5 pb-4">
         {tab === 'home' && <PhoneHome setSheet={setSheet} setTab={setTab} />}
         {tab === 'claude' && <PhoneClaude />}
@@ -87,10 +90,10 @@ function PhoneShell() {
         {tab === 'devices' && <PhoneDevices setSheet={setSheet} />}
       </div>
       {here && <MiniPlayer sessionId={here.id} />}
-      <nav className="relative z-40 grid shrink-0 grid-cols-5 border-t hair bg-void/90 pb-5 pt-2 backdrop-blur-md">
+      <nav className="relative z-40 grid shrink-0 grid-cols-5 border-t hair bg-[rgba(8,6,6,0.85)] pt-2 backdrop-blur-xl" style={{ paddingBottom: 'max(16px, env(safe-area-inset-bottom))' }} >
         {TABS.map((t) => (
           <button key={t.id} onClick={() => { setTab(t.id); setSheet(null) }} className="flex flex-col items-center gap-1 py-1">
-            <Icon name={t.icon} size={17} className={tab === t.id ? 'text-signal' : 'text-ash'} />
+            <Glyph id={t.glyph} size={26} className={tab === t.id ? 'text-signal drop-shadow-[0_0_6px_rgba(232,36,43,0.8)]' : 'text-ash'} />
             <span className={`text-[10px] tracking-[0.12em] font-semibold ${tab === t.id ? 'text-bone' : 'text-smoke'}`}>{t.label}</span>
             <span className={`h-[2px] w-4 ${tab === t.id ? 'bg-signal shadow-[0_0_8px_rgba(232,36,43,0.9)]' : 'bg-transparent'}`} />
           </button>
@@ -218,12 +221,11 @@ function PhoneApps({ setSheet }: { setSheet: (s: Sheet) => void }) {
     <div className="pt-3">
       <div className="label text-red">APPS</div>
       <div className="label-sm mt-1">DESKTOP APPS STREAM FROM RELIC LAPTOP</div>
-      <div className="mt-4 grid grid-cols-3 gap-2">
+      <div className="mt-5 grid grid-cols-4 gap-x-2 gap-y-5">
         {list.map((a) => (
-          <button key={a.id} onClick={() => void open(a.id)} className="panel flex aspect-square flex-col items-center justify-center gap-2 p-2">
-            <Icon name={a.icon} size={20} className="text-bone" />
-            <span className="w-full truncate text-center text-[10px] tracking-[0.09em] font-semibold text-bone">{a.name.replace('Relic ', '').toUpperCase()}</span>
-            <span className={`text-[10px] tracking-[0.09em] font-semibold ${a.runtime === 'windows' ? 'text-red' : 'text-smoke'}`}>{a.runtime === 'windows' ? 'WINDOWS' : a.runtime.toUpperCase()}</span>
+          <button key={a.id} onClick={() => void open(a.id)} className="group flex flex-col items-center gap-2 p-1">
+            <AppIcon id={a.id} size={62} />
+            <span className="w-full truncate text-center text-[12px] font-semibold text-bone">{a.name.replace('Relic ', '')}</span>
           </button>
         ))}
       </div>

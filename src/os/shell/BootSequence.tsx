@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { relicRuntime } from '../runtime/relicRuntime'
 import { useMesh } from '../../ui/primitives'
 import { Art } from '../../ui/Art'
+import { RelicWordmark, ScarabMark } from '../../ui/Brand'
 
 /**
  * Boot sequence. Cinematic, but honest: each line reflects a real runtime
@@ -84,20 +85,20 @@ export function BootSequence() {
 
       <div className="relative w-[min(440px,86vw)]">
         <motion.div
-          initial={{ opacity: 0, letterSpacing: '1.2em' }}
-          animate={{ opacity: 1, letterSpacing: '0.9em' }}
+          initial={{ opacity: 0, scale: 0.92, filter: 'blur(8px)' }}
+          animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
           transition={{ duration: 1.6, ease: [0.2, 0, 0, 1] }}
-          className="text-center text-[30px] font-light text-bone"
-          style={{ paddingLeft: '0.9em' }}
+          className="flex flex-col items-center text-bone"
         >
-          RELIC
+          <ScarabMark size={92} glow className="text-signal" />
+          <RelicWordmark height={22} className="mt-7" />
         </motion.div>
+        {/* the blade ignites from the centre out */}
         <motion.div
-          className="mx-auto mt-5 h-px bg-gradient-to-r from-transparent via-signal to-transparent"
+          className="saber saber-hum mx-auto mt-8"
           initial={{ width: 0, opacity: 0 }}
           animate={{ width: '100%', opacity: 1 }}
-          transition={{ delay: 0.5, duration: 1.1, ease: [0.4, 0, 0.2, 1] }}
-          style={{ boxShadow: '0 0 12px rgba(232,36,43,0.6)' }}
+          transition={{ delay: 0.6, duration: 0.7, ease: [0.3, 0, 0, 1] }}
         />
 
         <div className="mt-10 min-h-[260px]">
@@ -115,7 +116,7 @@ export function BootSequence() {
                 const active = i === shown && phase === 1
                 if (!done && !active) return null
                 return (
-                  <motion.div key={l.k} initial={{ opacity: 0, x: -6 }} animate={{ opacity: 1, x: 0 }} className="flex items-baseline gap-3 text-[11px] tracking-[0.14em] font-semibold">
+                  <motion.div key={l.k} initial={{ opacity: 0, x: -6 }} animate={{ opacity: 1, x: 0 }} className="flex items-baseline gap-3 text-[12px] tracking-[0.14em] font-semibold">
                     <span className="w-[190px] text-ash">{l.k}</span>
                     <span className="flex-1 overflow-hidden whitespace-nowrap text-soot">
                       {i === 0 && active ? '.'.repeat(discovery) : ''}
@@ -130,7 +131,7 @@ export function BootSequence() {
             {phase >= 2 && (
               <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} className="mt-10 text-center">
                 <div className="label text-ash">RELIC OS</div>
-                <div className="mt-2 text-[13px] tracking-[0.23em] font-semibold text-signal" style={{ textShadow: '0 0 12px rgba(232,36,43,0.6)' }}>
+                <div className="mt-2 text-[16px] tracking-[0.3em] font-bold text-signal" style={{ textShadow: '0 0 12px rgba(232,36,43,0.6)' }}>
                   READY
                 </div>
               </motion.div>

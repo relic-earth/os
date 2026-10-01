@@ -4,7 +4,7 @@ import { useOS, useOSShallow } from '../os/runtime/store'
 import { relicRuntime } from '../os/runtime/relicRuntime'
 import { appRegistry, runtimeLabel } from '../os/apps/registry'
 import type { AppRuntime } from '../sdk/types'
-import { Icon } from '../ui/Icon'
+import { AppIcon } from '../ui/AppIcon'
 
 const FILTERS: { id: 'all' | AppRuntime; label: string }[] = [
   { id: 'all', label: 'ALL' },
@@ -35,7 +35,7 @@ export function AppLauncher({ compact }: { compact?: boolean }) {
         ))}
         {!compact && <span className="label-sm ml-auto">WINDOWS APPS RUN THROUGH RELIC COMPATIBILITY</span>}
       </div>
-      <div className={`grid flex-1 content-start gap-px overflow-y-auto bg-[var(--line-faint)] ${compact ? 'grid-cols-2' : 'grid-cols-[repeat(auto-fill,minmax(180px,1fr))]'}`}>
+      <div className={`grid flex-1 content-start gap-2 overflow-y-auto p-3 ${compact ? 'grid-cols-2' : 'grid-cols-[repeat(auto-fill,minmax(180px,1fr))]'}`}>
         {list.map((a) => {
           const isInstalled = installed[a.id]
           const isRunning = running.includes(a.id)
@@ -43,23 +43,20 @@ export function AppLauncher({ compact }: { compact?: boolean }) {
             <button
               key={a.id}
               onClick={() => (isInstalled ? void relicRuntime.apps.launch(a.id) : !confirmBusy && void relicRuntime.ai.ask(`Install ${a.name}`))}
-              className="group relative flex h-[132px] flex-col justify-between bg-ink p-4 text-left transition-colors hover:bg-burgundy/50"
+              className="group relative flex h-[156px] flex-col justify-between rounded-[18px] p-4 text-left transition-colors hover:bg-white/[0.06]"
             >
               <div className="flex items-start justify-between">
-                <div className={`flex h-10 w-10 items-center justify-center border ${isRunning ? 'border-red/80 shadow-[var(--glow)]' : 'hair'} bg-void`}>
-                  <Icon name={a.icon} size={17} className={isRunning ? 'text-signal' : 'text-bone/85'} />
-                </div>
+                <AppIcon id={a.id} size={56} active={isRunning} live={isRunning} className={isInstalled ? '' : 'opacity-50'} />
                 {isRunning && <span className="label-sm text-red">RUNNING</span>}
                 {!isInstalled && <Download size={13} strokeWidth={1.25} className="text-smoke" />}
               </div>
               <div>
-                <div className="text-[12px] tracking-[0.14em] font-semibold text-bone">{a.name.toUpperCase()}</div>
+                <div className="text-[15px] font-semibold text-bone">{a.name}</div>
                 <div className={`label-sm mt-1 ${a.runtime === 'windows' ? 'text-red' : ''}`}>
                   {runtimeLabel[a.runtime]}
                   {!isInstalled && ' · INSTALL'}
                 </div>
               </div>
-              <span className="absolute bottom-0 left-0 h-px w-0 bg-red transition-all duration-300 group-hover:w-full" />
             </button>
           )
         })}

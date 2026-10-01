@@ -6,10 +6,10 @@ import { relicRuntime } from '../os/runtime/relicRuntime'
 import { getMedia, fmtTime, mediaLibrary } from '../os/media/library'
 import { appRegistry } from '../os/apps/registry'
 import { Art } from '../ui/Art'
-import { Icon } from '../ui/Icon'
 import { fmtClock, useNow, Wordmark } from '../ui/primitives'
 import { DeviceSwitcher } from '../os/shell/TopBar'
 import { ClaudeInput, ClaudeTranscript, Suggestions } from '../apps/claude/ClaudePanel'
+import { AppIcon } from '../ui/AppIcon'
 
 type Pane = 'drive' | 'maps' | 'media' | 'calls' | 'apps' | 'vehicle' | 'claude'
 const RAIL: Pane[] = ['drive', 'maps', 'media', 'calls', 'apps', 'vehicle', 'claude']
@@ -221,9 +221,9 @@ function AppsPane() {
       <div className="label text-red">APPS · DRIVE-SAFE</div>
       <div className="mt-6 grid grid-cols-3 gap-3">
         {list.map((a) => (
-          <div key={a.id} className="panel flex aspect-[4/3] flex-col items-center justify-center gap-3">
-            <Icon name={a.icon} size={24} />
-            <span className="text-[11px] tracking-[0.14em] font-semibold">{a.name.replace('Relic ', '').toUpperCase()}</span>
+          <div key={a.id} className="group flex aspect-[4/3] flex-col items-center justify-center gap-3 rounded-[22px] hover:bg-white/[0.05]">
+            <AppIcon id={a.id} size={84} />
+            <span className="text-[14px] tracking-[0.14em] font-semibold">{a.name.replace('Relic ', '').toUpperCase()}</span>
           </div>
         ))}
       </div>

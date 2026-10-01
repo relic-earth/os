@@ -14,9 +14,10 @@ import { Art } from '../../ui/Art'
 import { Icon, deviceIcon } from '../../ui/Icon'
 import { Bar, Range, statusText, Toggle, useMesh } from '../../ui/primitives'
 import { ArchitectureDiagram } from './Architecture'
+import { OpenOnIPhone } from './OpenOnIPhone'
 import { Developer } from './Developer'
 
-type SectionId = 'general' | 'display' | 'network' | 'devices' | 'claude' | 'security' | 'compatibility' | 'developer' | 'system' | 'about'
+type SectionId = 'general' | 'display' | 'network' | 'devices' | 'claude' | 'security' | 'compatibility' | 'developer' | 'system' | 'iphone' | 'about'
 
 const SECTIONS: { id: SectionId; label: string }[] = [
   { id: 'general', label: 'GENERAL' },
@@ -28,6 +29,7 @@ const SECTIONS: { id: SectionId; label: string }[] = [
   { id: 'compatibility', label: 'COMPATIBILITY' },
   { id: 'developer', label: 'DEVELOPER' },
   { id: 'system', label: 'SYSTEM' },
+  { id: 'iphone', label: 'OPEN ON IPHONE' },
   { id: 'about', label: 'ABOUT RELIC' },
 ]
 
@@ -75,6 +77,7 @@ export function Settings({ win }: { win: RelicWindow }) {
         {section === 'compatibility' && <Compatibility />}
         {section === 'developer' && <Developer />}
         {section === 'system' && <SystemSection sub={sub ?? 'overview'} setSub={setSub} />}
+        {section === 'iphone' && <OpenOnIPhone />}
         {section === 'about' && <About sub={sub ?? 'relic'} setSub={setSub} />}
       </div>
     </div>

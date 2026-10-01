@@ -1,3 +1,4 @@
+import { RelicWordmark, ScarabMark } from './Brand'
 import { useEffect, useState, type ReactNode } from 'react'
 import { useOS } from '../os/runtime/store'
 import type { RelicDevice } from '../sdk/types'
@@ -15,10 +16,12 @@ export const fmtClock = (ts: number) => new Date(ts).toLocaleTimeString('en-US',
 export const fmtDate = (ts: number) =>
   new Date(ts).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' }).toUpperCase()
 
-export function Wordmark({ className = '', size = 13 }: { className?: string; size?: number }) {
+/** The Relic lockup in a line: scarab + striped wordmark, from relic.earth. */
+export function Wordmark({ className = '', size = 13, glow }: { className?: string; size?: number; glow?: boolean }) {
   return (
-    <span className={`wordmark text-bone ${className}`} style={{ fontSize: size }}>
-      RELIC
+    <span className={`inline-flex items-center text-bone ${className}`} style={{ gap: size * 0.6 }}>
+      <ScarabMark size={size * 1.45} glow={glow} className="text-signal" />
+      <RelicWordmark height={size * 0.8} glow={glow} />
     </span>
   )
 }

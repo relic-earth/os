@@ -3,7 +3,7 @@ import { Check, Loader } from 'lucide-react'
 import { useOS, useOSShallow } from '../runtime/store'
 import { getApp } from '../apps/registry'
 import { riskMeta } from '../../agent/policies'
-import { Icon } from '../../ui/Icon'
+import { AppIcon } from '../../ui/AppIcon'
 
 const scrim = 'fixed inset-0 z-[9700] flex items-center justify-center bg-void/70 backdrop-blur-[3px]'
 
@@ -91,9 +91,7 @@ export function LaunchOverlay() {
             <div className="relative px-8 py-8">
               <div className="label text-red">RELIC COMPATIBILITY</div>
               <div className="mt-6 flex items-center gap-4">
-                <div className="flex h-12 w-12 items-center justify-center border hair-strong bg-burgundy/40">
-                  <Icon name={app.icon} size={20} className="text-bone" />
-                </div>
+                <AppIcon id={app.id} size={60} live active />
                 <div>
                   <div className="text-[20px] tracking-[0.15em] font-semibold text-bone">{app.name.toUpperCase()}</div>
                   <div className="label-sm mt-1 text-ash">{l.platform}</div>
@@ -183,9 +181,9 @@ export function TaskSwitcher() {
           const app = getApp(w.appId)
           const active = i === sw.index % wins.length
           return (
-            <div key={w.id} className={`flex w-[118px] flex-col items-center gap-3 px-3 py-5 ${active ? 'lit bg-burgundy/40' : ''}`}>
-              <Icon name={app?.icon} size={22} className={active ? 'text-signal' : 'text-ash'} />
-              <span className="w-full truncate text-center text-[10px] tracking-[0.12em] font-semibold text-bone">{(app?.name ?? w.title).toUpperCase()}</span>
+            <div key={w.id} className={`flex w-[124px] flex-col items-center gap-3 rounded-[18px] px-3 py-5 ${active ? 'bg-white/[0.08] shadow-[0_0_30px_rgba(232,36,43,0.2)]' : ''}`}>
+              <AppIcon id={w.appId} size={64} live={active} active={active} />
+              <span className="w-full truncate text-center text-[12px] tracking-[0.1em] font-semibold text-bone">{(app?.name ?? w.title).replace('Relic ', '').toUpperCase()}</span>
             </div>
           )
         })}

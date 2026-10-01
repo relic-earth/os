@@ -12,6 +12,7 @@
   "dependencies": {
     "framer-motion": "^13.4.6",
     "lucide-react": "^1.49.0",
+    "qrcode": "^1.5.4",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
     "zustand": "^5.0.15"
@@ -23,6 +24,7 @@
     "@vitejs/plugin-react": "^6.1.1",
     "tailwindcss": "^4.3.3",
     "typescript": "^7.0.2",
-    "vite": "^8.3.1"
+    "vite": "^8.3.1",
+    "@types/qrcode": "^1.5.6"
   }
 }

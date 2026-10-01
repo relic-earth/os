@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Check, Loader, Search, X } from 'lucide-react'
+import { Check, Loader, X } from 'lucide-react'
+import { AppIcon } from '../../ui/AppIcon'
 import { getOS, useOS } from '../runtime/store'
 import { relicRuntime } from '../runtime/relicRuntime'
 import { classify, routeLabel } from '../../agent/intent'
@@ -115,11 +116,11 @@ function Prompt({ seed }: { seed: string }) {
         initial={{ y: -8, scale: 0.98 }}
         animate={{ y: 0, scale: 1 }}
         transition={{ duration: 0.2, ease: [0.2, 0, 0, 1] }}
-        className="w-[min(640px,92vw)] overflow-hidden rounded-[16px] border border-[rgba(235,229,223,0.14)] bg-[rgba(24,20,20,0.82)] shadow-[0_30px_90px_rgba(0,0,0,0.7)] backdrop-blur-2xl"
+        className="w-[min(680px,92vw)] overflow-hidden rounded-[24px] border border-[rgba(232,36,43,0.35)] bg-[rgba(22,17,17,0.85)] shadow-[0_30px_90px_rgba(0,0,0,0.75),0_0_70px_rgba(232,36,43,0.25)] backdrop-blur-2xl"
         onMouseDown={(e) => e.stopPropagation()}
       >
-        <div className="relative flex h-14 items-center gap-3 px-4">
-          <Search size={20} strokeWidth={2} className="shrink-0 text-signal" />
+        <div className="relative flex h-16 items-center gap-3 pl-3 pr-5">
+          <AppIcon id="claude" size={40} live />
           <input
             ref={input}
             value={text}
@@ -152,7 +153,7 @@ function Prompt({ seed }: { seed: string }) {
             placeholder={busy ? 'Working…' : 'Ask Claude'}
             spellCheck={false}
             autoComplete="off"
-            className="min-w-0 flex-1 bg-transparent text-[20px] text-bone caret-[#e8242b] outline-none placeholder:font-semibold placeholder:text-smoke"
+            className="min-w-0 flex-1 bg-transparent text-[22px] font-semibold text-bone caret-[#e8242b] outline-none placeholder:font-semibold placeholder:text-smoke"
             aria-label="Ask Claude"
           />
           <span className="shrink-0 text-[11px] font-semibold tracking-[0.12em] text-smoke">
@@ -196,7 +197,7 @@ function Prompt({ seed }: { seed: string }) {
                 </div>
               )}
               {reply.text && (
-                <div className="whitespace-pre-wrap text-[15px] leading-[1.6] text-bone">
+                <div className="whitespace-pre-wrap text-[16px] leading-[1.6] text-bone">
                   {reply.text}
                   {reply.streaming && <span className="caret" />}
                 </div>

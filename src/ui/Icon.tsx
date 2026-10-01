@@ -32,7 +32,42 @@ import {
   type LucideIcon,
 } from 'lucide-react'
 
-/** Restrained icon system: lucide, hairline stroke, keyed by name. */
+import { Glyph } from './AppIcon'
+
+/**
+ * Names that have a drawn Relic glyph (AppIcon.tsx) render that instead of lucide;
+ * lucide remains only for small utility marks (link, shield, cloud…).
+ */
+const relicGlyph: Record<string, string> = {
+  sparkle: 'claude',
+  folder: 'files',
+  globe: 'web',
+  grid: 'apps',
+  devices: 'devices',
+  settings: 'settings',
+  file: 'viewer',
+  play: 'player',
+  music: 'music',
+  gamepad: 'games',
+  hammer: 'relic-build',
+  image: 'photoshop',
+  compass: 'autocad',
+  table: 'excel',
+  box: 'revit',
+  chrome: 'chrome',
+  cube: 'blender',
+  code: 'vscode',
+  tv: 'tv',
+  phone: 'phone',
+  car: 'car',
+  thermostat: 'thermostat',
+  thermometer: 'thermostat',
+  home: 'home',
+  laptop: 'laptop',
+  desktop: 'desktop',
+}
+
+/** Lucide fallback map. */
 const map: Record<string, LucideIcon> = {
   sparkle: Sparkle,
   folder: Folder,
@@ -68,6 +103,7 @@ const map: Record<string, LucideIcon> = {
 }
 
 export function Icon({ name, size = 16, className, strokeWidth = 1.25 }: { name?: string; size?: number; className?: string; strokeWidth?: number }) {
+  if (name && relicGlyph[name]) return <Glyph id={relicGlyph[name]} size={Math.round(size * 1.25)} className={className} />
   const C = (name && map[name]) || Box
   return <C size={size} strokeWidth={strokeWidth} className={className} />
 }
