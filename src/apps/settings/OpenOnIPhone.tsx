@@ -36,9 +36,9 @@ export function OpenOnIPhone() {
         <div className="mt-2 text-[14px] text-ash">Point the iPhone camera at the code. Relic opens in its phone shell.</div>
       </div>
       <div className="grid grid-cols-[auto_1fr] items-start gap-10">
-        <div className="relative rounded-[28px] border border-[rgba(245,240,235,0.12)] bg-[radial-gradient(circle_at_50%_0%,rgba(232,36,43,0.18),transparent_70%),#0b0909] p-7 shadow-[0_0_50px_rgba(232,36,43,0.22)]">
+        <div className="relative rounded-[2px] border border-[rgba(245,240,235,0.12)] bg-[radial-gradient(circle_at_50%_0%,rgba(232,36,43,0.18),transparent_70%),#0b0909] p-7 shadow-[0_0_50px_rgba(232,36,43,0.22)]">
           <div className="relative h-[220px] w-[220px] [&>svg]:h-full [&>svg]:w-full" dangerouslySetInnerHTML={{ __html: svg }} aria-label={`QR code for ${url}`} role="img" />
-          <span className="absolute left-1/2 top-1/2 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-[14px] bg-[#0b0909] shadow-[0_0_0_4px_#0b0909]">
+          <span className="absolute left-1/2 top-1/2 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-[2px] bg-[#0b0909] shadow-[0_0_0_4px_#0b0909]">
             <ScarabMark size={30} glow className="text-signal" />
           </span>
         </div>

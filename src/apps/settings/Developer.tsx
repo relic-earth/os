@@ -21,7 +21,7 @@ export function Developer() {
       <div>
         <div className="label text-red">RELIC SDK</div>
         <div className="mt-1 text-[11px] text-ash">@relic/sdk {relic.version} · the stable API every Relic application builds against.</div>
-        <div className="mt-4 grid grid-cols-5 gap-px overflow-hidden rounded-[12px] border hair bg-[var(--line-faint)]">
+        <div className="mt-4 grid grid-cols-5 gap-px overflow-hidden rounded-[2px] border hair bg-[var(--line-faint)]">
           {READY.map((k) => (
             <div key={k} className="bg-ink px-3 py-3">
               <div className="label-sm">{k}</div>
@@ -33,7 +33,7 @@ export function Developer() {
       <div className="grid grid-cols-2 gap-5">
         <div>
           <div className="label-sm mb-2 text-ash">EXAMPLE APIS · CLICK TO RUN AGAINST THIS SYSTEM</div>
-          <div className="space-y-px overflow-hidden rounded-[12px] border hair bg-[var(--line-faint)]">
+          <div className="space-y-px overflow-hidden rounded-[2px] border hair bg-[var(--line-faint)]">
             {SAMPLES.map((s) => (
               <button
                 key={s.code}

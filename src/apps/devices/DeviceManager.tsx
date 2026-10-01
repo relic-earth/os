@@ -18,7 +18,7 @@ export function DeviceCard({ d, active, onClick }: { d: RelicDevice; active?: bo
   return (
     <button
       onClick={onClick}
-      className={`group relative flex h-[150px] flex-col justify-between overflow-hidden rounded-[14px] border p-4 text-left transition-all duration-300 ${
+      className={`group relative flex h-[150px] flex-col justify-between overflow-hidden rounded-[2px] border p-4 text-left transition-all duration-300 ${
         active ? 'border-red/80 bg-[#22090b]' : on ? 'border-[var(--line-soft)] bg-white/[0.04] hover:bg-white/[0.07]' : 'border-[var(--line-faint)] bg-white/[0.02] hover:bg-white/[0.05]'
       }`}
     >
@@ -175,7 +175,7 @@ export function DeviceControl({ d }: { d: RelicDevice }) {
           </div>
         )}
         {d.type === 'car' && (
-          <div className="grid grid-cols-3 gap-px overflow-hidden rounded-[12px] border hair bg-[var(--line-faint)]">
+          <div className="grid grid-cols-3 gap-px overflow-hidden rounded-[2px] border hair bg-[var(--line-faint)]">
             {[['CHARGE', `${Math.round((d.battery ?? 0) * 100)}%`], ['RANGE', `${st.range} MI`], ['CABIN', `${st.cabin}°`]].map(([k, v]) => (
               <div key={k} className="bg-ink px-3 py-2.5"><div className="label-sm">{k}</div><div className="num mt-1 text-[13px] text-bone">{v}</div></div>
             ))}

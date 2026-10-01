@@ -18,8 +18,11 @@ export function OSShell({ compact }: { compact?: boolean }) {
   return (
     <div className="relative flex h-full w-full flex-col overflow-clip">
       <Background />
+      <div className="deck-grid" />
+      <div className="deck-scan" />
       <TopBar compact={compact} />
       <div className="relative flex min-h-0 flex-1">
+        <Dock />
         <main className="relative min-w-0 flex-1 overflow-clip">
           <AnimatePresence mode="wait">
             <motion.div
@@ -42,7 +45,6 @@ export function OSShell({ compact }: { compact?: boolean }) {
           )}
         </main>
       </div>
-      <Dock />
     </div>
   )
 }

@@ -4,66 +4,98 @@ import { useOS } from '../../runtime/store'
 import { relicRuntime } from '../../runtime/relicRuntime'
 import { Art } from '../../../ui/Art'
 import { Glyph } from '../../../ui/AppIcon'
-import { fmtClock, fmtDate, useMesh, useNow, useWindowFocus } from '../../../ui/primitives'
+import { fmtDate, useMesh, useNow, useWindowFocus } from '../../../ui/primitives'
 import { HudReactor } from '../../../ui/HudReactor'
 import { ContinuityActions } from '../Continuity'
 import { fmtAgo } from '../../files/service'
 import { fmtTime, getMedia } from '../../media/library'
 
 /**
- * HOME — the time, one field to ask Claude, and four quiet widgets.
- * Typing anywhere opens the prompt; the field is the visible way in.
+ * HOME — the cockpit. The reactor and the time at the centre; four MFDs
+ * flank it, two to a side. There is no field: type and the prompt ignites.
  */
 export function Home({ compact }: { compact?: boolean }) {
-  const now = useNow(15_000)
+  const now = useNow(1000)
   const hasFocus = useWindowFocus()
   const hour = new Date(now).getHours()
-  const greeting = hour < 5 ? 'Good night' : hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening'
+  const greeting = hour < 5 ? 'Night watch' : hour < 12 ? 'Morning watch' : hour < 18 ? 'Afternoon watch' : 'Evening watch'
+  const t = new Date(now)
+  const hh = String(t.getHours() % 12 || 12)
+  const mm = String(t.getMinutes()).padStart(2, '0')
+
+  const reactor = (
+    <motion.div initial={{ opacity: 0, scale: 0.86, filter: 'blur(12px)' }} animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }} transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }} className="relative flex h-[480px] w-[480px] shrink-0 items-center justify-center">
+      <div className="absolute inset-0">
+        <HudReactor size={480} callouts={false} />
+      </div>
+      <div className="relative text-center">
+        <div className="font-mono text-[10px] tracking-[0.4em] text-[rgba(176,138,82,0.9)]">{fmtDate(now)}</div>
+        <div className="mt-3 font-display text-[clamp(64px,6.4vw,92px)] leading-none tracking-[0.02em] text-white [text-shadow:0_0_30px_rgba(255,58,64,0.8),0_0_2px_#fff]">
+          {hh}<span className="pulse text-signal">:</span>{mm}
+        </div>
+        <div className="mt-3 font-mono text-[10px] tracking-[0.4em] text-smoke">{greeting.toUpperCase()}</div>
+        <div className="mt-6 h-4">{!hasFocus ? <span className="pulse font-mono text-[10px] tracking-[0.3em] text-signal">CLICK ANYWHERE, THEN TYPE</span> : <span className="font-mono text-[10px] tracking-[0.3em] text-[rgba(255,58,64,0.55)]">▸ TYPE TO COMMAND</span>}</div>
+      </div>
+    </motion.div>
+  )
+
+  if (compact)
+    return (
+      <div className="h-full overflow-y-auto">
+        <div className="mx-auto flex w-full max-w-[760px] flex-col items-center px-6 pb-8">
+          {reactor}
+          <div className="grid w-full grid-cols-2 gap-3">
+            <NowPlayingWidget n={1} />
+            <ClimateWidget n={2} />
+            <DevicesWidget n={3} />
+            <RecentWidget n={4} />
+          </div>
+        </div>
+      </div>
+    )
 
   return (
-    <div className="h-full overflow-y-auto">
-      <div className="mx-auto flex min-h-full w-full max-w-[1040px] flex-col px-6 pb-6 pt-[3vh]">
-        <motion.div initial={{ opacity: 0, scale: 0.9, filter: 'blur(10px)' }} animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }} transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }} className="relative mx-auto flex h-[440px] w-full items-center justify-center">
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-            <HudReactor size={440} />
-          </div>
-          <div className="relative text-center">
-            <div className="num text-[clamp(72px,8vw,112px)] font-semibold leading-none tracking-[-0.01em] text-bone [text-shadow:0_0_40px_rgba(255,58,64,0.55),0_0_2px_rgba(255,255,255,0.6)]">{fmtClock(now).replace(/ (AM|PM)/, '')}</div>
-            <div className="mt-4 text-[11px] font-semibold uppercase tracking-[0.34em] text-[rgba(216,179,122,0.85)]">{fmtDate(now)}</div>
-            <div className="mt-2 text-[10px] font-semibold uppercase tracking-[0.34em] text-smoke">{greeting}</div>
-            <div className="mt-5 h-4">{!hasFocus ? <span className="pulse text-[10px] font-semibold tracking-[0.3em] text-signal">CLICK ANYWHERE, THEN TYPE</span> : <span className="text-[10px] font-semibold tracking-[0.3em] text-soot">TYPE TO COMMAND</span>}</div>
-          </div>
-        </motion.div>
-
-        <div className={`mt-auto grid gap-3 pt-14 ${compact ? 'grid-cols-2' : 'grid-cols-2 lg:grid-cols-4'}`}>
-          <NowPlayingWidget />
-          <ClimateWidget />
-          <DevicesWidget />
-          <RecentWidget />
-        </div>
+    <div className="flex h-full items-center justify-center gap-8 overflow-hidden px-8">
+      <div className="flex w-[300px] shrink-0 flex-col gap-4">
+        <NowPlayingWidget n={1} side="l" />
+        <ClimateWidget n={2} side="l" />
+      </div>
+      {reactor}
+      <div className="flex w-[300px] shrink-0 flex-col gap-4">
+        <DevicesWidget n={3} side="r" />
+        <RecentWidget n={4} side="r" />
       </div>
     </div>
   )
 }
 
-function Widget({ title, children, onClick }: { title: string; children: React.ReactNode; onClick?: () => void }) {
+/** An MFD: a chamfered plate with a coded header strip. */
+function Widget({ title, n, side, children, onClick }: { title: string; n: number; side?: 'l' | 'r'; children: React.ReactNode; onClick?: () => void }) {
   return (
-    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6, ease: [0.2, 0, 0, 1] }} className="panel hud-target scan-hover flex min-h-[184px] min-w-0 flex-col p-5 hover:-translate-y-1 hover:shadow-[inset_0_1px_0_rgba(216,179,122,0.2),0_24px_50px_rgba(0,0,0,0.6),0_0_40px_rgba(200,24,32,0.25)]">
-      <button onClick={onClick} disabled={!onClick} className="label hud-target mb-4 self-start enabled:hover:text-bone">
-        {title}
+    <motion.div
+      initial={{ opacity: 0, x: side === 'l' ? -40 : side === 'r' ? 40 : 0, clipPath: 'inset(0 0 100% 0)' }}
+      animate={{ opacity: 1, x: 0, clipPath: 'inset(0 0 0% 0)' }}
+      transition={{ delay: 0.3 + n * 0.12, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+      className="panel hud-target scan-hover flex min-h-[176px] min-w-0 flex-col transition-transform duration-300 hover:-translate-y-1"
+    >
+      <button onClick={onClick} disabled={!onClick} className="flex h-8 shrink-0 items-center gap-2 border-b border-[rgba(255,58,64,0.2)] bg-[linear-gradient(90deg,rgba(255,58,64,0.18),transparent_70%)] pl-5 pr-3 text-left enabled:hover:bg-[rgba(255,58,64,0.22)]">
+        <span className="font-mono text-[9px] tracking-[0.1em] text-[rgba(176,138,82,0.9)]">MFD-{String(n).padStart(2, '0')}</span>
+        <span className="h-px w-3 bg-[rgba(255,58,64,0.6)]" />
+        <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white">{title}</span>
+        <span className="ml-auto h-1.5 w-1.5 rotate-45 bg-signal shadow-[0_0_6px_#ff3a40]" />
       </button>
-      {children}
+      <div className="flex min-h-0 flex-1 flex-col p-5 pt-4">{children}</div>
     </motion.div>
   )
 }
 
-function NowPlayingWidget() {
+function NowPlayingWidget({ n, side }: { n: number; side?: 'l' | 'r' }) {
   const video = useOS((s) => s.sessions.filter((x) => x.mediaId && getMedia(x.mediaId)?.kind !== 'track').sort((a, b) => b.updatedAt - a.updatedAt)[0])
   const device = useOS((s) => s.devices.find((d) => d.id === video?.deviceId))
   const m = getMedia(video?.mediaId)
-  if (!video || !m) return <Widget title="NOW PLAYING"><div className="text-[13px] text-smoke">Nothing playing</div></Widget>
+  if (!video || !m) return <Widget n={n} side={side} title="NOW PLAYING"><div className="text-[13px] text-smoke">Nothing playing</div></Widget>
   return (
-    <Widget title="NOW PLAYING" onClick={() => void relicRuntime.apps.launch('player', { props: { mediaId: m.id }, title: m.title })}>
+    <Widget n={n} side={side} title="NOW PLAYING" onClick={() => void relicRuntime.apps.launch('player', { props: { mediaId: m.id }, title: m.title })}>
       <div className="flex gap-3">
         <div className="h-12 w-[72px] shrink-0 overflow-hidden rounded-md"><Art variant={m.art} className="h-full w-full" /></div>
         <div className="min-w-0">
@@ -78,10 +110,10 @@ function NowPlayingWidget() {
   )
 }
 
-function ClimateWidget() {
+function ClimateWidget({ n, side }: { n: number; side?: 'l' | 'r' }) {
   const t = useOS((s) => s.thermostat)
   return (
-    <Widget title="HOME" onClick={() => relicRuntime.shell.setProfile('relic-thermostat')}>
+    <Widget n={n} side={side} title="HOME" onClick={() => relicRuntime.shell.setProfile('relic-thermostat')}>
       <div className="flex items-end justify-between">
         <div>
           <div className="num text-[44px] font-semibold leading-none text-bone">{t.target}°</div>
@@ -96,14 +128,14 @@ function ClimateWidget() {
   )
 }
 
-function DevicesWidget() {
+function DevicesWidget({ n, side }: { n: number; side?: 'l' | 'r' }) {
   const { devices, online, total } = useMesh()
   return (
-    <Widget title="DEVICES" onClick={() => void relicRuntime.apps.launch('devices')}>
+    <Widget n={n} side={side} title="DEVICES" onClick={() => void relicRuntime.apps.launch('devices')}>
       <div className="flex items-baseline gap-2"><span className="num text-[44px] font-semibold leading-none text-bone">{online}</span><span className="text-[13px] font-semibold text-smoke">of {total} online</span></div>
       <div className="mt-4 grid grid-cols-4 gap-2">
         {devices.map((d) => (
-          <div key={d.id} title={d.name} className={`flex h-10 items-center justify-center rounded-[12px] ${d.status === 'online' ? 'bg-white/[0.07] text-signal' : 'text-soot'}`}>
+          <div key={d.id} title={d.name} className={`flex h-10 items-center justify-center rounded-[2px] ${d.status === 'online' ? 'bg-white/[0.07] text-signal' : 'text-soot'}`}>
             <Glyph id={d.type} size={24} className={d.status === 'online' ? 'drop-shadow-[0_0_5px_rgba(232,36,43,0.7)]' : ''} />
           </div>
         ))}
@@ -112,11 +144,11 @@ function DevicesWidget() {
   )
 }
 
-function RecentWidget() {
+function RecentWidget({ n, side }: { n: number; side?: 'l' | 'r' }) {
   useOS((s) => s.memory.recentFiles)
   const recent = relicRuntime.files.recent(3)
   return (
-    <Widget title="RECENT" onClick={() => void relicRuntime.apps.launch('files')}>
+    <Widget n={n} side={side} title="RECENT" onClick={() => void relicRuntime.apps.launch('files')}>
       <div className="space-y-2">
         {recent.map((f) => (
           <button key={f.id} onClick={() => { relicRuntime.files.reveal(f.id); void relicRuntime.files.open(f.id) }} className="block w-full min-w-0 text-left">

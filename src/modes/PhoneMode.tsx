@@ -50,10 +50,10 @@ export function PhoneMode({ framed }: { framed: boolean }) {
         initial={{ opacity: 0, y: 20, scale: 0.98 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.6, ease: [0.2, 0, 0, 1] }}
-        className="relative z-10 rounded-[46px] border border-[#2a2020] bg-[#050404] p-[10px] shadow-[0_40px_120px_rgba(0,0,0,0.9),0_0_0_1px_rgba(179,20,27,0.25),0_0_60px_rgba(125,15,20,0.2)]"
+        className="relative z-10 rounded-[2px] border border-[#2a2020] bg-[#050404] p-[10px] shadow-[0_40px_120px_rgba(0,0,0,0.9),0_0_0_1px_rgba(179,20,27,0.25),0_0_60px_rgba(125,15,20,0.2)]"
         style={{ height: 'min(844px, 92vh)', aspectRatio: '390 / 844' }}
       >
-        <div className="relative h-full w-full overflow-hidden rounded-[37px] bg-void">
+        <div className="relative h-full w-full overflow-hidden rounded-[2px] bg-void">
           <div className="absolute left-1/2 top-2 z-50 h-[26px] w-[96px] -translate-x-1/2 rounded-full bg-black" />
           {screen}
         </div>
@@ -128,7 +128,7 @@ function PhoneAsk({ onAsk }: { onAsk: () => void }) {
       enterKeyHint="send"
       placeholder={busy ? 'WORKING…' : 'COMMAND RELIC'}
       aria-label="Ask Claude"
-      className="well mt-2 h-11 w-full rounded-[12px] border border-[rgba(176,138,82,0.3)] bg-[rgba(20,6,8,0.7)] px-4 text-[17px] text-bone caret-[#e8242b] outline-none placeholder:text-smoke focus:shadow-[0_0_0_1px_rgba(232,36,43,0.5),0_0_20px_rgba(232,36,43,0.25)]"
+      className="well mt-2 h-11 w-full rounded-[2px] border border-[rgba(176,138,82,0.3)] bg-[rgba(20,6,8,0.7)] px-4 text-[17px] text-bone caret-[#e8242b] outline-none placeholder:text-smoke focus:shadow-[0_0_0_1px_rgba(232,36,43,0.5),0_0_20px_rgba(232,36,43,0.25)]"
     />
   )
 }
@@ -158,7 +158,7 @@ function PhoneHome({ setSheet, setTab }: { setSheet: (s: Sheet) => void; setTab:
         <div className="label-sm mt-1">{devices.filter((d) => d.status === 'online').length} DEVICES · ONE RELIC</div>
       </div>
 
-      <button onClick={() => setTab('claude')} className="flex h-11 w-full items-center gap-3 rounded-[12px] border border-[var(--line-soft)] bg-white/[0.06] px-4 text-left">
+      <button onClick={() => setTab('claude')} className="flex h-11 w-full items-center gap-3 rounded-[2px] border border-[var(--line-soft)] bg-white/[0.06] px-4 text-left">
         <span className="dot" />
         <span className="text-[10px] tracking-[0.14em] font-semibold text-ash">ASK CLAUDE…</span>
       </button>

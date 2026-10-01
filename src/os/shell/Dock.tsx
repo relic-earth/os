@@ -1,6 +1,7 @@
 import { useOS, useOSShallow, type Section } from '../runtime/store'
 import { relicRuntime } from '../runtime/relicRuntime'
 import { getApp } from '../apps/registry'
+import { Glyph } from '../../ui/AppIcon'
 
 const PINNED = ['claude', 'files', 'web', 'apps', 'devices', 'settings']
 const SURFACES: { id: Section; name: string }[] = [
@@ -13,8 +14,9 @@ const SURFACES: { id: Section; name: string }[] = [
 const shortName = (id: string) => (getApp(id)?.name ?? id).replace('Relic ', '').replace('Applications', 'Apps')
 
 /**
- * Bottom bar — a single row of small text tabs. Claude needs no field:
- * start typing anywhere and the prompt appears mid-screen.
+ * COMMAND RAIL — the deck's left spine. Numbered keys: the four places,
+ * then the system apps, then whatever is running. Claude has no field:
+ * start typing anywhere.
  */
 export function Dock() {
   const profile = useOS((s) => s.profile)
@@ -30,47 +32,53 @@ export function Dock() {
     if (top.focused && !top.minimized) relicRuntime.windows.minimize(top.id)
     else relicRuntime.windows.focus(top.id)
   }
-  // a surface is a place, not a window: going there clears the windows out of the way
+  // a place, not a window: going there clears the windows away
   const surface = (id: Section) => {
     relicRuntime.shell.setSection(id)
     wins.filter((w) => !w.minimized).forEach((w) => relicRuntime.windows.minimize(w.id))
     relicRuntime.windows.blur(profile)
   }
-  const appTab = (id: string) => {
-    const mine = wins.filter((w) => w.appId === id)
-    const active = mine.some((w) => w.focused && !w.minimized)
-    return <Tab key={id} label={shortName(id)} active={active} running={mine.length > 0} onClick={() => click(id)} />
-  }
+
+  let n = 0
+  const key = () => String(++n).padStart(2, '0')
 
   return (
-    <div className="relative z-[5000] shrink-0 border-t border-[rgba(176,138,82,0.3)] bg-[linear-gradient(180deg,rgba(14,5,6,0.86),rgba(4,1,2,0.92))] shadow-[inset_0_1px_0_rgba(216,179,122,0.12)] px-4 py-2 backdrop-blur-2xl" data-profile={profile}>
-      <nav className="no-scrollbar flex items-center justify-center gap-1 overflow-x-auto" aria-label="Apps">
-        {SURFACES.map((s) => (
-          <Tab key={s.id} label={s.name} active={section === s.id && !anyFocused} onClick={() => surface(s.id)} />
-        ))}
-        <Divider />
-        {PINNED.map(appTab)}
-        {running.length > 0 && <Divider />}
-        {running.map(appTab)}
-      </nav>
+    <nav aria-label="Apps" data-profile={profile} className="no-scrollbar relative z-[5000] flex w-[88px] shrink-0 flex-col items-stretch gap-1 overflow-y-auto border-r border-[rgba(255,58,64,0.16)] bg-[linear-gradient(90deg,rgba(6,1,2,0.92),rgba(14,3,5,0.78))] px-2 py-3 backdrop-blur-xl">
+      <RailHead>NAV</RailHead>
+      {SURFACES.map((s) => (
+        <Key key={s.id} n={key()} glyph={s.id} label={s.name} active={section === s.id && !anyFocused} onClick={() => surface(s.id)} />
+      ))}
+      <RailHead>SYS</RailHead>
+      {PINNED.map((id) => {
+        const mine = wins.filter((w) => w.appId === id)
+        return <Key key={id} n={key()} glyph={id} label={shortName(id)} active={mine.some((w) => w.focused && !w.minimized)} running={mine.length > 0} onClick={() => click(id)} />
+      })}
+      {running.length > 0 && <RailHead>RUN</RailHead>}
+      {running.map((id) => {
+        const mine = wins.filter((w) => w.appId === id)
+        return <Key key={id} n={key()} glyph={id} label={shortName(id)} active={mine.some((w) => w.focused && !w.minimized)} running onClick={() => click(id)} />
+      })}
+    </nav>
+  )
+}
+
+function RailHead({ children }: { children: string }) {
+  return (
+    <div className="mt-2 flex items-center gap-1.5 px-1 font-mono text-[9px] tracking-[0.2em] text-[rgba(176,138,82,0.75)] first:mt-0">
+      <span className="h-px flex-1 bg-[rgba(176,138,82,0.35)]" />
+      {children}
+      <span className="h-px w-2 bg-[rgba(176,138,82,0.35)]" />
     </div>
   )
 }
 
-function Divider() {
-  return <span className="mx-1.5 h-4 w-px shrink-0 bg-[rgba(176,138,82,0.45)]" />
-}
-
-function Tab({ label, active, running, onClick }: { label: string; active: boolean; running?: boolean; onClick: () => void }) {
+function Key({ n, glyph, label, active, running, onClick }: { n: string; glyph: string; label: string; active: boolean; running?: boolean; onClick: () => void }) {
   return (
-    <button
-      onClick={onClick}
-      className={`hud-target ${active ? 'is-active' : ''} h-7 shrink-0 rounded-full px-3 text-[11px] font-semibold uppercase tracking-[0.18em] transition-colors ${
-        active ? 'bg-gradient-to-b from-[#b81620] to-[#6e0a10] text-white shadow-[inset_0_1px_0_rgba(216,179,122,0.45),inset_0_0_0_1px_rgba(176,138,82,0.5),0_0_16px_rgba(200,24,32,0.4)]' : 'text-smoke hover:bg-white/[0.07] hover:text-bone'
-      }`}
-    >
-      {label}
-      {running && !active && <span className="absolute bottom-0.5 left-1/2 h-[3px] w-[3px] -translate-x-1/2 rounded-full bg-bone/70" />}
+    <button onClick={onClick} aria-label={label} className={`rail-key hud-target group ${active ? 'is-active' : ''}`}>
+      <span className="rail-n">{n}</span>
+      {running && <span className="rail-run" />}
+      <Glyph id={glyph} size={24} className={active ? 'text-white' : 'text-[#ff3a40]'} />
+      <span className="rail-label">{label}</span>
     </button>
   )
 }

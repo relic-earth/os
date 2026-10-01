@@ -123,11 +123,11 @@ function Prompt({ seed }: { seed: string }) {
         />
         {/* 2 · the panel unfolds out of the blade */}
         <motion.div
-          initial={{ clipPath: 'inset(48% 0% 48% 0% round 22px)', opacity: 0.6 }}
-          animate={{ clipPath: 'inset(0% 0% 0% 0% round 22px)', opacity: 1 }}
-          exit={{ clipPath: 'inset(48% 0% 48% 0% round 22px)', opacity: 0, transition: { duration: 0.22, ease: [0.6, 0, 1, 1] } }}
+          initial={{ clipPath: 'inset(48% 0% 48% 0%)', opacity: 0.6 }}
+          animate={{ clipPath: 'inset(0% 0% 0% 0%)', opacity: 1 }}
+          exit={{ clipPath: 'inset(48% 0% 48% 0%)', opacity: 0, transition: { duration: 0.22, ease: [0.6, 0, 1, 1] } }}
           transition={{ delay: 0.16, duration: 0.42, ease: [0.16, 1, 0.3, 1] }}
-          className="hud-frame holo relative flex flex-col overflow-hidden rounded-[22px] bg-[linear-gradient(180deg,rgba(26,6,8,0.92),rgba(6,1,2,0.94))] shadow-[0_40px_120px_rgba(0,0,0,0.85),0_0_90px_rgba(220,20,30,0.3)] backdrop-blur-2xl"
+          className="hud-frame holo relative flex flex-col overflow-hidden rounded-[2px] bg-[linear-gradient(180deg,rgba(26,6,8,0.92),rgba(6,1,2,0.94))] shadow-[0_40px_120px_rgba(0,0,0,0.85),0_0_90px_rgba(220,20,30,0.3)] backdrop-blur-2xl"
         >
           <span className="hud-orbit" />
           <span className="hud-corner tl" />

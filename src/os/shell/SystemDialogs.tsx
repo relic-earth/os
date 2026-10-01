@@ -33,7 +33,7 @@ export function ConfirmDialog() {
               <div className="mt-2 text-[20px] tracking-[0.14em] font-semibold text-bone">{c.subject}</div>
               {c.detail && <div className="mt-4 whitespace-pre-line text-[11px] leading-relaxed tracking-[0.12em] text-ash">{c.detail}</div>}
               {c.permissions && c.permissions.length > 0 && (
-                <div className="mt-4 grid grid-cols-3 gap-px overflow-hidden rounded-[12px] border hair bg-[var(--line-faint)]">
+                <div className="mt-4 grid grid-cols-3 gap-px overflow-hidden rounded-[2px] border hair bg-[var(--line-faint)]">
                   {c.permissions.map((p) => (
                     <div key={p} className="bg-ink px-3 py-2.5 text-center text-[11px] tracking-[0.13em] font-semibold text-bone">
                       {p}
@@ -97,7 +97,7 @@ export function LaunchOverlay() {
                   <div className="label-sm mt-1 text-ash">{l.platform}</div>
                 </div>
               </div>
-              <div className="mt-6 grid grid-cols-2 gap-px overflow-hidden rounded-[12px] border hair bg-[var(--line-faint)]">
+              <div className="mt-6 grid grid-cols-2 gap-px overflow-hidden rounded-[2px] border hair bg-[var(--line-faint)]">
                 <div className="bg-ink px-4 py-3">
                   <div className="label-sm">RUNTIME</div>
                   <div className="mt-1 text-[11px] tracking-[0.11em] font-semibold text-bone">{l.runtimeLabel}</div>
@@ -181,7 +181,7 @@ export function TaskSwitcher() {
           const app = getApp(w.appId)
           const active = i === sw.index % wins.length
           return (
-            <div key={w.id} className={`flex w-[124px] flex-col items-center gap-3 rounded-[18px] px-3 py-5 ${active ? 'bg-white/[0.08] shadow-[0_0_30px_rgba(232,36,43,0.2)]' : ''}`}>
+            <div key={w.id} className={`flex w-[124px] flex-col items-center gap-3 rounded-[2px] px-3 py-5 ${active ? 'bg-white/[0.08] shadow-[0_0_30px_rgba(232,36,43,0.2)]' : ''}`}>
               <AppIcon id={w.appId} size={64} live={active} active={active} />
               <span className="w-full truncate text-center text-[12px] tracking-[0.1em] font-semibold text-bone">{(app?.name ?? w.title).replace('Relic ', '').toUpperCase()}</span>
             </div>

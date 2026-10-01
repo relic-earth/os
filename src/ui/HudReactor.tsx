@@ -6,7 +6,7 @@ import { useOS } from '../os/runtime/store'
  * an Imperial targeting sweep, a live seconds arc, and EDITH-style callouts
  * tied to the ring with leader lines. All motion is CSS (`.rx-*`).
  */
-export function HudReactor({ size = 560 }: { size?: number }) {
+export function HudReactor({ size = 560, callouts = true }: { size?: number; callouts?: boolean }) {
   const now = useNow(1000)
   const { online, total } = useMesh()
   const temp = useOS((s) => s.thermostat.target)
@@ -79,9 +79,11 @@ export function HudReactor({ size = 560 }: { size?: number }) {
       </g>
 
       {/* EDITH callouts */}
+      {callouts && (<>
       <Callout x1={C - 236} y1={C - 70} x2={C - 330} y2={C - 140} label="Device mesh" value={`${online}/${total} online`} align="end" />
       <Callout x1={C + 236} y1={C - 60} x2={C + 330} y2={C - 130} label="Climate" value={`${temp}° holding`} align="start" />
       <Callout x1={C + 220} y1={C + 100} x2={C + 320} y2={C + 160} label="Claude" value={busy ? 'working' : 'standing by'} align="start" hot={busy} />
+      </>)}
     </svg>
   )
 }

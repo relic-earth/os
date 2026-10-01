@@ -221,7 +221,7 @@ function AppsPane() {
       <div className="label text-red">APPS · DRIVE-SAFE</div>
       <div className="mt-6 grid grid-cols-3 gap-3">
         {list.map((a) => (
-          <div key={a.id} className="group flex aspect-[4/3] flex-col items-center justify-center gap-3 rounded-[22px] hover:bg-white/[0.05]">
+          <div key={a.id} className="group flex aspect-[4/3] flex-col items-center justify-center gap-3 rounded-[2px] hover:bg-white/[0.05]">
             <AppIcon id={a.id} size={84} />
             <span className="text-[14px] tracking-[0.14em] font-semibold">{a.name.replace('Relic ', '').toUpperCase()}</span>
           </div>
@@ -237,7 +237,7 @@ function VehiclePane() {
   return (
     <div className="h-full overflow-y-auto p-8">
       <div className="label text-red">VEHICLE</div>
-      <div className="mt-6 grid grid-cols-3 gap-px overflow-hidden rounded-[12px] border hair bg-[var(--line-faint)]">
+      <div className="mt-6 grid grid-cols-3 gap-px overflow-hidden rounded-[2px] border hair bg-[var(--line-faint)]">
         {[['CHARGE', `${Math.round((car.battery ?? 0) * 100)}%`], ['RANGE', `${st.range} MI`], ['CABIN', `${st.cabin}°`], ['TIRES', '42 · 42 · 41 · 42 PSI'], ['ODOMETER', '8,214 MI'], ['SOFTWARE', 'RELIC DRIVE 0.1']].map(([k, v]) => (
           <div key={k} className="bg-ink px-5 py-5"><div className="label-sm">{k}</div><div className="num mt-2 text-[16px] font-light">{v}</div></div>
         ))}

@@ -116,7 +116,7 @@ function Page({ url, go }: { url: string; go: (u: string) => void }) {
             className="field mt-8 h-10 w-full"
             onKeyDown={(e) => e.key === 'Enter' && go(normalize((e.target as HTMLInputElement).value))}
           />
-          <div className="mt-6 grid grid-cols-4 gap-px overflow-hidden rounded-[12px] border hair bg-[var(--line-faint)]">
+          <div className="mt-6 grid grid-cols-4 gap-px overflow-hidden rounded-[2px] border hair bg-[var(--line-faint)]">
             {['relic.earth', 'en.wikipedia.org/wiki/Operating_system', 'anthropic.com', 'github.com'].map((s) => (
               <button key={s} onClick={() => go(normalize(s))} className="bg-ink px-3 py-4 text-[10px] tracking-[0.11em] font-semibold text-ash hover:bg-burgundy hover:text-bone">
                 {host('https://' + s).replace('en.', '').toUpperCase()}

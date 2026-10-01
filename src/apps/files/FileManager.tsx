@@ -67,7 +67,7 @@ export function FileManager({ compact }: { compact?: boolean }) {
                   const id = e.dataTransfer.getData('text/relic-file')
                   if (id && p.id !== 'recent') relicRuntime.files.move(id, p.id)
                 }}
-                className={`hud-target scan-hover flex h-8 w-full items-center gap-2.5 rounded-[9px] px-3 text-left ${active ? 'lit is-active' : 'hover:bg-white/[0.05]'}`}
+                className={`hud-target scan-hover flex h-8 w-full items-center gap-2.5 rounded-[2px] px-3 text-left ${active ? 'lit is-active' : 'hover:bg-white/[0.05]'}`}
               >
                 {p.id === 'recent' ? <Clock size={12} strokeWidth={1.25} className={active ? 'text-signal' : 'text-smoke'} /> : <Folder size={12} strokeWidth={1.25} className={active ? 'text-signal' : 'text-smoke'} />}
                 <span className={`text-[11px] tracking-[0.15em] font-semibold ${active ? 'text-white' : 'text-smoke'}`}>{p.name.toUpperCase()}</span>
@@ -76,7 +76,7 @@ export function FileManager({ compact }: { compact?: boolean }) {
           })}
           <button
             onClick={() => relicRuntime.files.setView({ folder: 'trash', query: '', selectedId: undefined })}
-            className={`relative !mt-3 flex h-8 w-full items-center gap-2.5 rounded-[9px] px-3 text-left ${view.folder === 'trash' ? 'lit' : 'hover:bg-white/[0.05]'}`}
+            className={`relative !mt-3 flex h-8 w-full items-center gap-2.5 rounded-[2px] px-3 text-left ${view.folder === 'trash' ? 'lit' : 'hover:bg-white/[0.05]'}`}
           >
             <Trash2 size={12} strokeWidth={1.25} className="text-smoke" />
             <span className="text-[11px] tracking-[0.13em] font-semibold text-ash">TRASH</span>
@@ -178,7 +178,7 @@ export function FileManager({ compact }: { compact?: boolean }) {
             )
           })}
         </div>
-        <div className="flex items-center justify-between border-t hair px-4 py-1.5">
+        <div className="flex items-center justify-between gap-4 border-t hair px-4 py-1.5">
           <span className="label-sm shrink-0 whitespace-nowrap">{list.length} ITEMS</span>
           <span className="label-sm truncate text-soot">DOUBLE-CLICK OPEN · F2 RENAME · DEL TRASH · RIGHT-CLICK MORE</span>
         </div>
@@ -255,7 +255,7 @@ export function FileManager({ compact }: { compact?: boolean }) {
           <div className="panel ticks w-[280px] p-4" onClick={(e) => e.stopPropagation()}>
             <div className="label text-red">{dest.op === 'move' ? 'MOVE TO' : 'COPY TO'}</div>
             <div className="mt-1 truncate text-[12px] text-bone">{relicRuntime.files.get(dest.id)?.name}</div>
-            <div className="mt-3 grid grid-cols-2 gap-px overflow-hidden rounded-[12px] border hair bg-[var(--line-faint)]">
+            <div className="mt-3 grid grid-cols-2 gap-px overflow-hidden rounded-[2px] border hair bg-[var(--line-faint)]">
               {ROOT_FOLDERS.map((id) => (
                 <button
                   key={id}

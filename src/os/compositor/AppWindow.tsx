@@ -90,41 +90,29 @@ export function AppWindow({ win, children }: { win: RelicWindow; children: React
       transition={{ duration: 0.62, times: [0, 0.32, 1], ease: [0.2, 0, 0, 1] }}
       onPointerDown={() => !win.focused && relicRuntime.windows.focus(win.id)}
     >
+      {/* glow lives on this wrapper: the frame below is clipped, so it cannot cast its own */}
+      <div className={`h-full transition-[filter] duration-300 ${win.focused ? 'drop-shadow-[0_0_18px_rgba(255,58,64,0.35)]' : ''}`}>
       <div
-        className={`relative flex h-full flex-col overflow-hidden border bg-[linear-gradient(180deg,rgba(18,8,9,0.97),rgba(6,3,3,0.97))] backdrop-blur-xl transition-[border-color,box-shadow] duration-300 ${win.maximized ? 'rounded-none' : 'rounded-[18px]'} ${
-          win.focused
-            ? 'border-[rgba(176,138,82,0.4)] shadow-[inset_0_1px_0_rgba(216,179,122,0.2),0_30px_90px_rgba(0,0,0,0.85),0_0_60px_rgba(200,24,32,0.18)]'
-            : 'border-[var(--line-faint)] shadow-[0_20px_60px_rgba(0,0,0,0.55)]'
-        }`}
+        className={`win-frame relative flex h-full flex-col overflow-hidden ${win.focused ? 'is-focused' : ''} ${win.maximized ? 'is-max' : ''}`}
       >
-        {/* title bar — lights on the left, title centred */}
+        <span className="win-corner tl" />
+        <span className="win-corner br" />
+        {/* header: code, glyph, title — keys on the right */}
         <div
-          className={`group/title relative flex h-[44px] shrink-0 items-center gap-3 border-b px-4 ${win.focused ? 'border-[rgba(176,138,82,0.28)] bg-[linear-gradient(180deg,rgba(40,14,16,0.7),rgba(18,6,8,0.6))]' : 'border-[rgba(176,138,82,0.12)] bg-[rgba(14,6,7,0.5)]'} ${dragging ? 'cursor-grabbing' : ''}`}
+          className={`relative flex h-[38px] shrink-0 items-center gap-3 border-b px-4 ${win.focused ? 'border-[rgba(255,58,64,0.4)] bg-[linear-gradient(90deg,rgba(255,58,64,0.22),rgba(255,58,64,0.04)_45%,transparent)]' : 'border-[rgba(255,58,64,0.12)] bg-[rgba(255,58,64,0.03)]'} ${dragging ? 'cursor-grabbing' : ''}`}
           onPointerDown={(e) => onDown(e)}
           onPointerMove={onMove}
           onPointerUp={onUp}
           onDoubleClick={() => relicRuntime.windows.toggleMaximize(win.id)}
         >
-          <div className="z-10 flex items-center gap-2" onPointerDown={(e) => e.stopPropagation()}>
-            <Light label="Close" tone="close" focused={win.focused} onClick={() => relicRuntime.windows.close(win.id)}>
-              <X size={9} strokeWidth={3} />
-            </Light>
-            <Light label="Minimize" tone="min" focused={win.focused} onClick={() => relicRuntime.windows.minimize(win.id)}>
-              <Minus size={9} strokeWidth={3} />
-            </Light>
-            <Light label="Maximize" tone="max" focused={win.focused} onClick={() => relicRuntime.windows.toggleMaximize(win.id)}>
-              {win.maximized ? <Minimize2 size={8} strokeWidth={3} /> : <Maximize2 size={8} strokeWidth={3} />}
-            </Light>
-          </div>
-          <div className="pointer-events-none absolute inset-x-28 flex items-center justify-center gap-2">
-            <Glyph id={win.appId} size={16} className={win.focused ? 'text-signal' : 'text-soot'} />
-            <span className={`truncate text-[11px] font-semibold uppercase tracking-[0.2em] ${win.focused ? 'text-ash' : 'text-soot'}`}>{win.title}</span>
-          </div>
+          <Glyph id={win.appId} size={20} className={win.focused ? 'text-white drop-shadow-[0_0_6px_#ff3a40]' : 'text-[#ff3a40]/60'} />
+          <span className={`truncate font-display text-[11px] tracking-[0.1em] ${win.focused ? 'text-white' : 'text-smoke'}`}>{win.title.toUpperCase()}</span>
+          <span className="hidden font-mono text-[9px] tracking-[0.1em] text-[rgba(176,138,82,0.7)] sm:inline">WND·{win.id.slice(-4).toUpperCase()}</span>
           {isForeign && (
             <button
               onPointerDown={(e) => e.stopPropagation()}
               onClick={() => setShowCompat((v) => !v)}
-              className={`z-10 ml-auto flex h-[24px] items-center gap-1.5 rounded-full border px-3 text-[11px] tracking-[0.1em] font-semibold transition-colors ${showCompat ? 'border-red text-bone shadow-[0_0_14px_rgba(232,36,43,0.4)]' : 'hair text-ash hover:text-bone'}`}
+              className={`hud-chip hud-target z-10 ml-2 gap-1.5 ${showCompat ? '!border-[#ff3a40] !text-white' : ''}`}
               title="Runtime details"
             >
               <Cpu size={11} strokeWidth={1.75} />
@@ -132,6 +120,17 @@ export function AppWindow({ win, children }: { win: RelicWindow; children: React
               {compat && <span className="text-signal">· {compat.mode === 'wine' && app!.runtime === 'windows' ? 'WINE' : app!.runtime === 'linux' ? 'SANDBOX' : compat.mode.toUpperCase()}</span>}
             </button>
           )}
+          <div className="z-10 ml-auto flex items-center gap-1" onPointerDown={(e) => e.stopPropagation()}>
+            <WinKey label="Minimize" onClick={() => relicRuntime.windows.minimize(win.id)}>
+              <Minus size={12} strokeWidth={2.5} />
+            </WinKey>
+            <WinKey label="Maximize" onClick={() => relicRuntime.windows.toggleMaximize(win.id)}>
+              {win.maximized ? <Minimize2 size={11} strokeWidth={2.5} /> : <Maximize2 size={11} strokeWidth={2.5} />}
+            </WinKey>
+            <WinKey label="Close" danger onClick={() => relicRuntime.windows.close(win.id)}>
+              <X size={13} strokeWidth={2.5} />
+            </WinKey>
+          </div>
         </div>
 
         <div className="relative min-h-0 flex-1 overflow-clip">
@@ -143,6 +142,7 @@ export function AppWindow({ win, children }: { win: RelicWindow; children: React
         </div>
       </div>
 
+      </div>
       {!win.maximized &&
         (Object.keys(edgeClass) as Edge[]).map((edge) => (
           <div key={edge} className={`absolute ${edgeClass[edge]}`} onPointerDown={(e) => onDown(e, edge)} onPointerMove={onMove} onPointerUp={onUp} />
@@ -151,21 +151,10 @@ export function AppWindow({ win, children }: { win: RelicWindow; children: React
   )
 }
 
-const LIGHT = {
-  close: 'bg-[#e8242b] shadow-[0_0_10px_rgba(232,36,43,0.85)]',
-  min: 'bg-[#8a1a1f] shadow-[0_0_6px_rgba(138,26,31,0.7)]',
-  max: 'bg-[#d8cfc9] shadow-[0_0_6px_rgba(245,240,235,0.35)]',
-}
-
-/** A window light: red close, oxblood minimize, bone zoom — glyphs appear on hover, as on a Mac. */
-function Light({ children, onClick, label, tone, focused }: { children: ReactNode; onClick: () => void; label: string; tone: keyof typeof LIGHT; focused: boolean }) {
+/** A window key: a small chamfered plate. Close burns red. */
+function WinKey({ children, onClick, label, danger }: { children: ReactNode; onClick: () => void; label: string; danger?: boolean }) {
   return (
-    <button
-      onClick={onClick}
-      aria-label={label}
-      title={label}
-      className={`flex h-[14px] w-[14px] items-center justify-center rounded-full text-black/0 transition-[color,background,box-shadow] group-hover/title:text-black/75 ${focused ? LIGHT[tone] : 'bg-[#3a3232]'}`}
-    >
+    <button onClick={onClick} aria-label={label} title={label} className={`win-key hud-target ${danger ? 'win-key-danger' : ''}`}>
       {children}
     </button>
   )

@@ -60,7 +60,7 @@ The UI never calls a model directly. Set `VITE_CLAUDE_PROVIDER=anthropic`, or pi
 
 ## Interface
 
-**Type**: Gill Sans SemiBold for display (headings, labels, buttons); Fira Sans for text — Erik Spiekermann's open-licensed descendant of FF Meta, bundled via `@fontsource/fira-sans`. If FF Meta Pro is installed it is used instead. Gill Sans: The system copy on Mac and iPhone is used first; for other machines, put `GillSans-SemiBold.ttf` in `public/fonts/` (git-ignored — the face is Monotype-licensed and is not redistributed here).
+**Type**: Michroma (display), Oxanium (interface), JetBrains Mono (telemetry), all open-licensed and bundled via `@fontsource`. The system copy on Mac and iPhone is used first; for other machines, put `GillSans-SemiBold.ttf` in `public/fonts/` (git-ignored — the face is Monotype-licensed and is not redistributed here).
 
 Wallpaper: the Great Wave in red ASCII, a seamless ping-pong video loop (`public/wallpaper/wave.mp4`); Coruscant at dusk (`src/ui/CoruscantWindow.tsx`) is the alternative. HUD language: JARVIS reactor rings and EDITH callouts around the clock (`src/ui/HudReactor.tsx`), target-lock brackets on hover and active, hologram-projector window transitions, a saber-ignite prompt, every icon in motion. Minimal and Mac-proportioned: a menu bar, the time, one *Ask Claude* field, four widgets and a dock. The scarab and striped wordmark are the Relic marks from relic.earth.
 

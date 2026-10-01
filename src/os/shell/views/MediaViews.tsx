@@ -18,7 +18,7 @@ function Poster({ id, i, wide }: { id: string; i: number; wide?: boolean }) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: i * 0.05, duration: 0.45 }}
       onClick={() => openPlayer(id)}
-      className={`group relative shrink-0 overflow-hidden text-left rounded-[16px] border border-[rgba(245,240,235,0.08)] shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_14px_30px_rgba(0,0,0,0.45)] transition-all duration-300 hover:-translate-y-1 hover:border-[rgba(232,36,43,0.5)] hover:shadow-[0_0_0_1px_rgba(232,36,43,0.3),0_20px_44px_rgba(0,0,0,0.55),0_0_30px_rgba(232,36,43,0.22)] ${wide ? 'aspect-video w-[300px]' : 'aspect-[2/3] w-[170px]'}`}
+      className={`group relative shrink-0 overflow-hidden text-left rounded-[2px] border border-[rgba(245,240,235,0.08)] shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_14px_30px_rgba(0,0,0,0.45)] transition-all duration-300 hover:-translate-y-1 hover:border-[rgba(232,36,43,0.5)] hover:shadow-[0_0_0_1px_rgba(232,36,43,0.3),0_20px_44px_rgba(0,0,0,0.55),0_0_30px_rgba(232,36,43,0.22)] ${wide ? 'aspect-video w-[300px]' : 'aspect-[2/3] w-[170px]'}`}
     >
       <Art variant={m.art} seed={i + 2} className="absolute inset-0 h-full w-full transition-transform duration-[1.2s] group-hover:scale-105" />
       <div className="absolute inset-0 bg-gradient-to-t from-void via-transparent to-transparent" />
@@ -89,7 +89,7 @@ export function TVSection() {
       </div>
       <div className="mt-6 grid grid-cols-2 gap-4 xl:grid-cols-4">
         {channels.map((c, i) => (
-          <button key={c.id} onClick={() => relicRuntime.media.play(c.id, 'relic-tv')} className="group relative aspect-video overflow-hidden text-left rounded-[16px] border border-[rgba(245,240,235,0.08)] shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_14px_30px_rgba(0,0,0,0.45)] transition-all duration-300 hover:-translate-y-1 hover:border-[rgba(232,36,43,0.5)] hover:shadow-[0_0_0_1px_rgba(232,36,43,0.3),0_20px_44px_rgba(0,0,0,0.55),0_0_30px_rgba(232,36,43,0.22)]">
+          <button key={c.id} onClick={() => relicRuntime.media.play(c.id, 'relic-tv')} className="group relative aspect-video overflow-hidden text-left rounded-[2px] border border-[rgba(245,240,235,0.08)] shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_14px_30px_rgba(0,0,0,0.45)] transition-all duration-300 hover:-translate-y-1 hover:border-[rgba(232,36,43,0.5)] hover:shadow-[0_0_0_1px_rgba(232,36,43,0.3),0_20px_44px_rgba(0,0,0,0.55),0_0_30px_rgba(232,36,43,0.22)]">
             <Art variant={c.art} seed={i + 9} className="absolute inset-0 h-full w-full" />
             <div className="absolute inset-0 bg-gradient-to-t from-void to-transparent" />
             <span className="label-sm absolute left-3 top-3 flex items-center gap-1.5 text-bone"><span className="dot pulse" /> LIVE</span>
@@ -125,7 +125,7 @@ export function Games() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.06 }}
             onClick={() => void relicRuntime.apps.launch('steam')}
-            className="group relative aspect-[16/9] overflow-hidden text-left rounded-[16px] border border-[rgba(245,240,235,0.08)] shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_14px_30px_rgba(0,0,0,0.45)] transition-all duration-300 hover:-translate-y-1 hover:border-[rgba(232,36,43,0.5)] hover:shadow-[0_0_0_1px_rgba(232,36,43,0.3),0_20px_44px_rgba(0,0,0,0.55),0_0_30px_rgba(232,36,43,0.22)]"
+            className="group relative aspect-[16/9] overflow-hidden text-left rounded-[2px] border border-[rgba(245,240,235,0.08)] shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_14px_30px_rgba(0,0,0,0.45)] transition-all duration-300 hover:-translate-y-1 hover:border-[rgba(232,36,43,0.5)] hover:shadow-[0_0_0_1px_rgba(232,36,43,0.3),0_20px_44px_rgba(0,0,0,0.55),0_0_30px_rgba(232,36,43,0.22)]"
           >
             <Art variant={g.art} seed={i + 4} className="absolute inset-0 h-full w-full transition-transform duration-[1.2s] group-hover:scale-105" />
             <div className="absolute inset-0 bg-gradient-to-t from-void via-void/20 to-transparent" />

@@ -63,7 +63,7 @@ export function Settings({ win }: { win: RelicWindow }) {
     <div className="flex h-full">
       <nav className="well w-[210px] shrink-0 space-y-0.5 border-r hair px-2.5 py-4">
         {SECTIONS.map((s) => (
-          <button key={s.id} onClick={() => { setSection(s.id); setSub(undefined) }} className={`hud-target scan-hover flex h-9 w-full items-center rounded-[10px] px-3 text-left text-[11px] tracking-[0.16em] font-semibold ${section === s.id ? 'lit is-active' : 'text-smoke hover:bg-white/[0.05] hover:text-bone'}`}>
+          <button key={s.id} onClick={() => { setSection(s.id); setSub(undefined) }} className={`hud-target scan-hover flex h-9 w-full items-center rounded-[2px] px-3 text-left text-[11px] tracking-[0.16em] font-semibold ${section === s.id ? 'lit is-active' : 'text-smoke hover:bg-white/[0.05] hover:text-bone'}`}>
             {s.label}
           </button>
         ))}
@@ -118,7 +118,7 @@ function Tabs({ items, value, onChange }: { items: [string, string][]; value: st
 
 function StatusGrid({ items }: { items: [string, string, boolean?][] }) {
   return (
-    <div className="grid grid-cols-2 gap-px overflow-hidden rounded-[12px] border hair bg-[var(--line-faint)] md:grid-cols-4">
+    <div className="grid grid-cols-2 gap-px overflow-hidden rounded-[2px] border hair bg-[var(--line-faint)] md:grid-cols-4">
       {items.map(([k, v, warn]) => (
         <div key={k} className="bg-ink px-4 py-4">
           <div className="label-sm">{k}</div>
@@ -211,7 +211,7 @@ function Network() {
       </div>
       <button className="btn mt-5" disabled={!connected} onClick={() => void cloud.sync.syncNow()}>SYNC NOW</button>
       <div className="label-sm mt-8 mb-3">RELIC CLOUD SERVICES</div>
-      <div className="grid grid-cols-4 gap-px overflow-hidden rounded-[12px] border hair bg-[var(--line-faint)]">
+      <div className="grid grid-cols-4 gap-px overflow-hidden rounded-[2px] border hair bg-[var(--line-faint)]">
         {cloud.services.map((s) => (
           <div key={s} className="bg-ink px-3 py-3">
             <div className="text-[10px] tracking-[0.11em] font-semibold text-bone">{s}</div>
@@ -266,7 +266,7 @@ function ClaudeSettings() {
       </Row>
       <Row k="ACTIVE ROUTE" v={claudeGateway.active().label} />
       <div className="label-sm mt-8 mb-3">PERMISSION MODEL</div>
-      <div className="grid grid-cols-4 gap-px overflow-hidden rounded-[12px] border hair bg-[var(--line-faint)]">
+      <div className="grid grid-cols-4 gap-px overflow-hidden rounded-[2px] border hair bg-[var(--line-faint)]">
         {levels.map((l) => (
           <div key={l} className="bg-ink p-4">
             <div className={`text-[11px] tracking-[0.14em] font-semibold ${l === 'system' ? 'text-signal' : l === 'sensitive' ? 'text-red' : 'text-bone'}`}>{riskMeta[l].label}</div>
@@ -319,7 +319,7 @@ function Security() {
   return (
     <div>
       <H sub="Every application runs sandboxed. Every device proves its identity.">SECURITY CENTER</H>
-      <div className="grid grid-cols-5 gap-px overflow-hidden rounded-[12px] border hair bg-[var(--line-faint)]">
+      <div className="grid grid-cols-5 gap-px overflow-hidden rounded-[2px] border hair bg-[var(--line-faint)]">
         {[['DEVICE IDENTITY', 'SECURE'], ['ENCRYPTION', 'ACTIVE'], ['APPLICATION SANDBOX', 'ACTIVE'], ['CLAUDE PERMISSIONS', `${grants} ACTIVE`], ['NETWORK', 'SECURE']].map(([k, v]) => (
           <div key={k} className="bg-ink px-4 py-4">
             <div className="label-sm">{k}</div>
