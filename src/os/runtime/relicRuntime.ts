@@ -61,6 +61,14 @@ export const relicRuntime = {
       setOS({ profile, commandOpen: false, notificationCenterOpen: false })
     },
     setSection: (section: Section) => setOS({ section }),
+    setUiScale: (uiScale: number) => {
+      setOS({ uiScale })
+      try {
+        localStorage.setItem('relic.scale', String(uiScale))
+      } catch {
+        /* private mode */
+      }
+    },
     setSkin: (skin: Skin) => {
       setOS({ skin })
       try {

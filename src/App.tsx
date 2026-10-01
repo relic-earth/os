@@ -15,7 +15,19 @@ import { PhoneMode } from './modes/PhoneMode'
 import { CarMode } from './modes/CarMode'
 import { ThermostatMode } from './modes/ThermostatMode'
 
+/** The interface zoom: the chosen scale on computer-sized screens, 1 on phones. */
+export function uiZoom(scale: number, width = window.innerWidth) {
+  return width < 700 ? 1 : scale
+}
+
+/** Viewport width in layout pixels (after the interface zoom). */
 function useViewport() {
+  const scale = useOS((s) => s.uiScale)
+  const raw = useRawWidth()
+  return { raw, layout: raw / uiZoom(scale, raw) }
+}
+
+function useRawWidth() {
   const [w, setW] = useState(() => window.innerWidth)
   useEffect(() => {
     const on = () => setW(window.innerWidth)
@@ -28,8 +40,8 @@ function useViewport() {
 /** Picks the interface for the device node this screen is rendering. */
 function DeviceProfile() {
   const profile = useOS((s) => s.profile)
-  const width = useViewport()
-  const narrow = width < 700
+  const { raw, layout: width } = useViewport()
+  const narrow = raw < 700
   if (narrow && profile !== 'relic-thermostat') return <PhoneMode framed={false} />
   switch (profile) {
     case 'relic-tv':
@@ -88,6 +100,12 @@ export default function App() {
     if (seen && !params.has('boot')) relicRuntime.shell.boot()
   }, [])
   const skin = useOS((s) => s.skin)
+  const uiScale = useOS((s) => s.uiScale)
+  const rawWidth = useRawWidth()
+  useEffect(() => {
+    // every surface scales together; drag math reads the same factor (see AppWindow)
+    document.documentElement.style.setProperty('zoom', String(uiZoom(uiScale, rawWidth)))
+  }, [uiScale, rawWidth])
   useEffect(() => {
     document.documentElement.dataset.theme = theme
   }, [theme])

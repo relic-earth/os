@@ -45,8 +45,10 @@ export function AppWindow({ win, children }: { win: RelicWindow; children: React
   const onMove = (e: RPE) => {
     const d = drag.current
     if (!d) return
-    const dx = e.clientX - d.x
-    const dy = e.clientY - d.y
+    // pointer coordinates are screen pixels; window geometry is in zoomed layout pixels
+    const z = Number(document.documentElement.style.zoom) || 1
+    const dx = (e.clientX - d.x) / z
+    const dy = (e.clientY - d.y) / z
     if (!d.edge) {
       const x = Math.min(Math.max(d.wx + dx, -d.w + 120), area.width - 120)
       const y = Math.min(Math.max(d.wy + dy, 0), area.height - 40)

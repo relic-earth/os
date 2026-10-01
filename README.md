@@ -78,7 +78,8 @@ Wallpaper: the Great Wave in red ASCII, a seamless ping-pong video loop (`public
 - **Type anywhere** to talk to Claude. The prompt runs one second after you stop typing. Hold the spacebar to keep it waiting, press Enter to run at once, Esc to close.
 - If the page is framed (for example in a preview) and has no keyboard focus, Home shows *Click anywhere, then type*.
 - **Menu bar**: the scarab menu (About, Architecture, Open on iPhone, Settings, Restart), the frontmost app's name, then status, search, notifications, device switcher and the clock.
-- **Bottom bar**: one row of uppercase tabs (Home, TV, Movies, Games · Claude, Files, Browser, Apps, Devices, Settings · running apps). There is no search field: start typing and the command prompt ignites mid-screen, 800 px wide.
+- **Command bar** (bottom): numbered keys — Home, TV, Movies, Games · the system apps · running apps. **Interface size** (Settings → Display) scales the whole deck: 100 / 120 (default) / 140%; phones always render at 100%.
+- *(earlier)* **Bottom bar**: one row of uppercase tabs (Home, TV, Movies, Games · Claude, Files, Browser, Apps, Devices, Settings · running apps). There is no search field: start typing and the command prompt ignites mid-screen, 800 px wide.
 - **Icons**: a Relic-drawn set (`src/ui/AppIcon.tsx`). Each glyph has its own CSS motion that plays on hover and stays running for the focused app; reduced-motion is respected.
 - **Windows**: red, oxblood and bone lights on the left; the title is centred.
 

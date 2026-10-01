@@ -159,6 +159,7 @@ function Display() {
     <div>
       <H>DISPLAY & SOUND</H>
       <SkinPicker />
+      <ScalePicker />
       <div className="label-sm mb-3">BACKGROUND</div>
       <div className="grid grid-cols-4 gap-3">
         {(['wave', 'chancellor', 'horizon', 'volcanic', 'topographic', 'architecture'] as const).map((b) => (
@@ -527,6 +528,24 @@ function SkinPicker() {
             </button>
           )
         })}
+      </div>
+    </div>
+  )
+}
+
+/** INTERFACE SIZE — the whole deck scales together (phones always render at 100%). */
+function ScalePicker() {
+  const scale = useOS((s) => s.uiScale)
+  const steps: [number, string][] = [[1, '100%'], [1.2, '120%'], [1.4, '140%']]
+  return (
+    <div className="mb-10">
+      <div className="label mb-3">Interface size</div>
+      <div className="flex gap-2">
+        {steps.map(([v, label]) => (
+          <button key={v} onClick={() => relicRuntime.shell.setUiScale(v)} aria-pressed={Math.abs(scale - v) < 0.01} className={`btn min-w-[96px] ${Math.abs(scale - v) < 0.01 ? 'btn-primary' : ''}`}>
+            {label}
+          </button>
+        ))}
       </div>
     </div>
   )

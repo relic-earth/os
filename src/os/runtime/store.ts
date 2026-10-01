@@ -115,6 +115,8 @@ export interface KernelState {
   theme: 'relic' | 'dim'
   /** visual skin: SITH (red deck) or EARTH (KOTOR: blue, green, white) */
   skin: Skin
+  /** interface scale for computer-sized screens (phones always render at 1) */
+  uiScale: number
   background: 'wave' | 'chancellor' | 'horizon' | 'volcanic' | 'topographic' | 'architecture'
   notifications: RelicNotification[]
   toasts: string[]
@@ -192,6 +194,14 @@ export const initialKernelState = (): KernelState => ({
   thermostat: { target: 68, indoor: 68, humidity: 41, mode: 'HEAT', fan: 'AUTO' },
   volume: 62,
   theme: 'relic',
+  uiScale: (() => {
+    try {
+      const v = Number(localStorage.getItem('relic.scale'))
+      return v >= 1 && v <= 1.6 ? v : 1.2
+    } catch {
+      return 1.2
+    }
+  })(),
   skin: (() => {
     try {
       const v = localStorage.getItem('relic.skin')

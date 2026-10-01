@@ -14,7 +14,7 @@ const SURFACES: { id: Section; name: string }[] = [
 const shortName = (id: string) => (getApp(id)?.name ?? id).replace('Relic ', '').replace('Applications', 'Apps')
 
 /**
- * COMMAND RAIL — the deck's left spine. Numbered keys: the four places,
+ * COMMAND BAR — the deck's bottom edge. Numbered keys: the four places,
  * then the system apps, then whatever is running. Claude has no field:
  * start typing anywhere.
  */
@@ -43,7 +43,8 @@ export function Dock() {
   const key = () => String(++n).padStart(2, '0')
 
   return (
-    <nav aria-label="Apps" data-profile={profile} className="no-scrollbar relative z-[5000] flex w-[88px] shrink-0 flex-col items-stretch gap-1 overflow-y-auto border-r border-[rgb(var(--acc)/0.16)] bg-[linear-gradient(90deg,rgb(var(--ink-1)/0.92),rgb(var(--ink-1)/0.78))] px-2 py-3 backdrop-blur-xl">
+    <nav aria-label="Apps" data-profile={profile} className="no-scrollbar relative z-[5000] flex h-[78px] w-full shrink-0 items-center justify-center gap-1.5 overflow-x-auto border-t border-[rgb(var(--acc)/0.22)] bg-[linear-gradient(0deg,rgb(var(--ink-1)/0.95),rgb(var(--ink-1)/0.8))] px-4 backdrop-blur-xl">
+      <span className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgb(var(--acc)),transparent)] opacity-70" />
       <RailHead>NAV</RailHead>
       {SURFACES.map((s) => (
         <Key key={s.id} n={key()} glyph={s.id} label={s.name} active={section === s.id && !anyFocused} onClick={() => surface(s.id)} />
@@ -64,10 +65,10 @@ export function Dock() {
 
 function RailHead({ children }: { children: string }) {
   return (
-    <div className="mt-2 flex items-center gap-1.5 px-1 font-mono text-[9px] tracking-[0.2em] text-[rgb(var(--gold)/0.75)] first:mt-0">
-      <span className="h-px flex-1 bg-[rgb(var(--gold)/0.35)]" />
-      {children}
-      <span className="h-px w-2 bg-[rgb(var(--gold)/0.35)]" />
+    <div className="flex h-[60px] shrink-0 flex-col items-center justify-between px-2 font-mono text-[9px] tracking-[0.2em] text-[rgb(var(--gold)/0.8)] first:pl-0">
+      <span className="w-px flex-1 bg-[rgb(var(--gold)/0.35)]" />
+      <span className="py-1 [writing-mode:vertical-rl] rotate-180">{children}</span>
+      <span className="w-px flex-1 bg-[rgb(var(--gold)/0.35)]" />
     </div>
   )
 }
