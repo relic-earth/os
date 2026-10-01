@@ -1,7 +1,6 @@
 import { useOS, useOSShallow, type Section } from '../runtime/store'
 import { relicRuntime } from '../runtime/relicRuntime'
 import { getApp } from '../apps/registry'
-import { useWindowFocus } from '../../ui/primitives'
 
 const PINNED = ['claude', 'files', 'web', 'apps', 'devices', 'settings']
 const SURFACES: { id: Section; name: string }[] = [
@@ -14,14 +13,12 @@ const SURFACES: { id: Section; name: string }[] = [
 const shortName = (id: string) => (getApp(id)?.name ?? id).replace('Relic ', '').replace('Applications', 'Apps')
 
 /**
- * Bottom bar — iOS-familiar: a row of small text tabs, and under it a
- * full-width "Ask Claude" field. The prompt itself opens in place of the field.
+ * Bottom bar — a single row of small text tabs. Claude needs no field:
+ * start typing anywhere and the prompt appears mid-screen.
  */
 export function Dock() {
   const profile = useOS((s) => s.profile)
   const section = useOS((s) => s.section)
-  const commandOpen = useOS((s) => s.commandOpen)
-  const hasFocus = useWindowFocus()
   const wins = useOSShallow((s) => s.windows.filter((w) => w.deviceId === s.profile))
   const running = Array.from(new Set(wins.map((w) => w.appId))).filter((id) => !PINNED.includes(id))
   const anyFocused = wins.some((w) => w.focused && !w.minimized)
@@ -46,7 +43,7 @@ export function Dock() {
   }
 
   return (
-    <div className="relative z-[5000] shrink-0 border-t border-[rgba(176,138,82,0.3)] bg-[linear-gradient(180deg,rgba(14,5,6,0.86),rgba(4,1,2,0.92))] shadow-[inset_0_1px_0_rgba(216,179,122,0.12)] px-4 pb-3 pt-2 backdrop-blur-2xl" data-profile={profile}>
+    <div className="relative z-[5000] shrink-0 border-t border-[rgba(176,138,82,0.3)] bg-[linear-gradient(180deg,rgba(14,5,6,0.86),rgba(4,1,2,0.92))] shadow-[inset_0_1px_0_rgba(216,179,122,0.12)] px-4 py-2 backdrop-blur-2xl" data-profile={profile}>
       <nav className="no-scrollbar flex items-center justify-center gap-1 overflow-x-auto" aria-label="Apps">
         {SURFACES.map((s) => (
           <Tab key={s.id} label={s.name} active={section === s.id && !anyFocused} onClick={() => surface(s.id)} />
@@ -56,14 +53,6 @@ export function Dock() {
         {running.length > 0 && <Divider />}
         {running.map(appTab)}
       </nav>
-      <button
-        onClick={() => relicRuntime.shell.openCommand()}
-        className={`well mt-2 flex h-11 w-full items-center rounded-[12px] bg-[rgba(118,110,110,0.16)] px-4 text-left transition-opacity hover:bg-[rgba(118,110,110,0.28)] ${commandOpen ? 'opacity-0' : ''}`}
-        aria-label="Ask Claude"
-      >
-        <span className="flex-1 text-[16px] text-smoke">Ask Claude</span>
-        <span className={`text-[13px] font-semibold ${hasFocus ? 'text-soot' : 'pulse text-signal'}`}>{hasFocus ? 'or just start typing' : 'Click anywhere, then type'}</span>
-      </button>
     </div>
   )
 }
@@ -76,7 +65,7 @@ function Tab({ label, active, running, onClick }: { label: string; active: boole
   return (
     <button
       onClick={onClick}
-      className={`relative h-7 shrink-0 rounded-full px-3 text-[11px] font-semibold uppercase tracking-[0.18em] transition-colors ${
+      className={`hud-target ${active ? 'is-active' : ''} h-7 shrink-0 rounded-full px-3 text-[11px] font-semibold uppercase tracking-[0.18em] transition-colors ${
         active ? 'bg-gradient-to-b from-[#b81620] to-[#6e0a10] text-white shadow-[inset_0_1px_0_rgba(216,179,122,0.45),inset_0_0_0_1px_rgba(176,138,82,0.5),0_0_16px_rgba(200,24,32,0.4)]' : 'text-smoke hover:bg-white/[0.07] hover:text-bone'
       }`}
     >

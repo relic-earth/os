@@ -71,7 +71,7 @@ function PhoneShell({ framed }: { framed: boolean }) {
   const here = useOS((s) => s.sessions.find((x) => x.deviceId === PHONE && x.mediaId))
   return (
     <div className="relative flex h-full flex-col">
-      <Art variant="topo" className="pointer-events-none absolute inset-0 h-full w-full opacity-40" />
+      <video className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-50" src="wallpaper/wave.mp4" poster="wallpaper/wave-poster.jpg" autoPlay muted loop playsInline />
       {!framed && <div className="shrink-0" style={{ height: 'max(12px, env(safe-area-inset-top))' }} />}
       {framed && <div className="relative z-40 flex h-11 shrink-0 items-center justify-between px-7 pt-2">
         <span className="num text-[13px] text-bone">{fmtClock(now).replace(/ (AM|PM)/, '')}</span>
@@ -97,7 +97,7 @@ function PhoneShell({ framed }: { framed: boolean }) {
             <button
               key={t.id}
               onClick={() => { setTab(t.id); setSheet(null) }}
-              className={`h-7 rounded-full px-2.5 text-[13px] font-semibold transition-colors ${tab === t.id ? 'bg-red text-white shadow-[0_0_14px_rgba(232,36,43,0.55)]' : 'text-ash'}`}
+              className={`hud-target h-7 rounded-full px-2.5 text-[11px] font-semibold uppercase tracking-[0.14em] transition-colors ${tab === t.id ? 'is-active bg-gradient-to-b from-[#b81620] to-[#6e0a10] text-white shadow-[inset_0_1px_0_rgba(216,179,122,0.45),0_0_14px_rgba(200,24,32,0.5)]' : 'text-smoke'}`}
             >
               {t.label}
             </button>
@@ -126,9 +126,9 @@ function PhoneAsk({ onAsk }: { onAsk: () => void }) {
       onChange={(e) => setText(e.target.value)}
       onKeyDown={(e) => e.key === 'Enter' && send()}
       enterKeyHint="send"
-      placeholder={busy ? 'Working…' : 'Ask Claude'}
+      placeholder={busy ? 'WORKING…' : 'COMMAND RELIC'}
       aria-label="Ask Claude"
-      className="mt-2 h-11 w-full rounded-[12px] bg-[rgba(118,110,110,0.2)] px-4 text-[17px] text-bone caret-[#e8242b] outline-none placeholder:text-smoke focus:shadow-[0_0_0_1px_rgba(232,36,43,0.5),0_0_20px_rgba(232,36,43,0.25)]"
+      className="well mt-2 h-11 w-full rounded-[12px] border border-[rgba(176,138,82,0.3)] bg-[rgba(20,6,8,0.7)] px-4 text-[17px] text-bone caret-[#e8242b] outline-none placeholder:text-smoke focus:shadow-[0_0_0_1px_rgba(232,36,43,0.5),0_0_20px_rgba(232,36,43,0.25)]"
     />
   )
 }

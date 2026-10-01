@@ -1,6 +1,6 @@
 import { useOS } from '../runtime/store'
 import { Art } from '../../ui/Art'
-import { ChancellorOffice } from '../../ui/ChancellorOffice'
+import { CoruscantWindow } from '../../ui/CoruscantWindow'
 
 /** Atmospheric layer. Never louder than the interface above it. */
 export function Background({ variant }: { variant?: string }) {
@@ -8,7 +8,11 @@ export function Background({ variant }: { variant?: string }) {
   const v = variant ?? bg
   return (
     <div className="pointer-events-none absolute inset-0 overflow-clip bg-void">
-      {v === 'chancellor' && <ChancellorOffice className="absolute inset-0 h-full w-full opacity-[0.62]" />}
+      {v === 'wave' && (
+        // the Great Wave in red ASCII — a ping-pong loop, so it breathes without a seam
+        <video className="absolute inset-0 h-full w-full object-cover opacity-80" src="wallpaper/wave.mp4" poster="wallpaper/wave-poster.jpg" autoPlay muted loop playsInline preload="auto" />
+      )}
+      {v === 'chancellor' && <CoruscantWindow className="absolute inset-0 h-full w-full opacity-[0.78]" />}
       {v === 'horizon' && (
         <>
           <Art variant="horizon" seed={4} className="absolute inset-0 h-full w-full opacity-80" />

@@ -4,7 +4,8 @@ import { useOS } from '../../runtime/store'
 import { relicRuntime } from '../../runtime/relicRuntime'
 import { Art } from '../../../ui/Art'
 import { Glyph } from '../../../ui/AppIcon'
-import { fmtClock, fmtDate, useMesh, useNow } from '../../../ui/primitives'
+import { fmtClock, fmtDate, useMesh, useNow, useWindowFocus } from '../../../ui/primitives'
+import { HudReactor } from '../../../ui/HudReactor'
 import { ContinuityActions } from '../Continuity'
 import { fmtAgo } from '../../files/service'
 import { fmtTime, getMedia } from '../../media/library'
@@ -15,16 +16,22 @@ import { fmtTime, getMedia } from '../../media/library'
  */
 export function Home({ compact }: { compact?: boolean }) {
   const now = useNow(15_000)
+  const hasFocus = useWindowFocus()
   const hour = new Date(now).getHours()
   const greeting = hour < 5 ? 'Good night' : hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening'
 
   return (
     <div className="h-full overflow-y-auto">
-      <div className="mx-auto flex min-h-full w-full max-w-[1040px] flex-col px-6 pb-8 pt-[10vh]">
-        <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: [0.2, 0, 0, 1] }} className="text-center">
-          <div className="num text-[clamp(80px,11vw,148px)] font-semibold leading-none tracking-[-0.02em] text-bone [text-shadow:0_0_60px_rgba(232,36,43,0.35)]">{fmtClock(now).replace(/ (AM|PM)/, '')}</div>
-          <div className="mt-5 text-[12px] font-semibold uppercase tracking-[0.3em] text-smoke">
-            {greeting} · {fmtDate(now)}
+      <div className="mx-auto flex min-h-full w-full max-w-[1040px] flex-col px-6 pb-6 pt-[3vh]">
+        <motion.div initial={{ opacity: 0, scale: 0.9, filter: 'blur(10px)' }} animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }} transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }} className="relative mx-auto flex h-[440px] w-full items-center justify-center">
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+            <HudReactor size={440} />
+          </div>
+          <div className="relative text-center">
+            <div className="num text-[clamp(72px,8vw,112px)] font-semibold leading-none tracking-[-0.01em] text-bone [text-shadow:0_0_40px_rgba(255,58,64,0.55),0_0_2px_rgba(255,255,255,0.6)]">{fmtClock(now).replace(/ (AM|PM)/, '')}</div>
+            <div className="mt-4 text-[11px] font-semibold uppercase tracking-[0.34em] text-[rgba(216,179,122,0.85)]">{fmtDate(now)}</div>
+            <div className="mt-2 text-[10px] font-semibold uppercase tracking-[0.34em] text-smoke">{greeting}</div>
+            <div className="mt-5 h-4">{!hasFocus ? <span className="pulse text-[10px] font-semibold tracking-[0.3em] text-signal">CLICK ANYWHERE, THEN TYPE</span> : <span className="text-[10px] font-semibold tracking-[0.3em] text-soot">TYPE TO COMMAND</span>}</div>
           </div>
         </motion.div>
 
@@ -41,8 +48,8 @@ export function Home({ compact }: { compact?: boolean }) {
 
 function Widget({ title, children, onClick }: { title: string; children: React.ReactNode; onClick?: () => void }) {
   return (
-    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6, ease: [0.2, 0, 0, 1] }} className="panel flex min-h-[184px] min-w-0 flex-col p-5">
-      <button onClick={onClick} disabled={!onClick} className="label mb-4 self-start enabled:hover:text-bone">
+    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6, ease: [0.2, 0, 0, 1] }} className="panel hud-target scan-hover flex min-h-[184px] min-w-0 flex-col p-5 hover:-translate-y-1 hover:shadow-[inset_0_1px_0_rgba(216,179,122,0.2),0_24px_50px_rgba(0,0,0,0.6),0_0_40px_rgba(200,24,32,0.25)]">
+      <button onClick={onClick} disabled={!onClick} className="label hud-target mb-4 self-start enabled:hover:text-bone">
         {title}
       </button>
       {children}

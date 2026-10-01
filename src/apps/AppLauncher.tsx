@@ -43,7 +43,7 @@ export function AppLauncher({ compact }: { compact?: boolean }) {
             <button
               key={a.id}
               onClick={() => (isInstalled ? void relicRuntime.apps.launch(a.id) : !confirmBusy && void relicRuntime.ai.ask(`Install ${a.name}`))}
-              className="group relative flex h-[156px] flex-col justify-between rounded-[18px] p-4 text-left transition-colors hover:bg-white/[0.06]"
+              className="hud-target scan-hover group flex h-[156px] flex-col justify-between rounded-[18px] p-4 text-left transition-colors hover:bg-white/[0.06]"
             >
               <div className="flex items-start justify-between">
                 <AppIcon id={a.id} size={56} active={isRunning} live={isRunning} className={isInstalled ? '' : 'opacity-50'} />

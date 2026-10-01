@@ -62,12 +62,12 @@ The UI never calls a model directly. Set `VITE_CLAUDE_PROVIDER=anthropic`, or pi
 
 **Type**: Gill Sans SemiBold for display (headings, labels, buttons); Fira Sans for text — Erik Spiekermann's open-licensed descendant of FF Meta, bundled via `@fontsource/fira-sans`. If FF Meta Pro is installed it is used instead. Gill Sans: The system copy on Mac and iPhone is used first; for other machines, put `GillSans-SemiBold.ttf` in `public/fonts/` (git-ignored — the face is Monotype-licensed and is not redistributed here).
 
-Palpatine's office, Episode III: crimson lacquer walls, bronze reliefs and filigree, Coruscant at dusk through the great window (`src/ui/ChancellorOffice.tsx`). Minimal and Mac-proportioned: a menu bar, the time, one *Ask Claude* field, four widgets and a dock. The scarab and striped wordmark are the Relic marks from relic.earth.
+Wallpaper: the Great Wave in red ASCII, a seamless ping-pong video loop (`public/wallpaper/wave.mp4`); Coruscant at dusk (`src/ui/CoruscantWindow.tsx`) is the alternative. HUD language: JARVIS reactor rings and EDITH callouts around the clock (`src/ui/HudReactor.tsx`), target-lock brackets on hover and active, hologram-projector window transitions, a saber-ignite prompt, every icon in motion. Minimal and Mac-proportioned: a menu bar, the time, one *Ask Claude* field, four widgets and a dock. The scarab and striped wordmark are the Relic marks from relic.earth.
 
 - **Type anywhere** to talk to Claude. The prompt runs one second after you stop typing. Hold the spacebar to keep it waiting, press Enter to run at once, Esc to close.
 - If the page is framed (for example in a preview) and has no keyboard focus, Home shows *Click anywhere, then type*.
 - **Menu bar**: the scarab menu (About, Architecture, Open on iPhone, Settings, Restart), the frontmost app's name, then status, search, notifications, device switcher and the clock.
-- **Bottom bar** (iOS-familiar): small text tabs (Claude, Files, Browser, Apps, Devices, Settings · TV, Movies, Games · running apps) and, under them, a full-width *Ask Claude* field. The prompt opens in place of that field; answers rise above it. The phone shell uses the same pattern.
+- **Bottom bar**: one row of uppercase tabs (Home, TV, Movies, Games · Claude, Files, Browser, Apps, Devices, Settings · running apps). There is no search field: start typing and the command prompt ignites mid-screen, 800 px wide.
 - **Icons**: a Relic-drawn set (`src/ui/AppIcon.tsx`). Each glyph has its own CSS motion that plays on hover and stays running for the focused app; reduced-motion is respected.
 - **Windows**: red, oxblood and bone lights on the left; the title is centred.
 

@@ -79,10 +79,15 @@ export function AppWindow({ win, children }: { win: RelicWindow; children: React
     <motion.div
       className="absolute"
       style={{ left: rect.x, top: rect.y, width: rect.width, height: rect.height, zIndex: win.z }}
-      initial={{ opacity: 0, scale: 0.965, y: 14 }}
-      animate={win.minimized ? { opacity: 0, scale: 0.6, y: area.height * 0.6, pointerEvents: 'none' } : { opacity: 1, scale: 1, y: 0, pointerEvents: 'auto' }}
-      exit={{ opacity: 0, scale: 0.97, transition: { duration: 0.16 } }}
-      transition={{ duration: 0.32, ease: [0.2, 0, 0, 1] }}
+      // projected like a hologram: a line of light opens into the window; closing is a CRT switching off
+      initial={{ opacity: 0, scaleX: 0.2, scaleY: 0.006, filter: 'brightness(4) saturate(0)' }}
+      animate={
+        win.minimized
+          ? { opacity: 0, scaleX: 0.3, scaleY: 0.02, y: area.height * 0.45, filter: 'brightness(3) blur(4px)', pointerEvents: 'none', transition: { duration: 0.42, ease: [0.5, 0, 0.9, 0.4] } }
+          : { opacity: [0, 1, 1], scaleX: [0.2, 1, 1], scaleY: [0.006, 0.006, 1], y: 0, filter: ['brightness(4) saturate(0)', 'brightness(2.2) saturate(0.4)', 'brightness(1) saturate(1)'], pointerEvents: 'auto' }
+      }
+      exit={{ scaleY: [1, 0.006, 0.006], scaleX: [1, 1, 0], opacity: [1, 1, 0], filter: ['brightness(1)', 'brightness(3)', 'brightness(5)'], transition: { duration: 0.38, times: [0, 0.55, 1], ease: 'easeIn' } }}
+      transition={{ duration: 0.62, times: [0, 0.32, 1], ease: [0.2, 0, 0, 1] }}
       onPointerDown={() => !win.focused && relicRuntime.windows.focus(win.id)}
     >
       <div
@@ -130,6 +135,7 @@ export function AppWindow({ win, children }: { win: RelicWindow; children: React
         </div>
 
         <div className="relative min-h-0 flex-1 overflow-clip">
+          <div className="holo-scan pointer-events-none absolute inset-0 z-50" />
           {children}
           {showCompat && isForeign && <CompatPanel win={win} onClose={() => setShowCompat(false)} />}
           <ComputerUseOverlay windowId={win.id} />

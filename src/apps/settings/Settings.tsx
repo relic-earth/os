@@ -11,7 +11,7 @@ import { claudeGateway } from '../../agent/relicAgent'
 import { cloud } from '../../cloud'
 import { fmtAgo } from '../../os/files/service'
 import { Art } from '../../ui/Art'
-import { ChancellorOffice } from '../../ui/ChancellorOffice'
+import { CoruscantWindow } from '../../ui/CoruscantWindow'
 import { Icon, deviceIcon } from '../../ui/Icon'
 import { Bar, Range, statusText, Toggle, useMesh } from '../../ui/primitives'
 import { ArchitectureDiagram } from './Architecture'
@@ -63,7 +63,7 @@ export function Settings({ win }: { win: RelicWindow }) {
     <div className="flex h-full">
       <nav className="well w-[210px] shrink-0 space-y-0.5 border-r hair px-2.5 py-4">
         {SECTIONS.map((s) => (
-          <button key={s.id} onClick={() => { setSection(s.id); setSub(undefined) }} className={`relative flex h-9 w-full items-center rounded-[10px] px-3 text-left text-[11px] tracking-[0.16em] font-semibold ${section === s.id ? 'lit' : 'text-smoke hover:bg-white/[0.05] hover:text-bone'}`}>
+          <button key={s.id} onClick={() => { setSection(s.id); setSub(undefined) }} className={`hud-target scan-hover flex h-9 w-full items-center rounded-[10px] px-3 text-left text-[11px] tracking-[0.16em] font-semibold ${section === s.id ? 'lit is-active' : 'text-smoke hover:bg-white/[0.05] hover:text-bone'}`}>
             {s.label}
           </button>
         ))}
@@ -160,10 +160,10 @@ function Display() {
       <H>DISPLAY & SOUND</H>
       <div className="label-sm mb-3">BACKGROUND</div>
       <div className="grid grid-cols-4 gap-3">
-        {(['chancellor', 'horizon', 'volcanic', 'topographic', 'architecture'] as const).map((b) => (
+        {(['wave', 'chancellor', 'horizon', 'volcanic', 'topographic', 'architecture'] as const).map((b) => (
           <button key={b} onClick={() => relicRuntime.settings.set('background', b)} className={`border ${bg === b ? 'border-red shadow-[var(--glow)]' : 'hair'}`}>
             <div className="aspect-video">
-              {b === 'chancellor' ? <ChancellorOffice className="h-full w-full" /> : <Art variant={b === 'volcanic' ? 'volcano' : b === 'topographic' ? 'topo' : b === 'architecture' ? 'spire' : 'horizon'} className="h-full w-full" />}
+              {b === 'wave' ? <img src="wallpaper/wave-poster.jpg" alt="" className="h-full w-full object-cover" /> : b === 'chancellor' ? <CoruscantWindow className="h-full w-full" /> : <Art variant={b === 'volcanic' ? 'volcano' : b === 'topographic' ? 'topo' : b === 'architecture' ? 'spire' : 'horizon'} className="h-full w-full" />}
             </div>
             <div className={`py-2 text-[10px] tracking-[0.13em] font-semibold ${bg === b ? 'text-bone' : 'text-ash'}`}>{b.toUpperCase()}</div>
           </button>

@@ -657,3 +657,183 @@ input[type='range']::-moz-range-thumb {
     animation: none !important;
   }
 }
+
+/* ── Coruscant wallpaper motion ─────────────────────────── */
+@keyframes cw-lane { from { transform: translateX(0); } to { transform: translateX(-1600px); } }
+.cw-lane { animation: cw-lane 30s linear infinite; }
+@keyframes cw-twinkle { 0%, 100% { opacity: 0.85; } 50% { opacity: 0.15; } }
+.cw-twinkle.cw-t0 { animation: cw-twinkle 3.1s ease-in-out infinite; }
+.cw-twinkle.cw-t1 { animation: cw-twinkle 4.7s ease-in-out 1.2s infinite; }
+.cw-twinkle.cw-t2 { animation: cw-twinkle 6.3s ease-in-out 2.4s infinite; }
+@keyframes cw-beacon { 0%, 70%, 100% { opacity: 0.15; } 80% { opacity: 1; } }
+.cw-beacon { animation: cw-beacon 2.2s linear infinite; filter: drop-shadow(0 0 3px #ff3a30); }
+@keyframes cw-beam { 0%, 100% { transform: rotate(-24deg); } 50% { transform: rotate(24deg); } }
+.cw-beam { transform-box: fill-box; transform-origin: 50% 100%; animation: cw-beam 13s ease-in-out infinite; mix-blend-mode: screen; }
+@keyframes cw-venator { from { transform: translate(-220px, 200px) scale(1.15); } to { transform: translate(1820px, 150px) scale(1.15); } }
+.cw-venator { animation: cw-venator 140s linear infinite; }
+@keyframes cw-engine { 0%, 100% { opacity: 1; } 50% { opacity: 0.55; } }
+.cw-engine { animation: cw-engine 0.4s ease-in-out infinite; filter: drop-shadow(0 0 4px #9fd8ff); }
+@keyframes cw-sunpulse { 0%, 100% { opacity: 0.85; } 50% { opacity: 1; } }
+.cw-sunpulse { animation: cw-sunpulse 9s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .cw-lane, .cw-twinkle, .cw-beacon, .cw-beam, .cw-venator, .cw-engine, .cw-sunpulse { animation: none !important; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   HUD SYSTEM — JARVIS rings, EDITH target-locks, Imperial
+   targeting computers, cyberpunk glitch. Red light only.
+   ═══════════════════════════════════════════════════════════ */
+
+/* a frame with a light that orbits its edge */
+.hud-frame { position: relative; isolation: isolate; }
+.hud-frame::before {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1px; z-index: 2; pointer-events: none;
+  background: conic-gradient(from var(--hud-a, 0deg), rgba(176,138,82,0.25), rgba(176,138,82,0.25) 70%, #ff3a40 82%, #fff 85%, #ff3a40 88%, rgba(176,138,82,0.25) 95%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude;
+  animation: hud-orbit 4.5s linear infinite;
+}
+@property --hud-a { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
+@keyframes hud-orbit { to { --hud-a: 360deg; } }
+
+/* corner brackets */
+.hud-corner { position: absolute; width: 18px; height: 18px; z-index: 3; pointer-events: none; border-color: #ff3a40; filter: drop-shadow(0 0 4px rgba(255,58,64,0.9)); animation: hud-corner-in 0.5s 0.3s cubic-bezier(0.2,0,0,1) both; }
+.hud-corner.tl { top: 8px; left: 8px; border-top: 2px solid; border-left: 2px solid; --dx: -10px; --dy: -10px; }
+.hud-corner.tr { top: 8px; right: 8px; border-top: 2px solid; border-right: 2px solid; --dx: 10px; --dy: -10px; }
+.hud-corner.bl { bottom: 8px; left: 8px; border-bottom: 2px solid; border-left: 2px solid; --dx: -10px; --dy: 10px; }
+.hud-corner.br { bottom: 8px; right: 8px; border-bottom: 2px solid; border-right: 2px solid; --dx: 10px; --dy: 10px; }
+@keyframes hud-corner-in { from { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(1.6); } to { opacity: 1; transform: none; } }
+
+.hud-chip {
+  display: inline-flex; align-items: center; height: 24px; padding: 0 10px; border-radius: 6px;
+  font-family: var(--font-display); font-size: 10px; font-weight: 600; letter-spacing: 0.22em; color: var(--color-brass);
+  border: 1px solid rgba(176,138,82,0.4); background: rgba(176,138,82,0.08);
+  clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
+}
+
+/* text that types itself in */
+.typewriter { display: inline-block; overflow: hidden; white-space: nowrap; animation: typewriter 0.6s steps(40, end) both; }
+@keyframes typewriter { from { max-width: 0; } to { max-width: 100%; } }
+
+/* chromatic glitch */
+.glitch-text { position: relative; display: inline-block; }
+.glitch-text::before, .glitch-text::after { content: attr(data-text); position: absolute; inset: 0; }
+.glitch-text::before { color: #ff2a3a; transform: translate(-1.5px, 0); mix-blend-mode: screen; animation: glitch-a 1.6s steps(2) infinite; }
+.glitch-text::after { color: #6ff; opacity: 0.55; transform: translate(1.5px, 0); mix-blend-mode: screen; animation: glitch-b 1.9s steps(2) infinite; }
+@keyframes glitch-a { 0%, 86%, 100% { clip-path: inset(0 0 0 0); } 88% { clip-path: inset(20% 0 55% 0); transform: translate(-3px, 0); } 92% { clip-path: inset(60% 0 10% 0); transform: translate(2px, 0); } }
+@keyframes glitch-b { 0%, 80%, 100% { clip-path: inset(0 0 0 0); } 84% { clip-path: inset(40% 0 30% 0); transform: translate(3px, 0); } 90% { clip-path: inset(5% 0 75% 0); transform: translate(-2px, 0); } }
+
+/* ── TARGET-LOCK hover / active (EDITH) ─────────────────── */
+.hud-target { position: relative; isolation: isolate; transition: color 0.18s, background-color 0.18s, box-shadow 0.25s, transform 0.18s cubic-bezier(0.2,0,0,1); }
+.hud-target::before, .hud-target::after {
+  content: ""; position: absolute; width: 9px; height: 9px; pointer-events: none; opacity: 0; z-index: 1;
+  border-color: #ff3a40; filter: drop-shadow(0 0 3px rgba(255,58,64,0.9));
+  transition: opacity 0.18s, transform 0.28s cubic-bezier(0.2,0,0,1);
+}
+.hud-target::before { top: -3px; left: -3px; border-top: 1.5px solid; border-left: 1.5px solid; transform: translate(-8px, -8px); }
+.hud-target::after { bottom: -3px; right: -3px; border-bottom: 1.5px solid; border-right: 1.5px solid; transform: translate(8px, 8px); }
+.hud-target:hover::before, .hud-target:hover::after, .hud-target:focus-visible::before, .hud-target:focus-visible::after { opacity: 1; transform: none; }
+.hud-target:hover { color: #fff; text-shadow: 0 0 12px rgba(255,58,64,0.7); }
+.hud-target:active { transform: scale(0.95); filter: brightness(1.4); }
+/* locked: the active item keeps its brackets and breathes */
+.hud-target.is-active::before, .hud-target.is-active::after { opacity: 1; transform: none; animation: lock-pulse 2.2s ease-in-out infinite; }
+@keyframes lock-pulse { 0%, 100% { filter: drop-shadow(0 0 3px rgba(255,58,64,0.9)); } 50% { filter: drop-shadow(0 0 8px rgba(255,58,64,1)); } }
+
+/* every button: a scan of light passes on hover, presses physically */
+button { transition: transform 0.16s cubic-bezier(0.2,0,0,1), filter 0.2s; }
+button:active:not(:disabled) { transform: scale(0.96); }
+.scan-hover, .btn { position: relative; overflow: hidden; }
+.scan-hover::after, .btn::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none; border-radius: inherit;
+  background: linear-gradient(105deg, transparent 30%, rgba(255,90,90,0.28) 48%, rgba(255,255,255,0.35) 50%, rgba(255,90,90,0.28) 52%, transparent 70%);
+  transform: translateX(-120%);
+}
+.scan-hover:hover::after, .btn:hover::after { animation: scan-pass 0.7s cubic-bezier(0.3,0,0.2,1); }
+@keyframes scan-pass { to { transform: translateX(120%); } }
+
+/* ── EVERY ICON ALIVE ───────────────────────────────────── */
+/* drawn app glyphs: always in motion, faster on hover */
+.ai .ai-spin-slow { animation: ai-spin 14s linear infinite; }
+.ai .ai-breathe { animation: ai-breathe 3s ease-in-out infinite; }
+.ai .ai-lift { animation: ai-lift 2.6s ease-in-out infinite; }
+.ai .ai-orbit { animation: ai-orbit 5s linear infinite; }
+.ai .ai-cell { animation: ai-cell 2.4s ease-in-out infinite; }
+.ai .ai-flow { animation: ai-flow 1.6s linear infinite; }
+.ai .ai-spin { animation: ai-spin 9s linear infinite; }
+.ai .ai-spin-rev { animation: ai-spin-rev 6s linear infinite; }
+.ai .ai-scan { animation: ai-scan 2.4s ease-in-out infinite alternate; }
+.ai .ai-ignite { animation: ai-ignite 3.2s cubic-bezier(0.2,0,0,1) infinite; }
+.ai .ai-wing-l { animation: ai-wing-l 2.2s ease-in-out infinite; }
+.ai .ai-wing-r { animation: ai-wing-r 2.2s ease-in-out infinite; }
+.ai .ai-bar { animation: ai-bar 1.4s ease-in-out infinite; }
+.ai .ai-ripple { animation: ai-ripple 2.4s ease-out infinite; }
+.ai .ai-read { animation: ai-read 4s ease-in-out infinite; }
+.ai .ai-rise { animation: ai-rise 2.2s ease-in-out infinite; }
+.ai { animation: holo-flicker 7s steps(1) infinite; }
+
+/* every lucide icon in the interface: a holographic flicker at rest, its own motion on hover */
+svg.lucide { overflow: visible; animation: holo-flicker 6s steps(1) infinite; filter: drop-shadow(0 0 2px rgba(255,58,64,0.35)); }
+svg.lucide:nth-of-type(3n) { animation-duration: 8.3s; }
+svg.lucide:nth-of-type(3n + 1) { animation-duration: 5.1s; animation-delay: -2s; }
+@keyframes holo-flicker { 0%, 91%, 100% { opacity: 1; } 92% { opacity: 0.35; } 93% { opacity: 1; } 95% { opacity: 0.6; } 96% { opacity: 1; } }
+
+svg.lucide-wifi path, svg.lucide-wifi-high path { animation: wifi-arc 2.4s ease-in-out infinite; }
+svg.lucide-wifi path:nth-child(2) { animation-delay: 0.2s; } svg.lucide-wifi path:nth-child(3) { animation-delay: 0.4s; } svg.lucide-wifi path:nth-child(4) { animation-delay: 0.6s; }
+@keyframes wifi-arc { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
+svg.lucide-bell { transform-origin: 50% 10%; animation: bell-idle 8s ease-in-out infinite; }
+@keyframes bell-idle { 0%, 88%, 100% { transform: rotate(0); } 90% { transform: rotate(14deg); } 92% { transform: rotate(-12deg); } 94% { transform: rotate(8deg); } 96% { transform: rotate(-4deg); } }
+svg.lucide-search { animation: search-scan 5s ease-in-out infinite; }
+@keyframes search-scan { 0%, 100% { transform: translate(0, 0); } 25% { transform: translate(1.5px, -1px); } 50% { transform: translate(-1px, 1px); } 75% { transform: translate(1px, 1px); } }
+svg[class*="lucide-battery"] rect:last-of-type, svg[class*="lucide-battery"] path:last-of-type { animation: wifi-arc 3s ease-in-out infinite; }
+svg[class*="lucide-cloud"] { animation: cloud-drift 6s ease-in-out infinite; }
+@keyframes cloud-drift { 0%, 100% { transform: translateX(-1px); } 50% { transform: translateX(1.5px); } }
+svg[class*="lucide-chevron"] { animation: chevron-nudge 2.6s ease-in-out infinite; }
+@keyframes chevron-nudge { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(1.5px); } }
+svg.lucide-loader, svg.lucide-loader-circle, svg[class*="lucide-refresh"], svg.lucide-rotate-cw { animation: ai-spin 1.6s linear infinite; }
+svg.lucide-play { animation: play-pulse 2s ease-in-out infinite; }
+@keyframes play-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); filter: drop-shadow(0 0 6px #ff3a40); } }
+svg[class*="lucide-folder"], svg[class*="lucide-file"] { animation: file-float 4s ease-in-out infinite; }
+@keyframes file-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-1.5px); } }
+svg.lucide-x, svg.lucide-minus, svg.lucide-plus, svg[class*="lucide-maximize"], svg[class*="lucide-minimize"] { animation: none; }
+svg.lucide-cpu { animation: ai-spin 12s linear infinite; }
+svg.lucide-check { stroke-dasharray: 24; animation: check-draw 0.5s ease-out both; }
+@keyframes check-draw { from { stroke-dashoffset: 24; } to { stroke-dashoffset: 0; } }
+
+/* hover: every icon kicks */
+button:hover svg.lucide, a:hover svg.lucide { animation: icon-kick 0.6s cubic-bezier(0.2,0,0,1); filter: drop-shadow(0 0 6px rgba(255,58,64,0.9)); }
+@keyframes icon-kick { 0% { transform: scale(1) rotate(0); } 30% { transform: scale(1.3) rotate(-8deg); } 60% { transform: scale(0.92) rotate(4deg); } 100% { transform: scale(1) rotate(0); } }
+.group:hover .ai .ai-spin-slow { animation-duration: 3s; }
+.group:hover .ai { filter: drop-shadow(0 0 8px rgba(255,58,64,1)) drop-shadow(0 0 16px rgba(255,58,64,0.5)); }
+
+/* ── Window materialisation (hologram projector) ─────────── */
+@keyframes holo-rise { 0% { filter: brightness(3) saturate(0) blur(2px); } 40% { filter: brightness(1.6) blur(0.5px); } 100% { filter: none; } }
+.holo-rise { animation: holo-rise 0.6s ease-out both; }
+.holo-scan::after {
+  content: ""; position: absolute; left: 0; right: 0; height: 30%; pointer-events: none; z-index: 50;
+  background: linear-gradient(180deg, transparent, rgba(255,58,64,0.18) 80%, rgba(255,200,200,0.6) 100%);
+  animation: holo-scan-pass 0.7s cubic-bezier(0.3,0,0.2,1) both;
+}
+@keyframes holo-scan-pass { from { top: -30%; } to { top: 100%; opacity: 0; } }
+
+/* section change: a red scanline wipe */
+@keyframes wipe-in { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .hud-frame::before, .hud-corner, .typewriter, .glitch-text::before, .glitch-text::after, svg.lucide, svg.lucide *, .ai, .ai *, .holo-rise, .holo-scan::after, .hud-target::before, .hud-target::after { animation: none !important; }
+}
+
+/* ── HUD reactor ─────────────────────────────────────────── */
+.rx * { transform-box: view-box; transform-origin: 300px 300px; }
+.rx-spin { animation: ai-spin 40s linear infinite; }
+.rx-spin-rev { animation: ai-spin-rev 26s linear infinite; }
+.rx-spin-slow { animation: ai-spin 18s linear infinite; }
+.rx-spin-fast { animation: ai-spin 2.4s linear infinite; }
+.rx-sweep { animation: ai-spin 6s linear infinite; mix-blend-mode: screen; }
+.rx-label { font-family: var(--font-display); font-size: 11px; font-weight: 600; letter-spacing: 0.24em; }
+.rx-value { font-family: var(--font-display); font-size: 16px; font-weight: 600; letter-spacing: 0.14em; }
+.rx-lead { stroke-dasharray: 260; stroke-dashoffset: 260; animation: rx-lead 1.1s 0.4s cubic-bezier(0.2,0,0,1) forwards; }
+@keyframes rx-lead { to { stroke-dashoffset: 0; } }
+.rx-callout text { opacity: 0; animation: rx-text 0.5s 1.1s ease-out forwards; }
+@keyframes rx-text { 0% { opacity: 0; } 30% { opacity: 1; } 45% { opacity: 0.3; } 60%, 100% { opacity: 1; } }
+.rx-ping { transform-box: fill-box; transform-origin: center; animation: rx-ping 2.4s ease-out infinite; }
+@keyframes rx-ping { from { transform: scale(0.5); opacity: 1; } to { transform: scale(2.2); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .rx * { animation: none !important; } .rx-lead { stroke-dashoffset: 0; } .rx-callout text { opacity: 1; } }

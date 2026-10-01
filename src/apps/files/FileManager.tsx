@@ -67,7 +67,7 @@ export function FileManager({ compact }: { compact?: boolean }) {
                   const id = e.dataTransfer.getData('text/relic-file')
                   if (id && p.id !== 'recent') relicRuntime.files.move(id, p.id)
                 }}
-                className={`relative flex h-8 w-full items-center gap-2.5 rounded-[9px] px-3 text-left ${active ? 'lit' : 'hover:bg-white/[0.05]'}`}
+                className={`hud-target scan-hover flex h-8 w-full items-center gap-2.5 rounded-[9px] px-3 text-left ${active ? 'lit is-active' : 'hover:bg-white/[0.05]'}`}
               >
                 {p.id === 'recent' ? <Clock size={12} strokeWidth={1.25} className={active ? 'text-signal' : 'text-smoke'} /> : <Folder size={12} strokeWidth={1.25} className={active ? 'text-signal' : 'text-smoke'} />}
                 <span className={`text-[11px] tracking-[0.15em] font-semibold ${active ? 'text-white' : 'text-smoke'}`}>{p.name.toUpperCase()}</span>

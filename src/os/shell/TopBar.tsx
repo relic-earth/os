@@ -26,7 +26,7 @@ export function DeviceSwitcher({ align = 'right', compact, up }: { align?: 'righ
     <div className="relative">
       <button
         onClick={() => setOpen((o) => !o)}
-        className="flex h-8 items-center gap-1.5 rounded-full px-3 text-ash transition-colors hover:bg-white/10 hover:text-bone"
+        className="flex hud-target h-8 items-center gap-1.5 rounded-full px-3 text-ash transition-colors hover:bg-white/10 hover:text-bone"
         aria-label="Switch device"
       >
         {!compact && <span className="text-[11px] font-semibold tracking-[0.16em] text-ash">{cur.label}</span>}
@@ -93,7 +93,7 @@ export function TopBar({ compact }: { compact?: boolean }) {
     <header className="relative z-[6000] flex h-10 shrink-0 items-center gap-1 bg-[linear-gradient(180deg,rgba(14,5,6,0.82),rgba(6,2,3,0.7))] px-3 backdrop-blur-2xl">
       <span className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-[rgba(176,138,82,0.55)] to-transparent" />
       <div className="relative">
-        <button onClick={() => setMenu((m) => !m)} className="group flex h-8 items-center rounded-full px-3 hover:bg-white/10" aria-label="Relic menu">
+        <button onClick={() => setMenu((m) => !m)} className="hud-target group flex h-8 items-center rounded-full px-3 hover:bg-white/10" aria-label="Relic menu">
           <ScarabMark size={20} glow className="text-signal transition-transform group-hover:scale-110" />
         </button>
         {menu && (
@@ -127,7 +127,7 @@ export function TopBar({ compact }: { compact?: boolean }) {
 
       <div className="ml-auto flex items-center gap-1">
         {!compact && (
-          <button onClick={() => void relicRuntime.apps.launch('settings', { props: { section: 'network', nonce: Date.now() } })} className="flex h-8 items-center gap-2.5 rounded-full px-3 text-ash hover:bg-white/10 hover:text-bone" title="Relic system status">
+          <button onClick={() => void relicRuntime.apps.launch('settings', { props: { section: 'network', nonce: Date.now() } })} className="flex hud-target h-8 items-center gap-2.5 rounded-full px-3 text-ash hover:bg-white/10 hover:text-bone" title="Relic system status">
             {cloud === 'connected' ? <Cloud size={14} strokeWidth={1.5} /> : <CloudOff size={14} strokeWidth={1.5} className="text-signal" />}
             <Wifi size={14} strokeWidth={1.5} />
             <span className="text-[12px] font-semibold tracking-[0.08em]">
@@ -141,10 +141,10 @@ export function TopBar({ compact }: { compact?: boolean }) {
             <span className="num text-[12px] font-semibold">{Math.round(battery * 100)}%</span>
           </span>
         )}
-        <button onClick={() => relicRuntime.shell.openCommand()} className="flex h-8 items-center rounded-full px-2.5 text-ash hover:bg-white/10 hover:text-bone" aria-label="Ask Claude" title="Ask Claude — or just start typing">
+        <button onClick={() => relicRuntime.shell.openCommand()} className="flex h-8 items-center hud-target rounded-full px-2.5 text-ash hover:bg-white/10 hover:text-bone" aria-label="Ask Claude" title="Ask Claude — or just start typing">
           <Search size={15} strokeWidth={2} />
         </button>
-        <button onClick={() => relicRuntime.notifications.toggleCenter()} className="relative flex h-8 items-center rounded-full px-2.5 text-ash hover:bg-white/10 hover:text-bone" aria-label="Notifications">
+        <button onClick={() => relicRuntime.notifications.toggleCenter()} className="relative flex h-8 items-center hud-target rounded-full px-2.5 text-ash hover:bg-white/10 hover:text-bone" aria-label="Notifications">
           <Bell size={15} strokeWidth={2} />
           {unread > 0 && <span className="dot absolute right-1 top-1" />}
         </button>
