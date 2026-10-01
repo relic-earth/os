@@ -31,7 +31,6 @@ AMythCrowdSystem* AMythCrowdSystem::Get(const UObject* WorldContext)
 	if (!World) return nullptr;
 	TActorIterator<AMythCrowdSystem> It(World);
 	return It ? *It : nullptr;
-	return nullptr;
 }
 
 void AMythCrowdSystem::BeginPlay()

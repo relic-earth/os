@@ -25,7 +25,6 @@ AMythCityBuilder* AMythCityBuilder::Get(const UObject* WorldContext)
 	if (!World) return nullptr;
 	TActorIterator<AMythCityBuilder> It(World);
 	return It ? *It : nullptr;
-	return nullptr;
 }
 
 // =====================================================================================

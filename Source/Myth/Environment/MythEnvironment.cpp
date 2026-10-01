@@ -91,7 +91,6 @@ AMythEnvironment* AMythEnvironment::Get(const UObject* WorldContext)
 	if (!World) return nullptr;
 	TActorIterator<AMythEnvironment> It(World);
 	return It ? *It : nullptr;
-	return nullptr;
 }
 
 FMythWeatherProfile AMythEnvironment::GetWeatherProfile(EMythWeather W)

@@ -30,7 +30,6 @@ AMythTrafficSystem* AMythTrafficSystem::Get(const UObject* WorldContext)
 	if (!World) return nullptr;
 	TActorIterator<AMythTrafficSystem> It(World);
 	return It ? *It : nullptr;
-	return nullptr;
 }
 
 // =====================================================================================
