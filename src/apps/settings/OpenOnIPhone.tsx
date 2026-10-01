@@ -4,6 +4,7 @@ import { ScarabMark } from '../../ui/Brand'
 
 /** The address a phone should open: the LAN dev server when running locally, otherwise this page. */
 function defaultUrl() {
+  if (__SHARE_URL__) return __SHARE_URL__
   const local = /^(localhost|127\.|\[?::1)/.test(location.hostname)
   if (local && __LAN_URL__) return __LAN_URL__
   return location.href.split('#')[0]
@@ -16,7 +17,7 @@ function defaultUrl() {
 export function OpenOnIPhone() {
   const [url, setUrl] = useState(defaultUrl)
   const [svg, setSvg] = useState('')
-  const local = /^(localhost|127\.)/.test(location.hostname)
+  const local = !__SHARE_URL__ && /^(localhost|127\.)/.test(location.hostname)
 
   useEffect(() => {
     let live = true

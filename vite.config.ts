@@ -18,6 +18,10 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   // listen on the LAN so a phone on the same Wi-Fi can open the dev server
   server: { host: true, port: PORT },
-  define: { __LAN_URL__: JSON.stringify(lanAddress() ? `http://${lanAddress()}:${PORT}/` : '') },
+  define: {
+    __LAN_URL__: JSON.stringify(lanAddress() ? `http://${lanAddress()}:${PORT}/` : ''),
+    // a hosted build can name its public address for the iPhone QR (RELIC_SHARE_URL=https://… npm run build)
+    __SHARE_URL__: JSON.stringify(process.env.RELIC_SHARE_URL ?? ''),
+  },
   build: { chunkSizeWarningLimit: 1000 },
 })
