@@ -8,6 +8,10 @@ This is a **web prototype**. It does not boot Linux, run Windows binaries, or co
 UI  →  Relic Runtime API  →  service interfaces  →  mock implementations (now)  →  Linux / OS services (later)
 ```
 
+## Live
+
+**https://relic.earth/os/** — every push to `main` deploys (Vercel project `relic-os`; relic.earth serves it at `/os/` through a project routing rule).
+
 ## Run
 
 ```bash

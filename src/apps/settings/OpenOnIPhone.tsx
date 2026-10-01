@@ -32,11 +32,11 @@ export function OpenOnIPhone() {
   return (
     <div>
       <div className="mb-6">
-        <div className="text-[22px] font-semibold tracking-[0.14em] text-bone">OPEN ON IPHONE</div>
-        <div className="mt-2 text-[14px] text-ash">Point the iPhone camera at the code. Relic opens in its phone shell.</div>
+        <div className="t-title">OPEN ON IPHONE</div>
+        <div className="mt-3 text-[14px] text-smoke">Point the iPhone camera at the code. Relic opens in its phone shell.</div>
       </div>
       <div className="grid grid-cols-[auto_1fr] items-start gap-10">
-        <div className="relative rounded-[2px] border border-[rgba(245,240,235,0.12)] bg-[radial-gradient(circle_at_50%_0%,rgb(var(--acc-1)/0.18),transparent_70%),#0b0909] p-7 shadow-[0_0_50px_rgb(var(--acc-1)/0.22)]">
+        <div className="panel hud-frame relative p-7">
           <div className="relative h-[220px] w-[220px] [&>svg]:h-full [&>svg]:w-full" dangerouslySetInnerHTML={{ __html: svg }} aria-label={`QR code for ${url}`} role="img" />
           <span className="absolute left-1/2 top-1/2 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-[2px] bg-[#0b0909] shadow-[0_0_0_4px_#0b0909]">
             <ScarabMark size={30} glow className="text-signal" />
@@ -63,7 +63,7 @@ export function OpenOnIPhone() {
 function Step({ n, children }: { n: number; children: React.ReactNode }) {
   return (
     <li className="flex gap-3">
-      <span className="flex h-6 w-6 flex-none items-center justify-center rounded-full bg-red text-[12px] font-bold text-white shadow-[0_0_14px_rgb(var(--acc-1)/0.6)]">{n}</span>
+      <span className="flex h-6 w-8 flex-none items-center justify-center bg-[linear-gradient(180deg,rgb(var(--acc-2)),rgb(var(--acc-3)))] font-mono text-[11px] text-white shadow-[inset_0_0_0_1px_rgb(var(--acc))] [clip-path:polygon(6px_0,100%_0,100%_calc(100%-6px),calc(100%-6px)_100%,0_100%,0_6px)]">{String(n).padStart(2, '0')}</span>
       <span>{children}</span>
     </li>
   )

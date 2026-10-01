@@ -161,7 +161,7 @@ export function TVMode() {
 
         <div className="mt-auto">
           <div className="label text-red">{screen.kind === 'grid' ? screen.title : 'RELIC TV'}</div>
-          <div className="mt-3 text-[clamp(34px,5vw,72px)] font-light leading-none tracking-[0.12em] text-bone">{hero?.label}</div>
+          <div className="mt-4 font-display text-[clamp(34px,4.6vw,68px)] leading-none tracking-[0.04em] text-white [text-shadow:0_0_30px_rgb(var(--acc)/0.6)]">{hero?.label}</div>
           {hero?.sub && <div className="mt-4 text-[clamp(12px,1.2vw,16px)] tracking-[0.14em] font-semibold text-ash">{hero.sub}</div>}
         </div>
 

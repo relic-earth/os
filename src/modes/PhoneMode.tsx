@@ -1,14 +1,16 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ChevronLeft, Minus, Plus, Search, Signal, Wifi, BatteryMedium, Play, Pause } from 'lucide-react'
-import { useOS } from '../os/runtime/store'
+import { useOS, SKINS } from '../os/runtime/store'
 import { relicRuntime } from '../os/runtime/relicRuntime'
 import { getApp, appRegistry, runtimeLabel } from '../os/apps/registry'
 import { getMedia, fmtTime } from '../os/media/library'
 import { fmtAgo } from '../os/files/service'
 import { Icon, deviceIcon } from '../ui/Icon'
 import { Art } from '../ui/Art'
-import { fmtClock, statusText, useNow, Wordmark } from '../ui/primitives'
+import { fmtClock, fmtDate, statusText, useMesh, useNow, Wordmark } from '../ui/primitives'
+import { ScarabMark } from '../ui/Brand'
+import { HudReactor } from '../ui/HudReactor'
 import { Background } from '../os/shell/Background'
 import { DeviceSwitcher } from '../os/shell/TopBar'
 import { ClaudeTranscript, Suggestions } from '../apps/claude/ClaudePanel'
@@ -73,6 +75,7 @@ function PhoneShell({ framed }: { framed: boolean }) {
     <div className="relative flex h-full flex-col">
       <video className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-50" src="wallpaper/wave.mp4" poster="wallpaper/wave-poster.jpg" autoPlay muted loop playsInline />
       {!framed && <div className="shrink-0" style={{ height: 'max(12px, env(safe-area-inset-top))' }} />}
+      <PhoneStrip />
       {framed && <div className="relative z-40 flex h-11 shrink-0 items-center justify-between px-7 pt-2">
         <span className="num text-[13px] text-bone">{fmtClock(now).replace(/ (AM|PM)/, '')}</span>
         <span className="flex items-center gap-1.5 text-bone">
@@ -133,6 +136,52 @@ function PhoneAsk({ onAsk }: { onAsk: () => void }) {
   )
 }
 
+/** The phone's telemetry strip: the mark, the theme keys, mesh and power. */
+function PhoneStrip() {
+  const skin = useOS((s) => s.skin)
+  const { online, total } = useMesh()
+  const battery = useOS((s) => s.devices.find((d) => d.id === PHONE)?.battery ?? 0.7)
+  return (
+    <div className="relative z-40 flex h-9 shrink-0 items-stretch border-b border-[rgb(var(--acc)/0.25)] font-mono text-[10px] text-ash">
+      <span className="flex items-center gap-1.5 bg-[linear-gradient(180deg,rgb(var(--acc-2)),rgb(var(--acc-3)))] pl-4 pr-5 text-white [clip-path:polygon(0_0,100%_0,calc(100%-10px)_100%,0_100%)]">
+        <ScarabMark size={14} className="text-white" />
+        <span className="font-display text-[9px] tracking-[0.18em]">RLC</span>
+      </span>
+      <span className="flex items-center gap-1.5 px-3">
+        {SKINS.map((k) => (
+          <button key={k.id} onClick={() => relicRuntime.shell.setSkin(k.id)} aria-label={`${k.name} theme`} aria-pressed={skin === k.id} className={`px-0.5 ${skin === k.id ? 'text-white [text-shadow:0_0_8px_rgb(var(--acc))]' : 'text-soot'}`}>
+            {k.name[0]}
+          </button>
+        ))}
+      </span>
+      <span className="ml-auto flex items-center gap-1.5 border-l border-[rgb(var(--acc)/0.18)] px-3">
+        MESH <span className="text-white">{online}/{total}</span>
+      </span>
+      <span className="flex items-center gap-1.5 border-l border-[rgb(var(--acc)/0.18)] px-3">
+        PWR <span className="text-white">{Math.round(battery * 100)}</span>
+      </span>
+    </div>
+  )
+}
+
+/** Home's centrepiece on the phone: the reactor ring and the time. */
+function PhoneReactor({ online, total }: { online: number; total: number }) {
+  const now = useNow(1000)
+  const t = new Date(now)
+  return (
+    <div className="relative mx-auto flex h-[290px] w-[290px] items-center justify-center">
+      <div className="absolute inset-0"><HudReactor size={290} callouts={false} /></div>
+      <div className="relative text-center">
+        <div className="font-mono text-[9px] tracking-[0.3em] text-[rgb(var(--gold))]">{fmtDate(now)}</div>
+        <div className="mt-2 font-display text-[54px] leading-none text-white [text-shadow:0_0_24px_rgb(var(--acc)/0.8)]">
+          {t.getHours() % 12 || 12}<span className="pulse text-signal">:</span>{String(t.getMinutes()).padStart(2, '0')}
+        </div>
+        <div className="mt-2 font-mono text-[9px] tracking-[0.3em] text-smoke">{online}/{total} NODES · ONE RELIC</div>
+      </div>
+    </div>
+  )
+}
+
 function Card({ children, className = '', onClick }: { children: ReactNode; className?: string; onClick?: () => void }) {
   const C = onClick ? 'button' : 'div'
   return (
@@ -142,7 +191,7 @@ function Card({ children, className = '', onClick }: { children: ReactNode; clas
   )
 }
 
-function PhoneHome({ setSheet, setTab }: { setSheet: (s: Sheet) => void; setTab: (t: Tab) => void }) {
+function PhoneHome({ setSheet }: { setSheet: (s: Sheet) => void; setTab: (t: Tab) => void }) {
   const sessions = useOS((s) => s.sessions)
   const devices = useOS((s) => s.devices)
   const windows = useOS((s) => s.windows)
@@ -152,16 +201,7 @@ function PhoneHome({ setSheet, setTab }: { setSheet: (s: Sheet) => void; setTab:
   const others = sessions.filter((s) => s.deviceId !== PHONE)
   return (
     <div className="space-y-3 pt-3">
-      <div className="px-1">
-        <Wordmark size={12} />
-        <div className="mt-3 text-[22px] font-light text-bone">Everything, here.</div>
-        <div className="label-sm mt-1">{devices.filter((d) => d.status === 'online').length} DEVICES · ONE RELIC</div>
-      </div>
-
-      <button onClick={() => setTab('claude')} className="flex h-11 w-full items-center gap-3 rounded-[2px] border border-[var(--line-soft)] bg-white/[0.06] px-4 text-left">
-        <span className="dot" />
-        <span className="text-[10px] tracking-[0.14em] font-semibold text-ash">ASK CLAUDE…</span>
-      </button>
+      <PhoneReactor online={devices.filter((d) => d.status === 'online').length} total={devices.length} />
 
       <div className="label-sm px-1 pt-2 text-red">ACTIVE ACROSS RELIC</div>
       {others.map((s) => {
