@@ -72,49 +72,100 @@
   --red-intensity: 0.7;
 }
 
-/* ── EARTH — after Knights of the Old Republic: black, white, Republic blue
-   and terminal green. Three very different faces: Cinzel (carved, classical),
-   Exo 2 (clean sci-fi interface), VT323 (phosphor terminal). ── */
+/* ── EARTH — after Knights of the Old Republic: black, with white and
+   terminal green leading and Republic blue beneath. Three faces:
+   Sackers Gothic (engraved display) · Meta (interface) · OCR A (data).
+   Each is used if present (installed, or dropped in public/fonts);
+   otherwise Copperplate / Syncopate, Fira Sans, Share Tech Mono. ── */
 :root[data-skin="earth"] {
-  --acc: 92 196 255;
-  --acc-1: 56 160 255;
-  --acc-2: 26 112 210;
-  --acc-3: 12 58 120;
-  --gold: 88 230 140;
-  --gold-2: 170 255 200;
-  --ink-1: 1 3 8;
-  --ink-2: 4 12 24;
-  --text: 240 246 255;
-  --art-filter: hue-rotate(196deg) saturate(1.15) brightness(1.05);
-  --color-red: rgb(26 112 210);
-  --color-signal: rgb(92 196 255);
-  --color-blood: rgb(12 58 120);
-  --color-oxblood: rgb(8 32 70);
-  --color-burgundy: rgb(4 14 30);
-  --color-bronze: rgb(88 230 140);
-  --color-brass: rgb(170 255 200);
-  --color-bone: rgb(240 246 255);
-  --color-ash: rgb(196 210 228);
-  --color-smoke: rgb(128 146 170);
-  --color-soot: rgb(60 74 92);
-  --font-display: "Cinzel", "Trajan Pro", Georgia, serif;
-  --font-sans: "Exo 2", "Helvetica Neue", Arial, sans-serif;
-  --font-mono: "VT323", "JetBrains Mono", monospace;
-  --line-soft: rgba(92, 196, 255, 0.14);
-  --line-faint: rgba(92, 196, 255, 0.07);
-  --line: rgba(92, 196, 255, 0.4);
-  --edge: rgba(92, 196, 255, 0.4);
-  --edge-dim: rgba(92, 196, 255, 0.16);
-  --plate: rgba(1, 4, 10, 0.88);
-  --grid: rgba(92, 196, 255, 0.05);
+  --acc: 110 255 160;     /* terminal green: edges, glows, the lit key */
+  --acc-1: 72 232 132;
+  --acc-2: 30 120 220;    /* Republic blue: fills */
+  --acc-3: 12 56 120;
+  --gold: 236 244 255;    /* white: codes, labels, filigree */
+  --gold-2: 255 255 255;
+  --ink-1: 1 3 6;
+  --ink-2: 4 10 18;
+  --text: 248 251 255;
+  --art-filter: hue-rotate(196deg) saturate(1.15) brightness(1.05); /* the world stays Republic blue */
+  --color-red: rgb(30 120 220);
+  --color-signal: rgb(110 255 160);
+  --color-blood: rgb(12 56 120);
+  --color-oxblood: rgb(8 30 66);
+  --color-burgundy: rgb(4 12 26);
+  --color-bronze: rgb(236 244 255);
+  --color-brass: rgb(255 255 255);
+  --color-bone: rgb(255 255 255);
+  --color-ash: rgb(220 230 240);
+  --color-smoke: rgb(150 172 190);
+  --color-soot: rgb(70 88 104);
+  --font-display: "Relic Sackers", "Sackers Gothic Std", "Sackers Gothic", "Copperplate", "Copperplate Gothic", "Syncopate", serif;
+  --font-sans: "Relic Meta", "FF Meta Pro", "Meta Pro", "FF Meta", "Meta", "Fira Sans", sans-serif;
+  --font-mono: "Relic OCR", "OCR A Std", "OCR A Extended", "OCR-A", "Share Tech Mono", monospace;
+  --line-soft: rgba(255, 255, 255, 0.14);
+  --line-faint: rgba(255, 255, 255, 0.07);
+  --line: rgba(110, 255, 160, 0.4);
+  --edge: rgba(255, 255, 255, 0.45);
+  --edge-dim: rgba(255, 255, 255, 0.16);
+  --plate: rgba(1, 4, 8, 0.9);
+  --grid: rgba(110, 255, 160, 0.04);
 }
-/* the artwork is painted red; under EARTH it is re-lit blue */
 :root[data-skin="earth"] video, :root[data-skin="earth"] .art, :root[data-skin="earth"] .rx { filter: var(--art-filter); }
-/* KOTOR: the terminal face reads larger; green is the voice of data */
-:root[data-skin="earth"] .label-sm, :root[data-skin="earth"] .font-mono, :root[data-skin="earth"] .num, :root[data-skin="earth"] .mono { font-size-adjust: 0.58; letter-spacing: 0.06em; }
-:root[data-skin="earth"] .label { color: rgb(88 230 140); }
-:root[data-skin="earth"] .t-display, :root[data-skin="earth"] .t-title, :root[data-skin="earth"] .font-display { font-weight: 600; letter-spacing: 0.08em; }
+/* KOTOR: dialogue green for labels and data, white for everything you read */
+:root[data-skin="earth"] .label, :root[data-skin="earth"] .label-sm, :root[data-skin="earth"] .font-mono { color: rgb(110 255 160); }
+:root[data-skin="earth"] .t-display, :root[data-skin="earth"] .t-title, :root[data-skin="earth"] .font-display { font-weight: 700; letter-spacing: 0.1em; color: #fff; }
+/* the lit key: blue plate, green light, white type */
+:root[data-skin="earth"] .rail-key.is-active, :root[data-skin="earth"] .lit { background: linear-gradient(180deg, rgb(30 120 220 / 0.85), rgb(12 56 120 / 0.85)) !important; box-shadow: inset 0 0 0 1px rgb(110 255 160), inset 0 1px 0 rgba(255,255,255,0.5), 0 0 22px rgb(110 255 160 / 0.45) !important; }
 :root[data-skin="earth"] body, :root[data-skin="earth"] #root { background: #000; }
+
+/* ── SAVILE — after Kingsman: Merlin's screens in a Savile Row fitting room.
+   Bottle-green black, jade light, brass and ivory. Cormorant SC (engraved),
+   Josefin Sans (1920s deco geometric), IBM Plex Mono (the armourer's data). ── */
+:root[data-skin="savile"] {
+  --acc: 70 220 150;
+  --acc-1: 40 186 116;
+  --acc-2: 22 116 74;
+  --acc-3: 10 62 40;
+  --gold: 201 168 92;
+  --gold-2: 236 214 160;
+  --ink-1: 1 6 3;
+  --ink-2: 6 22 13;
+  --text: 244 240 226;
+  --art-filter: hue-rotate(138deg) saturate(0.85) brightness(0.95);
+  --color-red: rgb(22 116 74);
+  --color-signal: rgb(70 220 150);
+  --color-blood: rgb(10 62 40);
+  --color-oxblood: rgb(8 40 26);
+  --color-burgundy: rgb(4 20 12);
+  --color-bronze: rgb(201 168 92);
+  --color-brass: rgb(236 214 160);
+  --color-bone: rgb(244 240 226);
+  --color-ash: rgb(206 210 196);
+  --color-smoke: rgb(140 152 136);
+  --color-soot: rgb(64 80 66);
+  --font-display: "Cormorant SC", "Bodoni 72 Smallcaps", Didot, serif;
+  --font-sans: "Josefin Sans", "Futura", "Century Gothic", sans-serif;
+  --font-mono: "IBM Plex Mono", "SF Mono", Menlo, monospace;
+  --line-soft: rgba(201, 168, 92, 0.18);
+  --line-faint: rgba(201, 168, 92, 0.08);
+  --line: rgba(70, 220, 150, 0.4);
+  --edge: rgba(201, 168, 92, 0.5);
+  --edge-dim: rgba(201, 168, 92, 0.2);
+  --plate: rgba(2, 10, 6, 0.9);
+  --grid: rgba(70, 220, 150, 0.035);
+}
+:root[data-skin="savile"] video, :root[data-skin="savile"] .art, :root[data-skin="savile"] .rx { filter: var(--art-filter); }
+:root[data-skin="savile"] .t-display, :root[data-skin="savile"] .t-title, :root[data-skin="savile"] .font-display { font-weight: 600; letter-spacing: 0.06em; }
+/* the tailor's hand: brass hairlines, ivory caps, a pinstripe in every plate */
+:root[data-skin="savile"] .panel, :root[data-skin="savile"] .plate { background-image:
+    linear-gradient(135deg, transparent calc(50% - 0.8px), rgba(201,168,92,0.7) calc(50% - 0.8px) calc(50% + 0.8px), transparent calc(50% + 0.8px)),
+    linear-gradient(135deg, transparent calc(50% - 0.8px), rgba(201,168,92,0.7) calc(50% - 0.8px) calc(50% + 0.8px), transparent calc(50% + 0.8px)),
+    repeating-linear-gradient(90deg, rgba(201,168,92,0.045) 0 1px, transparent 1px 9px),
+    linear-gradient(transparent, transparent),
+    linear-gradient(180deg, rgba(8, 28, 17, 0.86), rgba(2, 8, 5, 0.9)); }
+:root[data-skin="savile"] .label { letter-spacing: 0.28em; }
+:root[data-skin="savile"] body, :root[data-skin="savile"] #root { background: #010402; }
+
 
 @layer base {
 html,

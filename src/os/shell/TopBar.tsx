@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Bell, ChevronDown, Search, Wifi, Cloud, CloudOff, BatteryMedium, Palette } from 'lucide-react'
-import { useOS, type Profile, type Section } from '../runtime/store'
+import { useOS, SKINS, type Profile, type Section } from '../runtime/store'
 import { relicRuntime } from '../runtime/relicRuntime'
 import { useMesh, useNow } from '../../ui/primitives'
 import { ScarabMark } from '../../ui/Brand'
@@ -179,17 +179,17 @@ export function TopBar({ compact }: { compact?: boolean }) {
             <span className="text-white">{Math.round(battery * 100)}</span>
           </span>
         )}
-        <button
-          onClick={() => relicRuntime.shell.setSkin(skin === 'sith' ? 'earth' : 'sith')}
-          className="hud-target flex h-full items-center gap-2 border-l border-[rgb(var(--acc)/0.14)] px-3 hover:bg-[rgb(var(--acc)/0.1)]"
-          aria-label="Switch theme"
-          title="Theme: SITH / EARTH"
-        >
-          <Palette size={13} strokeWidth={2} className="text-signal" />
-          <span className={skin === 'sith' ? 'text-white' : 'text-smoke'}>SITH</span>
-          <span className="text-soot">/</span>
-          <span className={skin === 'earth' ? 'text-white' : 'text-smoke'}>EARTH</span>
-        </button>
+        <div className="flex h-full items-center gap-1 border-l border-[rgb(var(--acc)/0.14)] pl-3 pr-2" role="group" aria-label="Theme">
+          <Palette size={13} strokeWidth={2} className="mr-1 text-signal" />
+          {SKINS.map((k, i) => (
+            <span key={k.id} className="flex items-center">
+              {i > 0 && <span className="px-0.5 text-soot">/</span>}
+              <button onClick={() => relicRuntime.shell.setSkin(k.id)} aria-label={`${k.name} theme`} aria-pressed={skin === k.id} className={`hud-target px-1 py-1 ${skin === k.id ? 'text-white [text-shadow:0_0_10px_rgb(var(--acc))]' : 'text-smoke hover:text-bone'}`}>
+                {k.name}
+              </button>
+            </span>
+          ))}
+        </div>
         <button onClick={() => relicRuntime.shell.openCommand()} className="hud-target flex h-full items-center gap-2 border-l border-[rgb(var(--acc)/0.14)] px-3 hover:bg-[rgb(var(--acc)/0.1)]" aria-label="Ask Claude" title="Ask Claude — or just start typing">
           <Search size={13} strokeWidth={2} className="text-signal" />
           <span>CMD</span>

@@ -60,11 +60,14 @@ The UI never calls a model directly. Set `VITE_CLAUDE_PROVIDER=anthropic`, or pi
 
 ## Interface
 
-**Themes** (telemetry strip → SITH / EARTH, or Settings → Display; remembered per device):
-- **SITH** — black and red. Michroma (display), Oxanium (interface), JetBrains Mono (telemetry).
-- **EARTH** — after *Knights of the Old Republic*: black, white, Republic blue and terminal green. Cinzel (carved classical display), Exo 2 (interface), VT323 (phosphor terminal).
+**Themes** (telemetry strip → SITH / EARTH / SAVILE, or Settings → Display; remembered per device):
+- **SITH** — black and red. Michroma, Oxanium, JetBrains Mono.
+- **EARTH** — after *Knights of the Old Republic*: black, white and terminal green over a Republic-blue world. Sackers Gothic (display), Meta (interface), OCR A (data).
+- **SAVILE** — after *Kingsman*: bottle green, jade, brass and ivory, a pinstripe in every plate. Cormorant SC, Josefin Sans, IBM Plex Mono.
 
-Colours are theme tokens (`--acc`, `--acc-1..3`, `--gold`, `--ink-1..2` in `src/index.css`); artwork painted in red is re-lit for EARTH with a hue filter. All fonts are open-licensed and bundled via `@fontsource`. The system copy on Mac and iPhone is used first; for other machines, put `GillSans-SemiBold.ttf` in `public/fonts/` (git-ignored — the face is Monotype-licensed and is not redistributed here).
+Colours are theme tokens (`--acc`, `--acc-1..3`, `--gold`, `--ink-1..2` in `src/index.css`); red artwork is re-lit per theme with a hue filter.
+
+**Licensed fonts**: Sackers Gothic, FF Meta and OCR A are commercial. Drop the files you own into `public/fonts/` (git-ignored; names containing `sackers`, `meta`, `ocr`) and the build registers them. Without them, EARTH uses Copperplate (built into macOS/iOS, Sackers' close relative) or Syncopate, Fira Sans (by Meta's designer) and Share Tech Mono. Open fonts are bundled via `@fontsource`. The system copy on Mac and iPhone is used first; for other machines, put `GillSans-SemiBold.ttf` in `public/fonts/` (git-ignored — the face is Monotype-licensed and is not redistributed here).
 
 Wallpaper: the Great Wave in red ASCII, a seamless ping-pong video loop (`public/wallpaper/wave.mp4`); Coruscant at dusk (`src/ui/CoruscantWindow.tsx`) is the alternative. HUD language: JARVIS reactor rings and EDITH callouts around the clock (`src/ui/HudReactor.tsx`), target-lock brackets on hover and active, hologram-projector window transitions, a saber-ignite prompt, every icon in motion. Minimal and Mac-proportioned: a menu bar, the time, one *Ask Claude* field, four widgets and a dock. The scarab and striped wordmark are the Relic marks from relic.earth.
 

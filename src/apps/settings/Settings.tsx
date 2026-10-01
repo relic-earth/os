@@ -493,36 +493,35 @@ function About({ sub, setSub }: { sub: string; setSub: (s: string) => void }) {
   )
 }
 
-/** THEME — two skins, each a whole visual language: palette, type and light. */
+/** THEME — each skin is a whole visual language: palette, three faces and light. */
 function SkinPicker() {
   const skin = useOS((s) => s.skin)
   return (
     <div className="mb-10">
       <div className="label mb-3">Theme</div>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-3 gap-4">
         {SKINS.map((k) => {
           const on = skin === k.id
-          const earth = k.id === 'earth'
           return (
             <button
               key={k.id}
               onClick={() => relicRuntime.shell.setSkin(k.id)}
               aria-pressed={on}
-              className={`hud-target scan-hover panel flex h-[132px] flex-col justify-between p-5 text-left ${on ? 'is-active' : ''}`}
-              style={earth ? { background: 'linear-gradient(135deg,#000 0%,#02101f 60%,#012014 100%)', borderColor: on ? '#5cc4ff' : 'rgba(92,196,255,0.3)' } : { background: 'linear-gradient(135deg,#000 0%,#1a0204 60%,#3a0609 100%)', borderColor: on ? '#ff3a40' : 'rgba(255,58,64,0.3)' }}
+              className={`hud-target scan-hover panel flex h-[150px] flex-col justify-between p-5 text-left ${on ? 'is-active' : ''}`}
+              style={{ background: k.bg, borderColor: on ? k.swatch[2] : `${k.swatch[2]}55` }}
             >
               <div className="flex items-center gap-3">
-                <span className="text-[24px] tracking-[0.12em]" style={earth ? { fontFamily: 'Cinzel, serif', fontWeight: 700, color: '#f0f6ff' } : { fontFamily: 'Michroma, sans-serif', color: '#fff' }}>
+                <span className="text-[24px] tracking-[0.1em]" style={{ fontFamily: `'${k.fonts[0]}', serif`, fontWeight: k.id === 'sith' ? 400 : 700, color: k.swatch[1] }}>
                   {k.name}
                 </span>
-                {on && <span className="text-[13px]" style={{ fontFamily: earth ? 'VT323, monospace' : 'JetBrains Mono, monospace', color: earth ? '#58e68c' : '#d8b37a' }}>● ACTIVE</span>}
+                {on && <span className="text-[13px]" style={{ fontFamily: `'${k.fonts[2]}', monospace`, color: k.swatch[4] }}>● ACTIVE</span>}
               </div>
               <div className="flex gap-1.5">
-                {(earth ? ['#000', '#f0f6ff', '#5cc4ff', '#1a70d2', '#58e68c'] : ['#000', '#f5f0eb', '#ff3a40', '#7d0f14', '#b08a52']).map((c) => (
-                  <span key={c} className="h-4 w-8" style={{ background: c, boxShadow: 'inset 0 0 0 1px rgba(255,255,255,0.15)' }} />
+                {k.swatch.map((c) => (
+                  <span key={c} className="h-4 w-7" style={{ background: c, boxShadow: 'inset 0 0 0 1px rgba(255,255,255,0.15)' }} />
                 ))}
               </div>
-              <div className="text-[12px]" style={earth ? { fontFamily: 'Exo 2, sans-serif', color: '#c4d2e4' } : { fontFamily: 'Oxanium, sans-serif', color: '#d4ccc7' }}>
+              <div className="text-[12px] leading-snug" style={{ fontFamily: `'${k.fonts[1]}', sans-serif`, color: k.swatch[1], opacity: 0.8 }}>
                 {k.note}
               </div>
             </button>

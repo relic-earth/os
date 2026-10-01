@@ -26,10 +26,12 @@ import { appRegistry } from '../apps/registry'
  */
 
 export type Section = 'home' | 'tv' | 'movies' | 'games'
-export type Skin = 'sith' | 'earth'
-export const SKINS: { id: Skin; name: string; note: string }[] = [
-  { id: 'sith', name: 'SITH', note: 'Black and red · Michroma, Oxanium, JetBrains Mono' },
-  { id: 'earth', name: 'EARTH', note: 'After KOTOR · black, white, blue, green · Cinzel, Exo 2, VT323' },
+export type Skin = 'sith' | 'earth' | 'savile'
+/** Each skin is a whole visual language: palette, three faces, and how the artwork is lit. */
+export const SKINS: { id: Skin; name: string; note: string; swatch: string[]; fonts: [string, string, string]; bg: string }[] = [
+  { id: 'sith', name: 'SITH', note: 'Black and red · Michroma, Oxanium, JetBrains Mono', swatch: ['#000', '#f5f0eb', '#ff3a40', '#7d0f14', '#b08a52'], fonts: ['Michroma', 'Oxanium', 'JetBrains Mono'], bg: 'linear-gradient(135deg,#000 0%,#1a0204 60%,#3a0609 100%)' },
+  { id: 'earth', name: 'EARTH', note: 'After KOTOR · black, white, terminal green, Republic blue · Sackers Gothic, Meta, OCR A', swatch: ['#000', '#ffffff', '#6effa0', '#1e78dc', '#0c3878'], fonts: ['Copperplate', 'Fira Sans', 'Share Tech Mono'], bg: 'linear-gradient(135deg,#000 0%,#031a10 55%,#04162e 100%)' },
+  { id: 'savile', name: 'SAVILE', note: 'After Kingsman · bottle green, jade, brass, ivory · Cormorant SC, Josefin Sans, IBM Plex Mono', swatch: ['#020805', '#f4f0e2', '#46dc96', '#145c3a', '#c9a85c'], fonts: ['Cormorant SC', 'Josefin Sans', 'IBM Plex Mono'], bg: 'linear-gradient(135deg,#010402 0%,#06180e 60%,#123020 100%)' },
 ]
 export type Profile = 'relic-laptop' | 'relic-desktop' | 'relic-tv' | 'relic-phone' | 'relic-car' | 'relic-thermostat'
 
@@ -192,7 +194,8 @@ export const initialKernelState = (): KernelState => ({
   theme: 'relic',
   skin: (() => {
     try {
-      return localStorage.getItem('relic.skin') === 'earth' ? 'earth' : 'sith'
+      const v = localStorage.getItem('relic.skin')
+      return v === 'earth' || v === 'savile' ? v : 'sith'
     } catch {
       return 'sith'
     }
