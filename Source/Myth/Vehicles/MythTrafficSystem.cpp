@@ -279,7 +279,6 @@ void AMythTrafficSystem::SpawnCars()
 		Mix.Add(R < 0.45f ? EMythCarStyle::Sedan : R < 0.75f ? EMythCarStyle::Compact : EMythCarStyle::SUV);
 	}
 
-	const FVector Spawn = G::PlayerSpawnLocation();
 	for (int32 k = 0; k < Mix.Num(); ++k)
 	{
 		for (int32 Attempt = 0; Attempt < 20; ++Attempt)
@@ -410,7 +409,7 @@ void AMythTrafficSystem::StepCar(FMythTrafficCar& C, float Dt, int32 Index)
 			C.P2 = LanePoint(C.BI, C.BJ, C.NI, C.NJ, NextLane, HalfCrossAt(C.BI, C.BJ, bNextNS));
 			const FVector DIn = (C.P0 - LanePoint(C.AI, C.AJ, C.BI, C.BJ, C.Lane, 0.f)).GetSafeNormal2D();
 			C.P1 = C.P0 + DIn * FVector::DotProduct(C.P2 - C.P0, DIn);
-			C.TurnLen = FMath::Max(100.f, (FVector::Dist2D(C.P0, C.P1) + FVector::Dist2D(C.P1, C.P2)) * 0.92f);
+			C.TurnLen = FMath::Max(100.f, (float)((FVector::Dist2D(C.P0, C.P1) + FVector::Dist2D(C.P1, C.P2)) * 0.92));
 			C.TurnT = 0.f;
 			C.bTurning = true;
 			C.Lane = NextLane;
@@ -458,7 +457,6 @@ void AMythTrafficSystem::BeginPlay()
 	SpawnCars();
 	for (UInstancedStaticMeshComponent* C : CarISMs) C->RegisterComponent();
 
-	UMythAssetSubsystem* A = UMythAssetSubsystem::Get(this);
 	const int32 Pool = FMath::Clamp(FMythGraphics::DynamicLightBudget() / 4, 3, 10);
 	for (int32 i = 0; i < Pool; ++i)
 	{

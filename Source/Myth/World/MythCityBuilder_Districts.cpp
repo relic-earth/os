@@ -246,7 +246,6 @@ void AMythCityBuilder::BuildTransitHub(int32 IX, int32 IY)
 	const float RailY = G::LineCenterY(5);
 	const float DeckTop = 960.f;
 	const FBox2D Hall(FVector2D(Lot.Min.X + 200.f, Lot.Min.Y + 1000.f), FVector2D(Lot.Max.X - 200.f, Lot.Max.Y - 700.f));
-	const float HallH = 1500.f;
 	const FVector2D HC = Hall.GetCenter();
 
 	// Floor

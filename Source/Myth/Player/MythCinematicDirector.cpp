@@ -96,7 +96,7 @@ void AMythCinematicDirector::Tick(float DeltaSeconds)
 	Evaluate(Time, P, L, F);
 	SetActorLocationAndRotation(P, (L - P).Rotation());
 	Camera->SetFieldOfView(F);
-	Camera->PostProcessSettings.DepthOfFieldFocalDistance = FMath::Max(300.f, FVector::Dist(P, L));
+	Camera->PostProcessSettings.DepthOfFieldFocalDistance = FMath::Max(300.f, (float)FVector::Dist(P, L));
 	Camera->PostProcessSettings.DepthOfFieldFstop = Mode == EMode::Benchmark ? 16.f : 2.8f;
 	if (AMythEnvironment* Env = AMythEnvironment::Get(this))
 	{

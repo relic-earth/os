@@ -283,7 +283,7 @@ void AMythPlayerController::HandleGameplayInput(const FMythInputState& In, float
 	{
 		FRotator R = GetControlRotation();
 		R.Yaw = FRotator::NormalizeAxis(R.Yaw + In.Look.X);
-		R.Pitch = FMath::Clamp(FRotator::NormalizeAxis(R.Pitch + In.Look.Y), -80.f, 75.f);
+		R.Pitch = FMath::Clamp(FRotator::NormalizeAxis(R.Pitch + In.Look.Y), -80.0, 75.0);
 		R.Roll = 0.f;
 		SetControlRotation(R);
 	}

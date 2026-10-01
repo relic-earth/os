@@ -54,8 +54,8 @@ FMythInputState UMythDeviceSubsystem::PollInput(APlayerController* PC, float Del
 	{
 		if (D.IsValid() && D->IsAvailable()) D->Poll(PC, DeltaSeconds, State);
 	}
-	State.Move.X = FMath::Clamp(State.Move.X, -1.f, 1.f);
-	State.Move.Y = FMath::Clamp(State.Move.Y, -1.f, 1.f);
+	State.Move.X = FMath::Clamp(State.Move.X, -1.0, 1.0);
+	State.Move.Y = FMath::Clamp(State.Move.Y, -1.0, 1.0);
 	return State;
 }
 

@@ -47,7 +47,7 @@ AMythVehicle::AMythVehicle()
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationPitch = false;
 	AutoPossessPlayer = EAutoReceiveInput::Disabled;
-	SetReplicates(true); // vehicles are shared world objects in multiplayer MYTH
+	bReplicates = true; // vehicles are shared world objects in multiplayer MYTH
 }
 
 void AMythVehicle::BeginPlay()
@@ -220,7 +220,7 @@ void AMythVehicle::UpdateGround(float Dt)
 		if (Loc.Z > TargetZ + 40.f)
 		{
 			VerticalSpeed -= 980.f * Dt;
-			NewLoc.Z = FMath::Max(TargetZ, Loc.Z + VerticalSpeed * Dt);
+			NewLoc.Z = FMath::Max((double)TargetZ, Loc.Z + VerticalSpeed * Dt);
 		}
 		else
 		{

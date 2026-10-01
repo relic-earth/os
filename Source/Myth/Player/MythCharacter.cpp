@@ -6,6 +6,8 @@
 #include "Persistence/MythSaveGame.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "Components/SkeletalMeshComponent.h"
+#include "Engine/World.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
@@ -62,8 +64,6 @@ AMythCharacter::AMythCharacter()
 	BodyRoot->SetRelativeLocation(FVector(0.f, 0.f, -90.f));
 
 	GetMesh()->SetVisibility(false); // no skeletal mesh asset required
-	SetReplicates(true);
-	SetReplicateMovement(true);
 
 	Look.Height = 1.02f;
 	Look.Top = FLinearColor(0.035f, 0.04f, 0.05f);     // dark technical coat

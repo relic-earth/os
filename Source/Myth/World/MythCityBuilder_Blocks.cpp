@@ -151,7 +151,7 @@ void AMythCityBuilder::Rooftop(const FBox2D& Top, float Z, int32 Style)
 	if (Style == 3 && Rng.FRand() < 0.6f)
 	{
 		for (int32 p = 0; p < 6; ++p)
-			Box("Glass", FVector(Top.Min.X + 300.f + p * 180.f, C.Y, Z + 60.f), FVector(150.f, FMath::Min(600.f, S.Y - 200.f), 5.f), FRotator(25.f, 0, 0), false);
+			Box("Glass", FVector(Top.Min.X + 300.f + p * 180.f, C.Y, Z + 60.f), FVector(150.f, FMath::Min(600.f, (float)(S.Y - 200.0)), 5.f), FRotator(25.f, 0, 0), false);
 	}
 	if (Rng.FRand() < 0.35f)
 	{
@@ -290,7 +290,7 @@ void AMythCityBuilder::BuildDowntownBlock(int32 IX, int32 IY)
 	const int32 NX = Rng.RandRange(1, 2), NY = Rng.RandRange(1, 3);
 	SplitLot(Rng, Lot, NX, NY, Parcels);
 	static const FName Facades[] = { "FacadeTower", "FacadeTowerCool", "FacadeOffice", "FacadeModern", "FacadeTower" };
-	const float CoreBoost = 1.f - FMath::Clamp(FVector2D::Distance(G::BlockCenter(IX, IY), G::BlockCenter(4, 5)) / 40000.f, 0.f, 0.6f);
+	const float CoreBoost = 1.f - FMath::Clamp((float)(FVector2D::Distance(G::BlockCenter(IX, IY), G::BlockCenter(4, 5)) / 40000.0), 0.f, 0.6f);
 	for (const FBox2D& P : Parcels)
 	{
 		const int32 F = Rng.RandRange(0, UE_ARRAY_COUNT(Facades) - 1);

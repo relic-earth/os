@@ -9,7 +9,7 @@ AMythNPC::AMythNPC()
 	Capsule->SetCollisionProfileName(TEXT("Pawn"));
 	Capsule->SetCanEverAffectNavigation(false);
 	RootComponent = Capsule;
-	SetReplicates(false); // becomes true once NPCs are server-simulated in multiplayer MYTH
+	bReplicates = false; // becomes true once NPCs are server-simulated in multiplayer MYTH
 }
 
 void AMythNPC::SetWorldPos(const FVector& P, bool bMoveCollision)
