@@ -26,6 +26,11 @@ import { appRegistry } from '../apps/registry'
  */
 
 export type Section = 'home' | 'tv' | 'movies' | 'games'
+export type Skin = 'sith' | 'earth'
+export const SKINS: { id: Skin; name: string; note: string }[] = [
+  { id: 'sith', name: 'SITH', note: 'Black and red · Michroma, Oxanium, JetBrains Mono' },
+  { id: 'earth', name: 'EARTH', note: 'After KOTOR · black, white, blue, green · Cinzel, Exo 2, VT323' },
+]
 export type Profile = 'relic-laptop' | 'relic-desktop' | 'relic-tv' | 'relic-phone' | 'relic-car' | 'relic-thermostat'
 
 export interface LaunchState {
@@ -106,6 +111,8 @@ export interface KernelState {
   }
   volume: number
   theme: 'relic' | 'dim'
+  /** visual skin: SITH (red deck) or EARTH (KOTOR: blue, green, white) */
+  skin: Skin
   background: 'wave' | 'chancellor' | 'horizon' | 'volcanic' | 'topographic' | 'architecture'
   notifications: RelicNotification[]
   toasts: string[]
@@ -183,6 +190,13 @@ export const initialKernelState = (): KernelState => ({
   thermostat: { target: 68, indoor: 68, humidity: 41, mode: 'HEAT', fan: 'AUTO' },
   volume: 62,
   theme: 'relic',
+  skin: (() => {
+    try {
+      return localStorage.getItem('relic.skin') === 'earth' ? 'earth' : 'sith'
+    } catch {
+      return 'sith'
+    }
+  })() as Skin,
   background: 'wave',
   notifications: [],
   toasts: [],

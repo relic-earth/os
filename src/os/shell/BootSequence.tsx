@@ -131,7 +131,7 @@ export function BootSequence() {
             {phase >= 2 && (
               <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} className="mt-10 text-center">
                 <div className="label text-ash">RELIC OS</div>
-                <div className="mt-2 text-[16px] tracking-[0.3em] font-bold text-signal" style={{ textShadow: '0 0 12px rgba(232,36,43,0.6)' }}>
+                <div className="mt-2 text-[16px] tracking-[0.3em] font-bold text-signal" style={{ textShadow: '0 0 12px rgb(var(--acc-1)/0.6)' }}>
                   READY
                 </div>
               </motion.div>

@@ -13,7 +13,7 @@ import { meshDiscovery } from '../../mesh/discovery'
 import { cloud } from '../../cloud'
 import { relicAgent } from '../../agent/relicAgent'
 import { memory } from '../../agent/memory'
-import { getOS, setOS, type Profile, type Section } from './store'
+import { getOS, setOS, type Profile, type Section, type Skin } from './store'
 
 /**
  * RELIC RUNTIME — the operating system's nervous system.
@@ -61,6 +61,14 @@ export const relicRuntime = {
       setOS({ profile, commandOpen: false, notificationCenterOpen: false })
     },
     setSection: (section: Section) => setOS({ section }),
+    setSkin: (skin: Skin) => {
+      setOS({ skin })
+      try {
+        localStorage.setItem('relic.skin', skin)
+      } catch {
+        /* private mode */
+      }
+    },
     openCommand: (open = true) => setOS({ commandOpen: open }),
     boot: () => setOS({ booted: true }),
     restart() {

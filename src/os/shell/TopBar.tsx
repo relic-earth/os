@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Bell, ChevronDown, Search, Wifi, Cloud, CloudOff, BatteryMedium } from 'lucide-react'
+import { Bell, ChevronDown, Search, Wifi, Cloud, CloudOff, BatteryMedium, Palette } from 'lucide-react'
 import { useOS, type Profile, type Section } from '../runtime/store'
 import { relicRuntime } from '../runtime/relicRuntime'
 import { useMesh, useNow } from '../../ui/primitives'
@@ -83,7 +83,7 @@ function Meter({ value, cells = 8 }: { value: number; cells?: number }) {
   return (
     <span className="flex items-end gap-[2px]">
       {Array.from({ length: cells }).map((_, i) => (
-        <span key={i} className={`w-[3px] ${i < lit ? 'bg-[#ff3a40] shadow-[0_0_4px_#ff3a40]' : 'bg-[rgba(255,58,64,0.18)]'}`} style={{ height: 5 + i }} />
+        <span key={i} className={`w-[3px] ${i < lit ? 'bg-[rgb(var(--acc))] shadow-[0_0_4px_rgb(var(--acc))]' : 'bg-[rgb(var(--acc)/0.18)]'}`} style={{ height: 5 + i }} />
       ))}
     </span>
   )
@@ -101,6 +101,7 @@ export function TopBar({ compact }: { compact?: boolean }) {
   const unread = useOS((s) => s.notifications.filter((n) => !n.read).length)
   const section = useOS((s) => s.section)
   const busy = useOS((s) => s.agentBusy)
+  const skin = useOS((s) => s.skin)
   const focusedApp = useOS((s) => s.windows.find((w) => w.deviceId === s.profile && w.focused && !w.minimized)?.appId)
   const appName = focusedApp ? (getApp(focusedApp)?.name ?? focusedApp).replace('Relic ', '') : SECTION_NAME[section]
   const [menu, setMenu] = useState(false)
@@ -110,11 +111,11 @@ export function TopBar({ compact }: { compact?: boolean }) {
   const ss = String(t.getSeconds()).padStart(2, '0')
 
   return (
-    <header className="relative z-[6000] flex h-9 shrink-0 items-stretch bg-[linear-gradient(180deg,rgba(10,2,3,0.95),rgba(6,1,2,0.85))] backdrop-blur-2xl">
-      <span className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-[linear-gradient(90deg,#ff3a40,rgba(255,58,64,0.25)_20%,rgba(255,58,64,0.25)_80%,#ff3a40)]" />
+    <header className="relative z-[6000] flex h-9 shrink-0 items-stretch bg-[linear-gradient(180deg,rgb(var(--ink-1)/0.95),rgb(var(--ink-1)/0.85))] backdrop-blur-2xl">
+      <span className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-[linear-gradient(90deg,rgb(var(--acc)),rgb(var(--acc)/0.25)_20%,rgb(var(--acc)/0.25)_80%,rgb(var(--acc)))]" />
       {/* the mark, on a cut plate */}
       <div className="relative">
-        <button onClick={() => setMenu((m) => !m)} className="hud-target flex h-full w-[88px] items-center justify-center gap-2 bg-[linear-gradient(180deg,#a3121a,#4a0509)] [clip-path:polygon(0_0,100%_0,calc(100%-14px)_100%,0_100%)]" aria-label="Relic menu">
+        <button onClick={() => setMenu((m) => !m)} className="hud-target flex h-full w-[88px] items-center justify-center gap-2 bg-[linear-gradient(180deg,rgb(var(--acc-2)),#4a0509)] [clip-path:polygon(0_0,100%_0,calc(100%-14px)_100%,0_100%)]" aria-label="Relic menu">
           <ScarabMark size={18} className="text-white drop-shadow-[0_0_6px_rgba(255,255,255,0.7)]" />
           <span className="font-display text-[9px] tracking-[0.2em] text-white">RLC</span>
         </button>
@@ -136,9 +137,9 @@ export function TopBar({ compact }: { compact?: boolean }) {
                     ;(fn as () => void)()
                     setMenu(false)
                   }}
-                  className="hud-target scan-hover flex w-full items-center gap-3 px-3 py-2 text-left text-[12px] font-semibold uppercase tracking-[0.16em] text-ash hover:bg-[rgba(255,58,64,0.16)] hover:text-white"
+                  className="hud-target scan-hover flex w-full items-center gap-3 px-3 py-2 text-left text-[12px] font-semibold uppercase tracking-[0.16em] text-ash hover:bg-[rgb(var(--acc)/0.16)] hover:text-white"
                 >
-                  <span className="font-mono text-[10px] text-[rgba(176,138,82,0.8)]">{String(i + 1).padStart(2, '0')}</span>
+                  <span className="font-mono text-[10px] text-[rgb(var(--gold)/0.8)]">{String(i + 1).padStart(2, '0')}</span>
                   {label as string}
                 </button>
               ))}
@@ -149,15 +150,15 @@ export function TopBar({ compact }: { compact?: boolean }) {
 
       {/* where you are */}
       <div className="flex items-center gap-3 pl-3 pr-4">
-        <span className="font-display text-[12px] tracking-[0.12em] text-white [text-shadow:0_0_14px_rgba(255,58,64,0.8)]">{appName.toUpperCase()}</span>
-        <span className="font-mono text-[10px] text-[rgba(176,138,82,0.8)]">{'//'} RELIC·OS 0.1</span>
+        <span className="font-display text-[12px] tracking-[0.12em] text-white [text-shadow:0_0_14px_rgb(var(--acc)/0.8)]">{appName.toUpperCase()}</span>
+        <span className="font-mono text-[10px] text-[rgb(var(--gold)/0.8)]">{'//'} RELIC·OS 0.1</span>
         {busy && <span className="glitch-text font-mono text-[10px] tracking-[0.2em] text-signal" data-text="CLAUDE·EXEC">CLAUDE·EXEC</span>}
       </div>
 
       {/* readouts */}
       <div className="ml-auto flex items-center font-mono text-[10px] tracking-[0.08em] text-ash">
         {!compact && (
-          <button onClick={() => void relicRuntime.apps.launch('devices')} className="hud-target flex h-full items-center gap-2 border-l border-[rgba(255,58,64,0.14)] px-3 hover:bg-[rgba(255,58,64,0.1)]" title="Device mesh">
+          <button onClick={() => void relicRuntime.apps.launch('devices')} className="hud-target flex h-full items-center gap-2 border-l border-[rgb(var(--acc)/0.14)] px-3 hover:bg-[rgb(var(--acc)/0.1)]" title="Device mesh">
             <Wifi size={13} strokeWidth={1.75} className="text-signal" />
             <span>MESH</span>
             <Meter value={online / total} cells={total} />
@@ -165,33 +166,44 @@ export function TopBar({ compact }: { compact?: boolean }) {
           </button>
         )}
         {!compact && (
-          <button onClick={() => void relicRuntime.apps.launch('settings', { props: { section: 'network', nonce: Date.now() } })} className="hud-target flex h-full items-center gap-2 border-l border-[rgba(255,58,64,0.14)] px-3 hover:bg-[rgba(255,58,64,0.1)]" title="Relic Cloud">
+          <button onClick={() => void relicRuntime.apps.launch('settings', { props: { section: 'network', nonce: Date.now() } })} className="hud-target flex h-full items-center gap-2 border-l border-[rgb(var(--acc)/0.14)] px-3 hover:bg-[rgb(var(--acc)/0.1)]" title="Relic Cloud">
             {cloud === 'connected' ? <Cloud size={13} strokeWidth={1.75} className="text-signal" /> : <CloudOff size={13} strokeWidth={1.75} className="text-signal" />}
             <span className={cloud === 'connected' ? 'text-white' : 'text-signal'}>{cloud === 'connected' ? 'SYNC' : 'LOCAL'}</span>
           </button>
         )}
         {battery != null && (
-          <span className="flex h-full items-center gap-2 border-l border-[rgba(255,58,64,0.14)] px-3">
+          <span className="flex h-full items-center gap-2 border-l border-[rgb(var(--acc)/0.14)] px-3">
             <BatteryMedium size={14} strokeWidth={1.75} className="text-signal" />
             <span>PWR</span>
             <Meter value={battery} cells={6} />
             <span className="text-white">{Math.round(battery * 100)}</span>
           </span>
         )}
-        <button onClick={() => relicRuntime.shell.openCommand()} className="hud-target flex h-full items-center gap-2 border-l border-[rgba(255,58,64,0.14)] px-3 hover:bg-[rgba(255,58,64,0.1)]" aria-label="Ask Claude" title="Ask Claude — or just start typing">
+        <button
+          onClick={() => relicRuntime.shell.setSkin(skin === 'sith' ? 'earth' : 'sith')}
+          className="hud-target flex h-full items-center gap-2 border-l border-[rgb(var(--acc)/0.14)] px-3 hover:bg-[rgb(var(--acc)/0.1)]"
+          aria-label="Switch theme"
+          title="Theme: SITH / EARTH"
+        >
+          <Palette size={13} strokeWidth={2} className="text-signal" />
+          <span className={skin === 'sith' ? 'text-white' : 'text-smoke'}>SITH</span>
+          <span className="text-soot">/</span>
+          <span className={skin === 'earth' ? 'text-white' : 'text-smoke'}>EARTH</span>
+        </button>
+        <button onClick={() => relicRuntime.shell.openCommand()} className="hud-target flex h-full items-center gap-2 border-l border-[rgb(var(--acc)/0.14)] px-3 hover:bg-[rgb(var(--acc)/0.1)]" aria-label="Ask Claude" title="Ask Claude — or just start typing">
           <Search size={13} strokeWidth={2} className="text-signal" />
           <span>CMD</span>
         </button>
-        <button onClick={() => relicRuntime.notifications.toggleCenter()} className="hud-target relative flex h-full items-center gap-2 border-l border-[rgba(255,58,64,0.14)] px-3 hover:bg-[rgba(255,58,64,0.1)]" aria-label="Notifications">
+        <button onClick={() => relicRuntime.notifications.toggleCenter()} className="hud-target relative flex h-full items-center gap-2 border-l border-[rgb(var(--acc)/0.14)] px-3 hover:bg-[rgb(var(--acc)/0.1)]" aria-label="Notifications">
           <Bell size={13} strokeWidth={2} className="text-signal" />
           <span className={unread ? 'text-white' : ''}>{String(unread).padStart(2, '0')}</span>
           {unread > 0 && <span className="dot absolute right-1.5 top-2" />}
         </button>
-        <div className="flex h-full items-center border-l border-[rgba(255,58,64,0.14)] px-1">
+        <div className="flex h-full items-center border-l border-[rgb(var(--acc)/0.14)] px-1">
           <DeviceSwitcher compact={compact} />
         </div>
-        <span className="flex h-full items-center gap-1 border-l border-[rgba(255,58,64,0.14)] bg-[rgba(255,58,64,0.08)] px-4 text-[13px] text-white">
-          {hh}<span className="pulse text-signal">:</span>{mm}<span className="text-[10px] text-[rgba(176,138,82,0.9)]">:{ss}</span>
+        <span className="flex h-full items-center gap-1 border-l border-[rgb(var(--acc)/0.14)] bg-[rgb(var(--acc)/0.08)] px-4 text-[13px] text-white">
+          {hh}<span className="pulse text-signal">:</span>{mm}<span className="text-[10px] text-[rgb(var(--gold)/0.9)]">:{ss}</span>
         </span>
       </div>
     </header>

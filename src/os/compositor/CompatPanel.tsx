@@ -37,7 +37,7 @@ export function CompatPanel({ win, onClose }: { win: RelicWindow; onClose: () =>
       initial={{ x: 24, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
       transition={{ duration: 0.24, ease: [0.2, 0, 0, 1] }}
-      className="absolute bottom-0 right-0 top-0 z-20 flex w-[280px] flex-col border-l hair-strong bg-[rgba(5,4,4,0.97)]"
+      className="absolute bottom-0 right-0 top-0 z-20 flex w-[280px] flex-col border-l hair-strong bg-[rgb(var(--ink-1)/0.97)]"
       onPointerDown={(e) => e.stopPropagation()}
     >
       <div className="flex items-center justify-between border-b hair px-4 py-2.5">

@@ -23,7 +23,7 @@ export function ConfirmDialog() {
             role="alertdialog"
             aria-label="Claude permission request"
           >
-            <div className={`h-[2px] ${c.risk === 'system' ? 'bg-signal shadow-[0_0_14px_rgba(232,36,43,0.9)]' : 'bg-red/80'}`} />
+            <div className={`h-[2px] ${c.risk === 'system' ? 'bg-signal shadow-[0_0_14px_rgb(var(--acc-1)/0.9)]' : 'bg-red/80'}`} />
             <div className="px-7 pb-6 pt-6">
               <div className="flex items-center justify-between">
                 <span className="label text-red">{c.risk === 'system' ? 'CONFIRM SYSTEM ACTION' : 'CLAUDE'}</span>
@@ -181,7 +181,7 @@ export function TaskSwitcher() {
           const app = getApp(w.appId)
           const active = i === sw.index % wins.length
           return (
-            <div key={w.id} className={`flex w-[124px] flex-col items-center gap-3 rounded-[2px] px-3 py-5 ${active ? 'bg-white/[0.08] shadow-[0_0_30px_rgba(232,36,43,0.2)]' : ''}`}>
+            <div key={w.id} className={`flex w-[124px] flex-col items-center gap-3 rounded-[2px] px-3 py-5 ${active ? 'bg-white/[0.08] shadow-[0_0_30px_rgb(var(--acc-1)/0.2)]' : ''}`}>
               <AppIcon id={w.appId} size={64} live={active} active={active} />
               <span className="w-full truncate text-center text-[12px] tracking-[0.1em] font-semibold text-bone">{(app?.name ?? w.title).replace('Relic ', '').toUpperCase()}</span>
             </div>

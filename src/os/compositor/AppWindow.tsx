@@ -91,7 +91,7 @@ export function AppWindow({ win, children }: { win: RelicWindow; children: React
       onPointerDown={() => !win.focused && relicRuntime.windows.focus(win.id)}
     >
       {/* glow lives on this wrapper: the frame below is clipped, so it cannot cast its own */}
-      <div className={`h-full transition-[filter] duration-300 ${win.focused ? 'drop-shadow-[0_0_18px_rgba(255,58,64,0.35)]' : ''}`}>
+      <div className={`h-full transition-[filter] duration-300 ${win.focused ? 'drop-shadow-[0_0_18px_rgb(var(--acc)/0.35)]' : ''}`}>
       <div
         className={`win-frame relative flex h-full flex-col overflow-hidden ${win.focused ? 'is-focused' : ''} ${win.maximized ? 'is-max' : ''}`}
       >
@@ -99,20 +99,20 @@ export function AppWindow({ win, children }: { win: RelicWindow; children: React
         <span className="win-corner br" />
         {/* header: code, glyph, title — keys on the right */}
         <div
-          className={`relative flex h-[38px] shrink-0 items-center gap-3 border-b px-4 ${win.focused ? 'border-[rgba(255,58,64,0.4)] bg-[linear-gradient(90deg,rgba(255,58,64,0.22),rgba(255,58,64,0.04)_45%,transparent)]' : 'border-[rgba(255,58,64,0.12)] bg-[rgba(255,58,64,0.03)]'} ${dragging ? 'cursor-grabbing' : ''}`}
+          className={`relative flex h-[38px] shrink-0 items-center gap-3 border-b px-4 ${win.focused ? 'border-[rgb(var(--acc)/0.4)] bg-[linear-gradient(90deg,rgb(var(--acc)/0.22),rgb(var(--acc)/0.04)_45%,transparent)]' : 'border-[rgb(var(--acc)/0.12)] bg-[rgb(var(--acc)/0.03)]'} ${dragging ? 'cursor-grabbing' : ''}`}
           onPointerDown={(e) => onDown(e)}
           onPointerMove={onMove}
           onPointerUp={onUp}
           onDoubleClick={() => relicRuntime.windows.toggleMaximize(win.id)}
         >
-          <Glyph id={win.appId} size={20} className={win.focused ? 'text-white drop-shadow-[0_0_6px_#ff3a40]' : 'text-[#ff3a40]/60'} />
+          <Glyph id={win.appId} size={20} className={win.focused ? 'text-white drop-shadow-[0_0_6px_rgb(var(--acc))]' : 'text-[rgb(var(--acc))]/60'} />
           <span className={`truncate font-display text-[11px] tracking-[0.1em] ${win.focused ? 'text-white' : 'text-smoke'}`}>{win.title.toUpperCase()}</span>
-          <span className="hidden font-mono text-[9px] tracking-[0.1em] text-[rgba(176,138,82,0.7)] sm:inline">WND·{win.id.slice(-4).toUpperCase()}</span>
+          <span className="hidden font-mono text-[9px] tracking-[0.1em] text-[rgb(var(--gold)/0.7)] sm:inline">WND·{win.id.slice(-4).toUpperCase()}</span>
           {isForeign && (
             <button
               onPointerDown={(e) => e.stopPropagation()}
               onClick={() => setShowCompat((v) => !v)}
-              className={`hud-chip hud-target z-10 ml-2 gap-1.5 ${showCompat ? '!border-[#ff3a40] !text-white' : ''}`}
+              className={`hud-chip hud-target z-10 ml-2 gap-1.5 ${showCompat ? '!border-[rgb(var(--acc))] !text-white' : ''}`}
               title="Runtime details"
             >
               <Cpu size={11} strokeWidth={1.75} />

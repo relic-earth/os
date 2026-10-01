@@ -74,7 +74,7 @@ export function ThermostatMode() {
         initial={{ opacity: 0, scale: 0.96 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.7, ease: [0.2, 0, 0, 1] }}
-        className="relative aspect-square rounded-full border border-[#2a2020] bg-[radial-gradient(circle_at_50%_35%,#141010_0%,#070606_60%,#030303_100%)] shadow-[0_40px_120px_rgba(0,0,0,0.9),0_0_0_10px_#0b0909,0_0_0_11px_rgba(179,20,27,0.35),0_0_80px_rgba(125,15,20,0.25)]"
+        className="relative aspect-square rounded-full border border-[#2a2020] bg-[radial-gradient(circle_at_50%_35%,#141010_0%,#070606_60%,#030303_100%)] shadow-[0_40px_120px_rgba(0,0,0,0.9),0_0_0_10px_#0b0909,0_0_0_11px_rgb(var(--acc-2)/0.35),0_0_80px_rgb(var(--acc-3)/0.25)]"
         style={{ width: 'min(560px, 82vmin)' }}
       >
         <svg
@@ -95,10 +95,10 @@ export function ThermostatMode() {
             const [x1, y1] = pt(deg, 172)
             const [x2, y2] = pt(deg, i % 10 === 0 ? 160 : 166)
             const active = deg <= ta
-            return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke={active ? '#b3141b' : '#3b3634'} strokeWidth={i % 10 === 0 ? 1.4 : 0.8} opacity={active ? 0.95 : 0.6} />
+            return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} style={{ stroke: active ? 'rgb(var(--acc-2))' : '#3b3634' }} strokeWidth={i % 10 === 0 ? 1.4 : 0.8} opacity={active ? 0.95 : 0.6} />
           })}
           <path d={arc(START, START + SWEEP)} stroke="#1d1818" strokeWidth="6" fill="none" strokeLinecap="round" />
-          <motion.path d={arc(START, ta)} stroke="#e8242b" strokeWidth="6" fill="none" strokeLinecap="round" style={{ filter: 'drop-shadow(0 0 8px rgba(232,36,43,0.7))' }} initial={false} animate={{ d: arc(START, ta) }} transition={{ duration: 0.3 }} />
+          <motion.path d={arc(START, ta)} stroke="#e8242b" strokeWidth="6" fill="none" strokeLinecap="round" style={{ filter: 'drop-shadow(0 0 8px rgb(var(--acc-1)/0.7))' }} initial={false} animate={{ d: arc(START, ta) }} transition={{ duration: 0.3 }} />
           {/* indoor marker */}
           {(() => {
             const [x, y] = pt(ia, 150)

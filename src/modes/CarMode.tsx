@@ -84,7 +84,7 @@ function MapPane({ detailed }: { detailed: boolean }) {
         <path d="M0 250 C 200 230, 300 290, 520 250 S 800 200, 900 230" stroke="#241c1c" strokeWidth="10" fill="none" />
         <path d="M600 600 C 620 420, 700 350, 900 330" stroke="#140f0f" strokeWidth="40" fill="none" />
         <path d={ROUTE} stroke="#7d0f14" strokeWidth="9" fill="none" strokeLinecap="round" />
-        <path d={ROUTE} stroke="#e8242b" strokeWidth="3" fill="none" strokeLinecap="round" style={{ filter: 'drop-shadow(0 0 6px rgba(232,36,43,0.9))' }} />
+        <path d={ROUTE} stroke="#e8242b" strokeWidth="3" fill="none" strokeLinecap="round" style={{ filter: 'drop-shadow(0 0 6px rgb(var(--acc-1)/0.9))' }} />
         <circle cx="760" cy="130" r="9" fill="none" stroke="#ebe5df" strokeWidth="1.5" />
         <circle cx="760" cy="130" r="3" fill="#ebe5df" />
         <g>

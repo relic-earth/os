@@ -67,7 +67,7 @@ export function ArchitectureDiagram() {
   return (
     <div className="space-y-4">
       <div className="panel-solid ticks relative overflow-hidden">
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(179,20,27,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(179,20,27,0.05)_1px,transparent_1px)] bg-[size:20px_20px]" />
+        <div className="absolute inset-0 bg-[linear-gradient(rgb(var(--acc-2)/0.05)_1px,transparent_1px),linear-gradient(90deg,rgb(var(--acc-2)/0.05)_1px,transparent_1px)] bg-[size:20px_20px]" />
         <div className="label-sm absolute left-4 top-3 text-red">RELIC OS · SYSTEM ARCHITECTURE</div>
         <div className="label-sm absolute right-4 top-3">REV 0.1 · LIVE</div>
         <svg viewBox="0 0 800 470" className="relative block w-full">
@@ -90,7 +90,7 @@ export function ArchitectureDiagram() {
             const on = node.id === hover
             return (
               <g key={node.id} onMouseEnter={() => setHover(node.id)} onClick={() => setHover(node.id)} style={{ cursor: 'pointer' }}>
-                <rect x={node.x - w / 2} y={node.y - 14} width={w} height="28" rx="6" fill={on ? '#2a0609' : '#0a0808'} stroke={on ? '#e8242b' : '#b3141b'} strokeOpacity={on ? 1 : 0.5} strokeWidth="1" />
+                <rect x={node.x - w / 2} y={node.y - 14} width={w} height="28" rx="6" style={{ fill: on ? 'rgb(var(--acc-3) / 0.35)' : '#0a0808', stroke: on ? 'rgb(var(--acc-1))' : 'rgb(var(--acc-2))' }} strokeOpacity={on ? 1 : 0.5} strokeWidth="1" />
                 {on && <rect x={node.x - w / 2} y={node.y - 14} width="2" height="28" fill="#e8242b" />}
                 <text x={node.x} y={node.y + 3.5} textAnchor="middle" fill={on ? '#ebe5df' : '#a39b96'} fontSize="10" fontWeight="600" letterSpacing="1.6">
                   {node.label}

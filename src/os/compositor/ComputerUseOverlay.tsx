@@ -12,7 +12,7 @@ export function ComputerUseOverlay({ windowId }: { windowId: string }) {
     <AnimatePresence>
       {cu && (
         <motion.div className="pointer-events-none absolute inset-0 z-30" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-          <div className="absolute inset-0 border-2 border-red/60 shadow-[inset_0_0_40px_rgba(179,20,27,0.25)]" />
+          <div className="absolute inset-0 border-2 border-red/60 shadow-[inset_0_0_40px_rgb(var(--acc-2)/0.25)]" />
           {cu.phase === 'connecting' && <div className="scanline" />}
 
           {/* status */}
@@ -44,7 +44,7 @@ export function ComputerUseOverlay({ windowId }: { windowId: string }) {
           {/* target */}
           {cu.target && (
             <motion.div
-              className="absolute border border-signal shadow-[0_0_14px_rgba(232,36,43,0.6)]"
+              className="absolute border border-signal shadow-[0_0_14px_rgb(var(--acc-1)/0.6)]"
               initial={false}
               animate={{ left: `${cu.target.x - cu.target.w / 2}%`, top: `${cu.target.y - cu.target.h / 2}%`, width: `${cu.target.w}%`, height: `${cu.target.h}%` }}
               transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
@@ -55,7 +55,7 @@ export function ComputerUseOverlay({ windowId }: { windowId: string }) {
 
           {/* cursor */}
           <motion.div className="absolute" initial={false} animate={{ left: `${cu.cursor.x}%`, top: `${cu.cursor.y}%` }} transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}>
-            <svg width="22" height="22" viewBox="0 0 22 22" className="-translate-x-[3px] -translate-y-[2px] drop-shadow-[0_0_6px_rgba(232,36,43,0.9)]">
+            <svg width="22" height="22" viewBox="0 0 22 22" className="-translate-x-[3px] -translate-y-[2px] drop-shadow-[0_0_6px_rgb(var(--acc-1)/0.9)]">
               <path d="M3 2 L3 18 L7.5 13.5 L10.5 20 L13 19 L10 12.5 L16 12.5 Z" fill="#e8242b" stroke="#ffd6d6" strokeWidth="0.8" />
             </svg>
           </motion.div>

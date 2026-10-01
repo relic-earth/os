@@ -63,7 +63,7 @@ export function CoruscantWindow({ className = '' }: { className?: string }) {
   )
 
   return (
-    <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid slice" className={className} aria-hidden>
+    <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid slice" className={`art ${className}`} aria-hidden>
       <defs>
         <linearGradient id="cw-sky" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0" stopColor="#0d0204" />

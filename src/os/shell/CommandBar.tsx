@@ -105,7 +105,7 @@ function Prompt({ seed }: { seed: string }) {
 
   return (
     <motion.div
-      className="fixed inset-0 z-[9000] flex flex-col items-center bg-[radial-gradient(ellipse_at_50%_35%,rgba(60,0,4,0.35),rgba(0,0,0,0.72))] pt-[24vh] backdrop-blur-[3px]"
+      className="fixed inset-0 z-[9000] flex flex-col items-center bg-[radial-gradient(ellipse_at_50%_35%,rgb(var(--acc-3)/0.3),rgba(0,0,0,0.72))] pt-[24vh] backdrop-blur-[3px]"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0, transition: { duration: 0.3, delay: 0.12 } }}
@@ -127,7 +127,7 @@ function Prompt({ seed }: { seed: string }) {
           animate={{ clipPath: 'inset(0% 0% 0% 0%)', opacity: 1 }}
           exit={{ clipPath: 'inset(48% 0% 48% 0%)', opacity: 0, transition: { duration: 0.22, ease: [0.6, 0, 1, 1] } }}
           transition={{ delay: 0.16, duration: 0.42, ease: [0.16, 1, 0.3, 1] }}
-          className="hud-frame holo relative flex flex-col overflow-hidden rounded-[2px] bg-[linear-gradient(180deg,rgba(26,6,8,0.92),rgba(6,1,2,0.94))] shadow-[0_40px_120px_rgba(0,0,0,0.85),0_0_90px_rgba(220,20,30,0.3)] backdrop-blur-2xl"
+          className="hud-frame holo relative flex flex-col overflow-hidden rounded-[2px] bg-[linear-gradient(180deg,rgb(var(--ink-2)/0.92),rgb(var(--ink-1)/0.94))] shadow-[0_40px_120px_rgba(0,0,0,0.85),0_0_90px_rgb(var(--acc-1)/0.3)] backdrop-blur-2xl"
         >
           <span className="hud-orbit" />
           <span className="hud-corner tl" />
@@ -168,7 +168,7 @@ function Prompt({ seed }: { seed: string }) {
               placeholder={busy ? 'WORKING…' : 'COMMAND RELIC'}
               spellCheck={false}
               autoComplete="off"
-              className="min-w-0 flex-1 bg-transparent text-[24px] font-semibold tracking-[0.02em] text-bone caret-[#ff3a40] outline-none placeholder:tracking-[0.24em] placeholder:text-[rgba(176,138,82,0.55)]"
+              className="min-w-0 flex-1 bg-transparent text-[24px] font-semibold tracking-[0.02em] text-bone caret-[rgb(var(--acc))] outline-none placeholder:tracking-[0.24em] placeholder:text-[rgb(var(--gold)/0.55)]"
               aria-label="Ask Claude"
             />
             <span className="hud-chip shrink-0">
@@ -187,7 +187,7 @@ function Prompt({ seed }: { seed: string }) {
           </div>
 
           {(route || held) && !reply && (
-            <div className="flex items-center gap-3 border-t border-[rgba(176,138,82,0.18)] px-5 py-3 text-[11px] font-semibold tracking-[0.2em] text-[rgba(216,179,122,0.8)]">
+            <div className="flex items-center gap-3 border-t border-[rgb(var(--gold)/0.18)] px-5 py-3 text-[11px] font-semibold tracking-[0.2em] text-[rgb(var(--gold-2)/0.8)]">
               <span className="h-1.5 w-1.5 animate-ping rounded-full bg-signal" />
               <span className="typewriter" key={held ? 'h' : route!.preview}>{held ? 'RELEASE SPACE TO SEND' : `${routeLabel[route!.route]} · ${route!.preview}`.toUpperCase()}</span>
             </div>
@@ -195,7 +195,7 @@ function Prompt({ seed }: { seed: string }) {
 
           <AnimatePresence>
             {reply && (
-              <motion.div key={reply.id} initial={{ opacity: 0, filter: 'blur(6px)' }} animate={{ opacity: 1, filter: 'blur(0px)' }} exit={{ opacity: 0 }} transition={{ duration: 0.35 }} className="max-h-[50vh] overflow-y-auto border-t border-[rgba(176,138,82,0.18)] px-6 py-5">
+              <motion.div key={reply.id} initial={{ opacity: 0, filter: 'blur(6px)' }} animate={{ opacity: 1, filter: 'blur(0px)' }} exit={{ opacity: 0 }} transition={{ duration: 0.35 }} className="max-h-[50vh] overflow-y-auto border-t border-[rgb(var(--gold)/0.18)] px-6 py-5">
                 {(!!reply.activity || !!reply.steps?.length) && (
                   <div className="mb-4 space-y-1.5">
                     {reply.activity && <div className="text-[11px] font-semibold tracking-[0.2em] text-signal">{reply.activity.toUpperCase()}</div>}
@@ -223,7 +223,7 @@ function Prompt({ seed }: { seed: string }) {
           </AnimatePresence>
         </motion.div>
       </div>
-      <motion.div initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="mt-4 text-[10px] font-semibold tracking-[0.3em] text-[rgba(176,138,82,0.7)]" onMouseDown={(e) => e.stopPropagation()}>
+      <motion.div initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="mt-4 text-[10px] font-semibold tracking-[0.3em] text-[rgb(var(--gold)/0.7)]" onMouseDown={(e) => e.stopPropagation()}>
         RUNS 1s AFTER YOU STOP · HOLD SPACE TO WAIT · ESC TO CLOSE
       </motion.div>
     </motion.div>

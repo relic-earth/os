@@ -31,7 +31,7 @@ export function AutoCAD() {
           setCursor({ x: e.clientX - r.left, y: e.clientY - r.top })
         }}
       >
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(179,20,27,0.07)_1px,transparent_1px),linear-gradient(90deg,rgba(179,20,27,0.07)_1px,transparent_1px)] bg-[size:24px_24px]" />
+        <div className="absolute inset-0 bg-[linear-gradient(rgb(var(--acc-2)/0.07)_1px,transparent_1px),linear-gradient(90deg,rgb(var(--acc-2)/0.07)_1px,transparent_1px)] bg-[size:24px_24px]" />
         <div className="absolute inset-6 opacity-90">
           <PlanSheet index={2} />
         </div>

@@ -1,6 +1,6 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import type { RelicWindow, AppPermission, PermissionState } from '../../sdk/types'
-import { useOS } from '../../os/runtime/store'
+import { useOS, SKINS } from '../../os/runtime/store'
 import { relicRuntime } from '../../os/runtime/relicRuntime'
 import { appRegistry, getApp } from '../../os/apps/registry'
 import { permissionLabels } from '../../os/permissions/service'
@@ -109,7 +109,7 @@ function Tabs({ items, value, onChange }: { items: [string, string][]; value: st
       {items.map(([id, label]) => (
         <button key={id} onClick={() => onChange(id)} className={`relative px-4 py-2.5 text-[11px] tracking-[0.14em] font-semibold ${value === id ? 'text-bone' : 'text-smoke hover:text-ash'}`}>
           {label}
-          {value === id && <span className="absolute inset-x-3 bottom-0 h-[2px] bg-signal shadow-[0_0_8px_rgba(232,36,43,0.8)]" />}
+          {value === id && <span className="absolute inset-x-3 bottom-0 h-[2px] bg-signal shadow-[0_0_8px_rgb(var(--acc-1)/0.8)]" />}
         </button>
       ))}
     </div>
@@ -158,12 +158,13 @@ function Display() {
   return (
     <div>
       <H>DISPLAY & SOUND</H>
+      <SkinPicker />
       <div className="label-sm mb-3">BACKGROUND</div>
       <div className="grid grid-cols-4 gap-3">
         {(['wave', 'chancellor', 'horizon', 'volcanic', 'topographic', 'architecture'] as const).map((b) => (
           <button key={b} onClick={() => relicRuntime.settings.set('background', b)} className={`border ${bg === b ? 'border-red shadow-[var(--glow)]' : 'hair'}`}>
             <div className="aspect-video">
-              {b === 'wave' ? <img src="wallpaper/wave-poster.jpg" alt="" className="h-full w-full object-cover" /> : b === 'chancellor' ? <CoruscantWindow className="h-full w-full" /> : <Art variant={b === 'volcanic' ? 'volcano' : b === 'topographic' ? 'topo' : b === 'architecture' ? 'spire' : 'horizon'} className="h-full w-full" />}
+              {b === 'wave' ? <img src="wallpaper/wave-poster.jpg" alt="" className="art h-full w-full object-cover" /> : b === 'chancellor' ? <CoruscantWindow className="h-full w-full" /> : <Art variant={b === 'volcanic' ? 'volcano' : b === 'topographic' ? 'topo' : b === 'architecture' ? 'spire' : 'horizon'} className="h-full w-full" />}
             </div>
             <div className={`py-2 text-[10px] tracking-[0.13em] font-semibold ${bg === b ? 'text-bone' : 'text-ash'}`}>{b.toUpperCase()}</div>
           </button>
@@ -458,11 +459,11 @@ function About({ sub, setSub }: { sub: string; setSub: (s: string) => void }) {
           <div className="label text-red">RELIC OS · ROADMAP</div>
           <div className="relative mt-8 grid grid-cols-8">
             <div className="absolute left-[6%] right-[6%] top-[30px] h-px bg-[var(--line)]" />
-            <div className="absolute left-[6%] top-[30px] h-px w-[37%] bg-signal shadow-[0_0_10px_rgba(232,36,43,0.8)]" />
+            <div className="absolute left-[6%] top-[30px] h-px w-[37%] bg-signal shadow-[0_0_10px_rgb(var(--acc-1)/0.8)]" />
             {ROADMAP.map(([label, done], i) => (
               <div key={label} className="relative flex flex-col items-center text-center">
                 <span className="num text-[11px] text-smoke">{String(i + 1).padStart(2, '0')}</span>
-                <span className={`relative mt-3 h-[14px] w-[14px] rounded-full border ${done ? 'border-signal bg-signal shadow-[0_0_12px_rgba(232,36,43,0.9)]' : 'border-soot bg-void'}`} />
+                <span className={`relative mt-3 h-[14px] w-[14px] rounded-full border ${done ? 'border-signal bg-signal shadow-[0_0_12px_rgb(var(--acc-1)/0.9)]' : 'border-soot bg-void'}`} />
                 <span className={`mt-4 px-1 text-[10px] leading-relaxed tracking-[0.12em] font-semibold ${done ? 'text-bone' : 'text-smoke'}`}>{label}</span>
                 <span className={`label-sm mt-1 ${done ? 'text-red' : 'text-soot'}`}>{done ? (i === 2 ? 'CURRENT' : 'BUILT') : 'NEXT'}</span>
               </div>
@@ -488,6 +489,46 @@ function About({ sub, setSub }: { sub: string; setSub: (s: string) => void }) {
           </div>
         </div>
       )}
+    </div>
+  )
+}
+
+/** THEME — two skins, each a whole visual language: palette, type and light. */
+function SkinPicker() {
+  const skin = useOS((s) => s.skin)
+  return (
+    <div className="mb-10">
+      <div className="label mb-3">Theme</div>
+      <div className="grid grid-cols-2 gap-4">
+        {SKINS.map((k) => {
+          const on = skin === k.id
+          const earth = k.id === 'earth'
+          return (
+            <button
+              key={k.id}
+              onClick={() => relicRuntime.shell.setSkin(k.id)}
+              aria-pressed={on}
+              className={`hud-target scan-hover panel flex h-[132px] flex-col justify-between p-5 text-left ${on ? 'is-active' : ''}`}
+              style={earth ? { background: 'linear-gradient(135deg,#000 0%,#02101f 60%,#012014 100%)', borderColor: on ? '#5cc4ff' : 'rgba(92,196,255,0.3)' } : { background: 'linear-gradient(135deg,#000 0%,#1a0204 60%,#3a0609 100%)', borderColor: on ? '#ff3a40' : 'rgba(255,58,64,0.3)' }}
+            >
+              <div className="flex items-center gap-3">
+                <span className="text-[24px] tracking-[0.12em]" style={earth ? { fontFamily: 'Cinzel, serif', fontWeight: 700, color: '#f0f6ff' } : { fontFamily: 'Michroma, sans-serif', color: '#fff' }}>
+                  {k.name}
+                </span>
+                {on && <span className="text-[13px]" style={{ fontFamily: earth ? 'VT323, monospace' : 'JetBrains Mono, monospace', color: earth ? '#58e68c' : '#d8b37a' }}>● ACTIVE</span>}
+              </div>
+              <div className="flex gap-1.5">
+                {(earth ? ['#000', '#f0f6ff', '#5cc4ff', '#1a70d2', '#58e68c'] : ['#000', '#f5f0eb', '#ff3a40', '#7d0f14', '#b08a52']).map((c) => (
+                  <span key={c} className="h-4 w-8" style={{ background: c, boxShadow: 'inset 0 0 0 1px rgba(255,255,255,0.15)' }} />
+                ))}
+              </div>
+              <div className="text-[12px]" style={earth ? { fontFamily: 'Exo 2, sans-serif', color: '#c4d2e4' } : { fontFamily: 'Oxanium, sans-serif', color: '#d4ccc7' }}>
+                {k.note}
+              </div>
+            </button>
+          )
+        })}
+      </div>
     </div>
   )
 }

@@ -50,7 +50,7 @@ export function PhoneMode({ framed }: { framed: boolean }) {
         initial={{ opacity: 0, y: 20, scale: 0.98 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.6, ease: [0.2, 0, 0, 1] }}
-        className="relative z-10 rounded-[2px] border border-[#2a2020] bg-[#050404] p-[10px] shadow-[0_40px_120px_rgba(0,0,0,0.9),0_0_0_1px_rgba(179,20,27,0.25),0_0_60px_rgba(125,15,20,0.2)]"
+        className="relative z-10 rounded-[2px] border border-[#2a2020] bg-[#050404] p-[10px] shadow-[0_40px_120px_rgba(0,0,0,0.9),0_0_0_1px_rgb(var(--acc-2)/0.25),0_0_60px_rgb(var(--acc-3)/0.2)]"
         style={{ height: 'min(844px, 92vh)', aspectRatio: '390 / 844' }}
       >
         <div className="relative h-full w-full overflow-hidden rounded-[2px] bg-void">
@@ -91,13 +91,13 @@ function PhoneShell({ framed }: { framed: boolean }) {
       </div>
       {here && <MiniPlayer sessionId={here.id} />}
       {/* iOS-familiar: small text tabs, then a full-width Ask Claude field */}
-      <div className="relative z-40 shrink-0 border-t border-[rgba(245,240,235,0.08)] bg-[rgba(10,8,8,0.82)] px-4 pt-2 backdrop-blur-xl" style={{ paddingBottom: 'max(12px, env(safe-area-inset-bottom))' }}>
+      <div className="relative z-40 shrink-0 border-t border-[rgba(245,240,235,0.08)] bg-[rgb(var(--ink-1)/0.82)] px-4 pt-2 backdrop-blur-xl" style={{ paddingBottom: 'max(12px, env(safe-area-inset-bottom))' }}>
         <nav className="flex items-center justify-between">
           {TABS.map((t) => (
             <button
               key={t.id}
               onClick={() => { setTab(t.id); setSheet(null) }}
-              className={`hud-target h-7 rounded-full px-2.5 text-[11px] font-semibold uppercase tracking-[0.14em] transition-colors ${tab === t.id ? 'is-active bg-gradient-to-b from-[#b81620] to-[#6e0a10] text-white shadow-[inset_0_1px_0_rgba(216,179,122,0.45),0_0_14px_rgba(200,24,32,0.5)]' : 'text-smoke'}`}
+              className={`hud-target h-7 rounded-full px-2.5 text-[11px] font-semibold uppercase tracking-[0.14em] transition-colors ${tab === t.id ? 'is-active bg-gradient-to-b from-[rgb(var(--acc-2))] to-[rgb(var(--acc-3))] text-white shadow-[inset_0_1px_0_rgb(var(--gold-2)/0.45),0_0_14px_rgb(var(--acc-1)/0.5)]' : 'text-smoke'}`}
             >
               {t.label}
             </button>
@@ -128,7 +128,7 @@ function PhoneAsk({ onAsk }: { onAsk: () => void }) {
       enterKeyHint="send"
       placeholder={busy ? 'WORKING…' : 'COMMAND RELIC'}
       aria-label="Ask Claude"
-      className="well mt-2 h-11 w-full rounded-[2px] border border-[rgba(176,138,82,0.3)] bg-[rgba(20,6,8,0.7)] px-4 text-[17px] text-bone caret-[#e8242b] outline-none placeholder:text-smoke focus:shadow-[0_0_0_1px_rgba(232,36,43,0.5),0_0_20px_rgba(232,36,43,0.25)]"
+      className="well mt-2 h-11 w-full rounded-[2px] border border-[rgb(var(--gold)/0.3)] bg-[rgb(var(--ink-2)/0.7)] px-4 text-[17px] text-bone caret-[rgb(var(--acc-1))] outline-none placeholder:text-smoke focus:shadow-[0_0_0_1px_rgb(var(--acc-1)/0.5),0_0_20px_rgb(var(--acc-1)/0.25)]"
     />
   )
 }

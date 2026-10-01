@@ -41,7 +41,7 @@ export function Art({ variant, className, seed = 3 }: { variant: string; classNa
   const id = useId().replace(/:/g, '')
   const v = variant as ArtVariant
   return (
-    <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" className={className} aria-hidden>
+    <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" className={`art ${className ?? ''}`} aria-hidden>
       <defs>
         <radialGradient id={`${id}-sun`} cx="50%" cy="100%" r="70%">
           <stop offset="0%" stopColor="#c3161c" stopOpacity="0.85" />

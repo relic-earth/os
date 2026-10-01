@@ -87,9 +87,13 @@ export default function App() {
     }
     if (seen && !params.has('boot')) relicRuntime.shell.boot()
   }, [])
+  const skin = useOS((s) => s.skin)
   useEffect(() => {
     document.documentElement.dataset.theme = theme
   }, [theme])
+  useEffect(() => {
+    document.documentElement.dataset.skin = skin
+  }, [skin])
 
   return (
     <div className="h-full w-full">

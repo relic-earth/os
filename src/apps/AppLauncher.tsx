@@ -30,7 +30,7 @@ export function AppLauncher({ compact }: { compact?: boolean }) {
         {FILTERS.map((f) => (
           <button key={f.id} onClick={() => setFilter(f.id)} className={`relative px-4 py-3 text-[11px] tracking-[0.14em] font-semibold ${filter === f.id ? 'text-bone' : 'text-smoke hover:text-ash'}`}>
             {f.label} <span className="num text-soot">{counts(f.id)}</span>
-            {filter === f.id && <span className="absolute inset-x-3 bottom-0 h-[2px] bg-signal shadow-[0_0_8px_rgba(232,36,43,0.8)]" />}
+            {filter === f.id && <span className="absolute inset-x-3 bottom-0 h-[2px] bg-signal shadow-[0_0_8px_rgb(var(--acc-1)/0.8)]" />}
           </button>
         ))}
         {!compact && <span className="label-sm ml-auto">WINDOWS APPS RUN THROUGH RELIC COMPATIBILITY</span>}

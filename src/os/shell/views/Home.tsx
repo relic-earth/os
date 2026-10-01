@@ -29,12 +29,12 @@ export function Home({ compact }: { compact?: boolean }) {
         <HudReactor size={480} callouts={false} />
       </div>
       <div className="relative text-center">
-        <div className="font-mono text-[10px] tracking-[0.4em] text-[rgba(176,138,82,0.9)]">{fmtDate(now)}</div>
-        <div className="mt-3 font-display text-[clamp(64px,6.4vw,92px)] leading-none tracking-[0.02em] text-white [text-shadow:0_0_30px_rgba(255,58,64,0.8),0_0_2px_#fff]">
+        <div className="font-mono text-[10px] tracking-[0.4em] text-[rgb(var(--gold)/0.9)]">{fmtDate(now)}</div>
+        <div className="mt-3 font-display text-[clamp(64px,6.4vw,92px)] leading-none tracking-[0.02em] text-white [text-shadow:0_0_30px_rgb(var(--acc)/0.8),0_0_2px_#fff]">
           {hh}<span className="pulse text-signal">:</span>{mm}
         </div>
         <div className="mt-3 font-mono text-[10px] tracking-[0.4em] text-smoke">{greeting.toUpperCase()}</div>
-        <div className="mt-6 h-4">{!hasFocus ? <span className="pulse font-mono text-[10px] tracking-[0.3em] text-signal">CLICK ANYWHERE, THEN TYPE</span> : <span className="font-mono text-[10px] tracking-[0.3em] text-[rgba(255,58,64,0.55)]">▸ TYPE TO COMMAND</span>}</div>
+        <div className="mt-6 h-4">{!hasFocus ? <span className="pulse font-mono text-[10px] tracking-[0.3em] text-signal">CLICK ANYWHERE, THEN TYPE</span> : <span className="font-mono text-[10px] tracking-[0.3em] text-[rgb(var(--acc)/0.55)]">▸ TYPE TO COMMAND</span>}</div>
       </div>
     </motion.div>
   )
@@ -78,11 +78,11 @@ function Widget({ title, n, side, children, onClick }: { title: string; n: numbe
       transition={{ delay: 0.3 + n * 0.12, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
       className="panel hud-target scan-hover flex min-h-[176px] min-w-0 flex-col transition-transform duration-300 hover:-translate-y-1"
     >
-      <button onClick={onClick} disabled={!onClick} className="flex h-8 shrink-0 items-center gap-2 border-b border-[rgba(255,58,64,0.2)] bg-[linear-gradient(90deg,rgba(255,58,64,0.18),transparent_70%)] pl-5 pr-3 text-left enabled:hover:bg-[rgba(255,58,64,0.22)]">
-        <span className="font-mono text-[9px] tracking-[0.1em] text-[rgba(176,138,82,0.9)]">MFD-{String(n).padStart(2, '0')}</span>
-        <span className="h-px w-3 bg-[rgba(255,58,64,0.6)]" />
+      <button onClick={onClick} disabled={!onClick} className="flex h-8 shrink-0 items-center gap-2 border-b border-[rgb(var(--acc)/0.2)] bg-[linear-gradient(90deg,rgb(var(--acc)/0.18),transparent_70%)] pl-5 pr-3 text-left enabled:hover:bg-[rgb(var(--acc)/0.22)]">
+        <span className="font-mono text-[9px] tracking-[0.1em] text-[rgb(var(--gold)/0.9)]">MFD-{String(n).padStart(2, '0')}</span>
+        <span className="h-px w-3 bg-[rgb(var(--acc)/0.6)]" />
         <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white">{title}</span>
-        <span className="ml-auto h-1.5 w-1.5 rotate-45 bg-signal shadow-[0_0_6px_#ff3a40]" />
+        <span className="ml-auto h-1.5 w-1.5 rotate-45 bg-signal shadow-[0_0_6px_rgb(var(--acc))]" />
       </button>
       <div className="flex min-h-0 flex-1 flex-col p-5 pt-4">{children}</div>
     </motion.div>
@@ -136,7 +136,7 @@ function DevicesWidget({ n, side }: { n: number; side?: 'l' | 'r' }) {
       <div className="mt-4 grid grid-cols-4 gap-2">
         {devices.map((d) => (
           <div key={d.id} title={d.name} className={`flex h-10 items-center justify-center rounded-[2px] ${d.status === 'online' ? 'bg-white/[0.07] text-signal' : 'text-soot'}`}>
-            <Glyph id={d.type} size={24} className={d.status === 'online' ? 'drop-shadow-[0_0_5px_rgba(232,36,43,0.7)]' : ''} />
+            <Glyph id={d.type} size={24} className={d.status === 'online' ? 'drop-shadow-[0_0_5px_rgb(var(--acc-1)/0.7)]' : ''} />
           </div>
         ))}
       </div>

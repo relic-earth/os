@@ -69,7 +69,7 @@ export function Toggle({ on, onChange, label }: { on: boolean; onChange: (v: boo
       aria-label={typeof label === 'string' ? label : undefined}
     >
       <span className={`relative h-[14px] w-[28px] border transition-colors ${on ? 'border-signal/80 bg-blood/60' : 'hair-strong bg-ink'}`}>
-        <span className={`absolute top-[2px] h-[8px] w-[10px] transition-all ${on ? 'left-[15px] bg-signal shadow-[0_0_8px_rgba(232,36,43,0.8)]' : 'left-[2px] bg-soot'}`} />
+        <span className={`absolute top-[2px] h-[8px] w-[10px] transition-all ${on ? 'left-[15px] bg-signal shadow-[0_0_8px_rgb(var(--acc-1)/0.8)]' : 'left-[2px] bg-soot'}`} />
       </span>
       {label && <span className="label">{label}</span>}
     </button>

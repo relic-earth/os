@@ -175,7 +175,7 @@ export function TVMode() {
                 onMouseEnter={() => setFocus(i)}
                 animate={{ scale: on ? 1.06 : 1, y: on ? -6 : 0 }}
                 transition={{ type: 'spring', stiffness: 320, damping: 28 }}
-                className={`relative aspect-video overflow-hidden border text-left ${on ? 'z-10 border-signal shadow-[0_0_40px_rgba(232,36,43,0.35)]' : 'border-[var(--line-soft)]'}`}
+                className={`relative aspect-video overflow-hidden border text-left ${on ? 'z-10 border-signal shadow-[0_0_40px_rgb(var(--acc-1)/0.35)]' : 'border-[var(--line-soft)]'}`}
               >
                 <Art variant={t.art} seed={i + 5} className="absolute inset-0 h-full w-full" />
                 <div className="absolute inset-0 bg-gradient-to-t from-void via-void/30 to-transparent" />

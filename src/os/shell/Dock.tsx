@@ -43,7 +43,7 @@ export function Dock() {
   const key = () => String(++n).padStart(2, '0')
 
   return (
-    <nav aria-label="Apps" data-profile={profile} className="no-scrollbar relative z-[5000] flex w-[88px] shrink-0 flex-col items-stretch gap-1 overflow-y-auto border-r border-[rgba(255,58,64,0.16)] bg-[linear-gradient(90deg,rgba(6,1,2,0.92),rgba(14,3,5,0.78))] px-2 py-3 backdrop-blur-xl">
+    <nav aria-label="Apps" data-profile={profile} className="no-scrollbar relative z-[5000] flex w-[88px] shrink-0 flex-col items-stretch gap-1 overflow-y-auto border-r border-[rgb(var(--acc)/0.16)] bg-[linear-gradient(90deg,rgb(var(--ink-1)/0.92),rgb(var(--ink-1)/0.78))] px-2 py-3 backdrop-blur-xl">
       <RailHead>NAV</RailHead>
       {SURFACES.map((s) => (
         <Key key={s.id} n={key()} glyph={s.id} label={s.name} active={section === s.id && !anyFocused} onClick={() => surface(s.id)} />
@@ -64,10 +64,10 @@ export function Dock() {
 
 function RailHead({ children }: { children: string }) {
   return (
-    <div className="mt-2 flex items-center gap-1.5 px-1 font-mono text-[9px] tracking-[0.2em] text-[rgba(176,138,82,0.75)] first:mt-0">
-      <span className="h-px flex-1 bg-[rgba(176,138,82,0.35)]" />
+    <div className="mt-2 flex items-center gap-1.5 px-1 font-mono text-[9px] tracking-[0.2em] text-[rgb(var(--gold)/0.75)] first:mt-0">
+      <span className="h-px flex-1 bg-[rgb(var(--gold)/0.35)]" />
       {children}
-      <span className="h-px w-2 bg-[rgba(176,138,82,0.35)]" />
+      <span className="h-px w-2 bg-[rgb(var(--gold)/0.35)]" />
     </div>
   )
 }
@@ -77,7 +77,7 @@ function Key({ n, glyph, label, active, running, onClick }: { n: string; glyph: 
     <button onClick={onClick} aria-label={label} className={`rail-key hud-target group ${active ? 'is-active' : ''}`}>
       <span className="rail-n">{n}</span>
       {running && <span className="rail-run" />}
-      <Glyph id={glyph} size={24} className={active ? 'text-white' : 'text-[#ff3a40]'} />
+      <Glyph id={glyph} size={24} className={active ? 'text-white' : 'text-[rgb(var(--acc))]'} />
       <span className="rail-label">{label}</span>
     </button>
   )
