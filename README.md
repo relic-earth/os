@@ -54,14 +54,22 @@ HARDWARE
 
 The UI never calls a model directly. Set `VITE_CLAUDE_PROVIDER=anthropic`, or pick it in Settings → Claude, and deploy `server/claude-proxy.example.ts` at `/api/claude` with `ANTHROPIC_API_KEY`. The browser never holds the key. The agent keeps ownership of the tool loop and the permission checks.
 
+## Interface
+
+At rest the desktop shows only the time and *START TYPING*. Everything else waits in the dark:
+
+- **Type anywhere** to talk to Claude. The prompt runs one second after you stop typing. Hold the spacebar to keep it waiting, press Enter to run at once, or Esc to dismiss.
+- **Left edge**: the sidebar slides in. **Bottom edge**: the dock. **Top**: the status bar. The tiles and status panels on Home appear when the pointer reaches their area.
+- Hidden chrome takes no clicks, so it never blocks the windows underneath it.
+
 ## Demo script
 
 1. Load `/?boot`. The boot sequence runs.
-2. Open **Claude** and type *"Find my latest Relic House permit plans"*. Claude searches Files and opens *Relic House Permit Plans.pdf* (Rev C).
+2. Just start typing *"Find my latest Relic House permit plans"*. The prompt appears as you type and runs one second after you stop. Claude searches Files and opens *Relic House Permit Plans.pdf* (Rev C).
 3. Type *"Open Photoshop"*. Photoshop launches through the Wine compatibility layer. The **WINDOWS APP** badge on the title bar opens the compatibility panel.
-4. Open **Devices**: laptop, desktop, TV, phone, car, home, thermostat.
+4. Move the pointer to the left edge and open **Devices**: laptop, desktop, TV, phone, car, home, thermostat.
 5. Type *"Send this to the TV"*. Claude locates the TV, authenticates it and transfers the Photoshop session.
-6. Press **T** (or use DEVICE → RELIC TV). TV mode shows the Photoshop session continued there.
+6. Press **Alt+T** (or use DEVICE → RELIC TV). TV mode shows the Photoshop session continued there.
 7. Switch to DEVICE → **RELIC PHONE**, then **RELIC CAR**, then **RELIC THERMOSTAT**.
 8. On the thermostat, change 68° to 70°.
 9. Return to the laptop and ask Claude *"What's the temperature at home?"*. It answers *"The thermostat is set to 70°."*
@@ -73,9 +81,12 @@ More to try: *"What devices have a large display?"*, *"Install Revit"* (install 
 
 | Keys | Action |
 |---|---|
-| Ctrl/⌘ + Space | Claude / global command |
+| Any letter | Opens the Claude prompt with what you typed; runs 1 second after you stop |
+| Hold Space | Keeps the prompt waiting; release to start the second again |
+| Enter | Runs the prompt immediately |
+| Ctrl/⌘ + Space | Opens the Claude prompt empty |
 | Ctrl/⌘ + Tab (or Ctrl + \`) | Switch applications. Browsers reserve Ctrl+Tab, so use Ctrl+\` there. |
 | Ctrl/⌘ + W (or Alt + W) | Close window. Browsers reserve Ctrl+W, so use Alt+W there. |
 | Esc | Close overlays / back (TV) |
-| T | Toggle TV mode |
+| Alt + T | Toggle TV mode |
 | Arrow keys | Remote-control navigation in TV mode; adjust the thermostat |

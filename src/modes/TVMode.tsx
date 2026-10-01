@@ -186,7 +186,7 @@ export function TVMode() {
             )
           })}
         </div>
-        <div className="label-sm mt-[3vh] text-smoke">← → ↑ ↓ NAVIGATE · ENTER SELECT · ESC BACK · T EXIT TV MODE</div>
+        <div className="label-sm mt-[3vh] text-smoke">← → ↑ ↓ NAVIGATE · ENTER SELECT · ESC BACK · ALT T EXIT TV · TYPE TO ASK</div>
       </div>
     </div>
   )

@@ -3,12 +3,14 @@ import { useOS, useOSShallow } from '../runtime/store'
 import { relicRuntime } from '../runtime/relicRuntime'
 import { getApp } from '../apps/registry'
 import { Icon } from '../../ui/Icon'
+import { revealClass, useEdgeReveal } from '../../ui/primitives'
 
 const PINNED = ['claude', 'files', 'web', 'apps', 'devices', 'settings']
 
 /** Dock / taskbar — pinned system apps plus every running app on this device. */
 export function Dock() {
   const profile = useOS((s) => s.profile)
+  const { ref, shown } = useEdgeReveal<HTMLDivElement>((_, y) => y >= window.innerHeight - 28, 24)
   const wins = useOSShallow((s) => s.windows.filter((w) => w.deviceId === s.profile))
   const running = Array.from(new Set(wins.map((w) => w.appId)))
   const items = [...PINNED, ...running.filter((id) => !PINNED.includes(id))]
@@ -22,12 +24,13 @@ export function Dock() {
   }
 
   return (
-    <div className="pointer-events-none absolute inset-x-0 bottom-3 z-[5000] flex justify-center" data-profile={profile}>
+    <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[5000] flex justify-center" data-profile={profile}>
+      <div ref={ref} data-shown={shown ? '1' : '0'} className={`${revealClass(shown)} pb-3`}>
       <motion.div
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.2, duration: 0.5, ease: [0.2, 0, 0, 1] }}
-        className="panel pointer-events-auto flex items-stretch"
+        className="panel flex items-stretch"
       >
         {items.map((id, i) => {
           const app = getApp(id)
@@ -53,6 +56,7 @@ export function Dock() {
           )
         })}
       </motion.div>
+      </div>
     </div>
   )
 }

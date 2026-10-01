@@ -64,7 +64,7 @@ export function DeviceSwitcher({ align = 'right', compact, up }: { align?: 'righ
                   </button>
                 )
               })}
-              <div className="label-sm border-t hair mt-2 px-4 pt-2">SHORTCUT · T FOR TV</div>
+              <div className="label-sm border-t hair mt-2 px-4 pt-2">SHORTCUT · ALT T FOR TV</div>
             </motion.div>
           </>
         )}
@@ -81,8 +81,8 @@ export function TopBar({ compact }: { compact?: boolean }) {
   const unread = useOS((s) => s.notifications.filter((n) => !n.read).length)
   const [menu, setMenu] = useState(false)
   return (
-    <header className="relative z-30 flex h-11 items-center gap-4 border-b hair bg-void/70 px-5 backdrop-blur-md">
-      <div className="relative">
+    <header className="group/top relative z-30 flex h-11 items-center gap-4 border-b border-transparent px-5 transition-colors duration-500 hover:border-[var(--line-soft)] hover:bg-void/70 hover:backdrop-blur-md">
+      <div className="whisper relative">
         <button onClick={() => setMenu((m) => !m)} className="flex items-center" aria-label="Relic menu">
           <Wordmark size={13} />
         </button>
@@ -110,19 +110,19 @@ export function TopBar({ compact }: { compact?: boolean }) {
           </>
         )}
       </div>
-      <span className="h-4 w-px bg-[var(--line-soft)]" />
-
-      {/* command bar — the primary OS interface */}
+      
+      {/* command bar — typing anywhere opens it; this is the pointer path */}
       <button
         onClick={() => relicRuntime.shell.openCommand()}
-        className="group mx-auto flex h-7 w-[min(460px,40vw)] items-center gap-3 border border-[var(--line)] bg-ink/80 px-3 text-left transition-all hover:border-red hover:shadow-[var(--glow)]"
+        className="group recede mx-auto flex h-7 w-[min(460px,40vw)] items-center gap-3 border border-[var(--line)] bg-ink/80 px-3 text-left transition-all hover:border-red hover:shadow-[var(--glow)]"
       >
         <Search size={13} strokeWidth={1.25} className="text-red" />
         <span className="flex-1 truncate text-[10px] tracking-[0.34em] text-ash group-hover:text-bone">ASK CLAUDE…</span>
-        {!compact && <span className="label-sm text-smoke">CTRL SPACE</span>}
+        {!compact && <span className="label-sm text-smoke">JUST TYPE</span>}
       </button>
 
       <div className="flex items-center gap-4">
+        <div className="recede flex items-center gap-4">
         <DeviceSwitcher compact={compact} />
         {!compact && (
           <div className="flex items-center gap-3 text-ash" title="Relic system status">
@@ -149,7 +149,9 @@ export function TopBar({ compact }: { compact?: boolean }) {
           <Bell size={14} strokeWidth={1.25} />
           {unread > 0 && <span className="dot absolute -right-1 -top-0.5" />}
         </button>
-        <span className="num whitespace-nowrap text-right text-[12px] tracking-[0.12em] text-bone">{fmtClock(now)}</span>
+        </div>
+        {unread > 0 && <span className="dot pulse group-hover/top:hidden" aria-hidden />}
+        <span className="whisper num whitespace-nowrap text-right text-[12px] tracking-[0.12em] text-bone">{fmtClock(now)}</span>
       </div>
     </header>
   )

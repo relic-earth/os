@@ -2,18 +2,13 @@ import { useEffect } from 'react'
 import { getOS, setOS } from '../runtime/store'
 import { relicRuntime } from '../runtime/relicRuntime'
 
-const typing = (el: EventTarget | null) => {
-  const t = el as HTMLElement | null
-  return !!t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)
-}
-
 /**
  * Global shortcuts
  *   Ctrl/Cmd + Space   Claude / global command
  *   Ctrl/Cmd + Tab     switch applications (also Ctrl + `, since browsers reserve Ctrl+Tab)
  *   Ctrl/Cmd + W       close window (also Alt + W, since browsers reserve Ctrl+W)
  *   Esc                close overlays
- *   T                  toggle TV mode
+ *   Alt + T            toggle TV mode (plain letters open the type-anywhere prompt)
  * Arrow keys in TV mode are handled by TVMode itself.
  */
 export function useGlobalShortcuts() {
@@ -48,7 +43,8 @@ export function useGlobalShortcuts() {
         if (s.profile === 'relic-tv') return // TV mode uses Esc as “back”
         return
       }
-      if (!mod && !e.altKey && e.key.toLowerCase() === 't' && !typing(e.target) && !s.commandOpen) {
+      if (e.altKey && !mod && e.code === 'KeyT') {
+        e.preventDefault()
         relicRuntime.shell.setProfile(s.profile === 'relic-tv' ? 'relic-laptop' : 'relic-tv')
       }
     }

@@ -449,3 +449,44 @@ input[type='range']::-moz-range-thumb {
   border-radius: 0;
   background: var(--color-signal);
 }
+
+/* ── Recede ───────────────────────────────────────────────
+   Chrome waits in the dark until you reach for its area.
+   Fades out slowly, returns quickly. Touch screens keep it visible. */
+.recede {
+  opacity: 0;
+  transition: opacity 0.9s cubic-bezier(0.2, 0, 0, 1) 0.35s;
+}
+.recede:hover,
+.recede:focus-within {
+  opacity: 1;
+  transition-duration: 0.25s;
+  transition-delay: 0s;
+}
+.whisper {
+  opacity: 0.4;
+  transition: opacity 0.9s cubic-bezier(0.2, 0, 0, 1) 0.35s;
+}
+.group\/top:hover .whisper,
+.group\/top:focus-within .whisper,
+.group\/top:hover .recede,
+.group\/top:focus-within .recede {
+  opacity: 1;
+  transition-duration: 0.25s;
+  transition-delay: 0s;
+}
+@media (hover: none) {
+  .recede,
+  .whisper {
+    opacity: 1;
+  }
+}
+
+@keyframes drain {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0);
+  }
+}

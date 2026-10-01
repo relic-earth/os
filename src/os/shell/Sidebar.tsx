@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import { useOS, type Section } from '../runtime/store'
 import { relicRuntime } from '../runtime/relicRuntime'
-import { useMesh } from '../../ui/primitives'
+import { revealClass, useEdgeReveal, useMesh } from '../../ui/primitives'
 import { Icon } from '../../ui/Icon'
 import { claudeGateway } from '../../agent/relicAgent'
 
@@ -26,6 +26,7 @@ export function Sidebar({ compact }: { compact?: boolean }) {
   const focusedApp = useOS((s) => s.windows.find((w) => w.deviceId === s.profile && w.focused && !w.minimized)?.appId)
   const cloud = useOS((s) => s.cloud.status)
   const { online } = useMesh()
+  const { ref, shown } = useEdgeReveal<HTMLElement>((x, y) => x <= 24 && y > 44)
   const activeId = NAV.find((n) => n.app && n.app === focusedApp)?.id ?? section
 
   const go = (n: NavItem) => {
@@ -36,9 +37,9 @@ export function Sidebar({ compact }: { compact?: boolean }) {
   }
 
   return (
-    <nav className={`relative z-20 flex shrink-0 flex-col border-r hair bg-void/55 backdrop-blur-md ${compact ? 'w-[60px]' : 'w-[196px]'}`}>
+    <nav ref={ref} data-shown={shown ? '1' : '0'} className={`${revealClass(shown)} absolute inset-y-0 left-0 z-[5100] flex flex-col border-r hair bg-void/80 backdrop-blur-md ${compact ? 'w-[60px]' : 'w-[196px]'}`}>
       <div className="flex-1 pt-5">
-        {NAV.map((n, i) => {
+        {NAV.map((n) => {
           const active = n.id === activeId
           return (
             <button
@@ -52,7 +53,6 @@ export function Sidebar({ compact }: { compact?: boolean }) {
                 <Icon name={n.icon} size={16} className={`relative ${active ? 'text-signal' : 'text-ash group-hover:text-bone'}`} />
               ) : (
                 <>
-                  <span className={`num relative w-4 text-[9px] ${active ? 'text-red' : 'text-soot'}`}>{String(i + 1).padStart(2, '0')}</span>
                   <span className={`relative text-[11px] tracking-[0.34em] ${active ? 'text-bone' : 'text-ash group-hover:text-bone'}`}>{n.label}</span>
                 </>
               )}

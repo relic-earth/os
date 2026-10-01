@@ -78,8 +78,6 @@ export function Art({ variant, className, seed = 3 }: { variant: string; classNa
           <ellipse cx="200" cy="560" rx="420" ry="330" fill="none" stroke="#e8242b" strokeOpacity="0.25" strokeWidth="5" filter={`url(#${id}-glow)`} />
           <rect width="400" height="300" fill={`url(#${id}-sun)`} opacity="0.45" />
           <path d={ridge(seed + 11, 270, 26)} fill="#040303" />
-          <circle cx="300" cy="70" r="1" fill="#ebe5df" opacity="0.6" />
-          <circle cx="90" cy="40" r="0.7" fill="#ebe5df" opacity="0.4" />
         </>
       )}
 

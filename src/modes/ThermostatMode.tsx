@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type PointerEvent as RPE } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Minus, Plus } from 'lucide-react'
-import { useOS } from '../os/runtime/store'
+import { getOS, useOS } from '../os/runtime/store'
 import { relicRuntime } from '../os/runtime/relicRuntime'
 import { Background } from '../os/shell/Background'
 import { DeviceSwitcher } from '../os/shell/TopBar'
@@ -36,6 +36,7 @@ export function ThermostatMode() {
 
   useEffect(() => {
     const k = (e: KeyboardEvent) => {
+      if (getOS().commandOpen) return
       if (e.key === 'ArrowUp' || e.key === 'ArrowRight') relicRuntime.home.thermostat.nudge(1, by)
       if (e.key === 'ArrowDown' || e.key === 'ArrowLeft') relicRuntime.home.thermostat.nudge(-1, by)
     }

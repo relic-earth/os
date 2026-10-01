@@ -2,8 +2,7 @@ import { motion } from 'framer-motion'
 import { useOS } from '../../runtime/store'
 import { relicRuntime } from '../../runtime/relicRuntime'
 import { Art } from '../../../ui/Art'
-import { Bar, fmtDate, useMesh, useNow } from '../../../ui/primitives'
-import { ClaudeInput } from '../../../apps/claude/ClaudePanel'
+import { Bar, fmtClock, fmtDate, useMesh, useNow } from '../../../ui/primitives'
 import { ContinuityActions, NowWatching } from '../Continuity'
 import { fmtAgo } from '../../files/service'
 import { getMedia } from '../../media/library'
@@ -15,62 +14,61 @@ const TILES = [
   { id: 'apps', label: 'APPS', sub: 'WINDOWS · LINUX · RELIC', art: 'grid', go: () => void relicRuntime.apps.launch('apps') },
 ]
 
-/** HOME — “What do you want to do?” */
+/**
+ * HOME — almost nothing at rest: the time, and an invitation to type.
+ * Everything else waits in the dark until the pointer reaches its area.
+ */
 export function Home({ compact }: { compact?: boolean }) {
-  const now = useNow(30_000)
+  const now = useNow(15_000)
   const hour = new Date(now).getHours()
   const greeting = hour < 5 ? 'GOOD NIGHT' : hour < 12 ? 'GOOD MORNING' : hour < 18 ? 'GOOD AFTERNOON' : 'GOOD EVENING'
   const video = useOS((s) => s.sessions.filter((x) => x.mediaId && getMedia(x.mediaId)?.kind !== 'track').sort((a, b) => b.updatedAt - a.updatedAt)[0])
 
   return (
-    <div className="flex h-full gap-6 overflow-y-auto px-8 pb-24 pt-8">
-      <div className="min-w-0 flex-1">
-        <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: [0.2, 0, 0, 1] }}>
-          <div className="label">{greeting} · {fmtDate(now)}</div>
-          <h1 className="mt-4 text-[clamp(26px,3.2vw,40px)] font-light tracking-[0.03em] text-bone">What do you want to do?</h1>
-          <div className="mt-6 max-w-[620px]">
-            <ClaudeInput size="lg" placeholder="ASK CLAUDE — OPEN, FIND, SEND, PLAY, CHANGE…" onSubmitted={() => relicRuntime.shell.openCommand()} />
+    <div className="relative flex h-full flex-col overflow-y-auto">
+      <div className="flex min-h-[46%] flex-1 flex-col items-center justify-center px-8 text-center">
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1.4, ease: [0.2, 0, 0, 1] }}>
+          <div className="num text-[clamp(56px,8.5vw,128px)] font-extralight leading-none tracking-[0.02em] text-bone/90">
+            {fmtClock(now).replace(/ (AM|PM)/, '')}
           </div>
+          <div className="label mt-5 text-ash/70">{greeting} · {fmtDate(now)}</div>
         </motion.div>
+        <motion.button
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.9, duration: 1.2 }}
+          onClick={() => relicRuntime.shell.openCommand()}
+          className="mt-14 flex items-center gap-1 text-[10px] tracking-[0.5em] text-smoke transition-colors hover:text-ash"
+        >
+          START TYPING
+          <span className="caret !h-[10px] !w-[5px] opacity-70" />
+        </motion.button>
+      </div>
 
-        <div className="mt-6 grid grid-cols-2 gap-4 md:grid-cols-4">
+      <div className="recede mx-auto w-full max-w-[1080px] px-8 pb-28 pt-10">
+        <div className={`grid gap-3 ${compact ? 'grid-cols-2' : 'grid-cols-2 md:grid-cols-4'}`}>
           {TILES.map((t, i) => (
-            <motion.button
+            <button
               key={t.id}
-              initial={{ opacity: 0, y: 14 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.12 + i * 0.07, duration: 0.55, ease: [0.2, 0, 0, 1] }}
               onClick={t.go}
-              className="group relative aspect-[4/5] max-h-[300px] w-full overflow-hidden border border-[var(--line-soft)] text-left transition-all duration-500 hover:border-red hover:shadow-[0_0_30px_rgba(179,20,27,0.25)]"
+              className="group relative aspect-[16/10] w-full overflow-hidden border border-[var(--line-soft)] text-left transition-all duration-500 hover:border-red hover:shadow-[0_0_30px_rgba(179,20,27,0.25)]"
             >
               <Art variant={t.art} seed={i + 3} className="absolute inset-0 h-full w-full transition-transform duration-[1.4s] ease-out group-hover:scale-[1.05]" />
               <div className="absolute inset-0 bg-gradient-to-t from-void via-void/30 to-transparent" />
-              <span className="absolute left-0 top-0 h-px w-0 bg-signal transition-all duration-500 group-hover:w-full" />
-              <div className="absolute bottom-0 left-0 right-0 p-4">
-                <div className="text-[14px] tracking-[0.46em] text-bone">{t.label}</div>
-                <div className="label-sm mt-1.5 text-ash">{t.sub}</div>
+              <div className="absolute bottom-0 left-0 right-0 p-3.5">
+                <div className="text-[12px] tracking-[0.46em] text-bone">{t.label}</div>
+                <div className="label-sm mt-1 text-ash">{t.sub}</div>
               </div>
-              <span className="num absolute right-3 top-3 text-[9px] text-soot">0{i + 1}</span>
-            </motion.button>
+            </button>
           ))}
         </div>
-
         {video && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.45 }} className="panel ticks mt-6 flex flex-wrap items-center gap-6 p-5">
-            <div className="h-[84px] w-[150px] shrink-0 overflow-hidden border hair">
-              <Art variant={getMedia(video.mediaId)?.art ?? 'duel'} className="h-full w-full" />
-            </div>
+          <div className="mt-3 flex flex-wrap items-center gap-6 border border-[var(--line-soft)] bg-void/60 px-5 py-4">
             <div className="min-w-[220px] flex-1">
               <NowWatching sessionId={video.id} />
             </div>
-            <div className="flex flex-col gap-2">
-              <span className="label-sm">CONTINUITY · ONE SESSION, ANY SCREEN</span>
-              <ContinuityActions sessionId={video.id} only={['relic-tv', 'relic-phone', 'relic-car', 'relic-laptop']} />
-              <button className="label-sm self-start hover:text-bone" onClick={() => void relicRuntime.apps.launch('player', { props: { mediaId: video.mediaId }, title: getMedia(video.mediaId)?.title })}>
-                OPEN PLAYER →
-              </button>
-            </div>
-          </motion.div>
+            <ContinuityActions sessionId={video.id} only={['relic-tv', 'relic-phone', 'relic-car', 'relic-laptop']} />
+          </div>
         )}
       </div>
 
@@ -87,7 +85,7 @@ function StatusColumn() {
   const recent = relicRuntime.files.recent(4)
   useOS((s) => s.memory.recentFiles)
   return (
-    <motion.aside initial={{ opacity: 0, x: 12 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25, duration: 0.6 }} className="hidden w-[270px] shrink-0 flex-col gap-4 lg:flex">
+    <aside className="recede absolute right-6 top-6 hidden w-[260px] flex-col gap-3 pb-6 pl-10 lg:flex">
       <div className="panel ticks p-5">
         <div className="label-sm text-red">RELIC NETWORK</div>
         <div className="mt-3 flex items-baseline justify-between">
@@ -141,6 +139,6 @@ function StatusColumn() {
           </button>
         ))}
       </div>
-    </motion.aside>
+    </aside>
   )
 }

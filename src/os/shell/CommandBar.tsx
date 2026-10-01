@@ -1,126 +1,200 @@
-import { useMemo, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Search, ArrowUpRight } from 'lucide-react'
-import { useOS } from '../runtime/store'
+import { Check, Loader, X } from 'lucide-react'
+import { getOS, useOS } from '../runtime/store'
 import { relicRuntime } from '../runtime/relicRuntime'
 import { classify, routeLabel } from '../../agent/intent'
-import { ClaudeTranscript, Suggestions } from '../../apps/claude/ClaudePanel'
-import { runtimeLabel } from '../apps/registry'
-import { Icon } from '../../ui/Icon'
 
 /**
- * Universal command bar — ASK CLAUDE…
- * One field for everything: native actions, apps, files, devices, questions.
- * Live results come from the runtime (apps + file index); Enter hands the
- * command to the Relic Agent, which routes it.
+ * TYPE ANYWHERE
+ *
+ * Start typing on any screen and the prompt appears with what you typed.
+ * One second after you stop, it runs. Hold the spacebar to keep it waiting;
+ * release to start the second again. Enter runs at once, Esc dismisses.
  */
-export function CommandBar() {
-  const open = useOS((s) => s.commandOpen)
-  return <AnimatePresence>{open && <CommandSurface />}</AnimatePresence>
+const IDLE_MS = 1000
+/** time to read the answer before the prompt fades: grows with its length */
+const lingerFor = (text: string) => Math.min(12000, 2600 + text.length * 35)
+
+const isTypingTarget = (t: EventTarget | null) => {
+  const el = t as HTMLElement | null
+  return !!el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.tagName === 'SELECT' || el.isContentEditable)
 }
 
-function CommandSurface() {
-  const [text, setText] = useState('')
-  const busy = useOS((s) => s.agentBusy)
-  const messages = useOS((s) => s.messages)
-  const close = () => relicRuntime.shell.openCommand(false)
-  const q = text.trim()
-  const route = q.length > 1 ? classify(q) : null
+export function CommandBar() {
+  const open = useOS((s) => s.commandOpen)
+  const [seed, setSeed] = useState('')
 
-  const results = useMemo(() => {
-    if (q.length < 2) return { apps: [], files: [] }
-    const term = q.toLowerCase().replace(/^(open|launch|start|run|find|show|search( for)?)\s+/, '').trim()
-    if (term.length < 2) return { apps: [], files: [] }
-    return {
-      apps: relicRuntime.apps.list().filter((a) => !['viewer', 'player'].includes(a.id) && (a.name.toLowerCase().includes(term) || term.includes(a.name.toLowerCase()))).slice(0, 4),
-      files: relicRuntime.files.search(term, { limit: 4 }),
+  // global listener: a printable key anywhere opens the prompt with that key
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const s = getOS()
+      if (!s.booted || s.commandOpen || s.confirm || s.launch) return
+      if (e.ctrlKey || e.metaKey || e.altKey || e.isComposing) return
+      if (e.key.length !== 1 || e.key === ' ') return
+      if (isTypingTarget(e.target)) return
+      e.preventDefault()
+      setSeed(e.key)
+      relicRuntime.shell.openCommand(true)
     }
-  }, [q])
-
-  const submit = () => {
-    if (!q || busy) return
-    void relicRuntime.ai.ask(q)
-    setText('')
-  }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
 
   return (
-    <motion.div className="fixed inset-0 z-[9000] flex justify-center bg-void/60 pt-[9vh] backdrop-blur-[2px]" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onMouseDown={close}>
-      <motion.div
-        initial={{ y: -12, opacity: 0, scale: 0.985 }}
-        animate={{ y: 0, opacity: 1, scale: 1 }}
-        exit={{ y: -8, opacity: 0 }}
-        transition={{ duration: 0.22, ease: [0.2, 0, 0, 1] }}
-        className="panel ticks flex max-h-[78vh] w-[min(720px,92vw)] flex-col shadow-[0_40px_120px_rgba(0,0,0,0.8)]"
-        onMouseDown={(e) => e.stopPropagation()}
-      >
-        <div className="flex items-center gap-3 border-b hair-strong px-5">
-          <Search size={15} strokeWidth={1.25} className="text-red" />
-          <input
-            autoFocus
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') submit()
-              if (e.key === 'Escape') close()
-            }}
-            placeholder="ASK CLAUDE…"
-            className="h-14 flex-1 bg-transparent text-[16px] tracking-[0.02em] text-bone outline-none placeholder:text-[11px] placeholder:tracking-[0.36em] placeholder:text-smoke"
-            aria-label="Ask Claude"
-          />
-          <span className={`dot ${busy ? 'pulse' : ''}`} />
-        </div>
-        {route && (
-          <div className="flex items-center gap-3 border-b hair px-5 py-2">
-            <span className="label-sm text-red">ROUTE · {routeLabel[route.route]}</span>
-            <span className="label-sm truncate text-ash">{route.preview}</span>
-            <span className="label-sm ml-auto text-smoke">ENTER</span>
-          </div>
-        )}
+    <AnimatePresence onExitComplete={() => setSeed('')}>
+      {open && <Prompt key="prompt" seed={seed} />}
+    </AnimatePresence>
+  )
+}
 
-        <div className="min-h-0 overflow-y-auto">
-          {(results.apps.length > 0 || results.files.length > 0) && (
-            <div className="grid grid-cols-2 gap-px border-b hair bg-[var(--line-faint)]">
-              <div className="bg-ink p-3">
-                <div className="label-sm mb-2 px-2">APPLICATIONS</div>
-                {results.apps.map((a) => (
-                  <button key={a.id} onClick={() => { void relicRuntime.apps.launch(a.id); close() }} className="flex w-full items-center gap-3 px-2 py-1.5 text-left hover:bg-burgundy/60">
-                    <Icon name={a.icon} size={14} className="text-ash" />
-                    <span className="flex-1 text-[12px] tracking-[0.06em] text-bone">{a.name}</span>
-                    <span className="label-sm">{runtimeLabel[a.runtime]}</span>
-                  </button>
-                ))}
-                {!results.apps.length && <div className="label-sm px-2 py-1 text-soot">NONE</div>}
-              </div>
-              <div className="bg-ink p-3">
-                <div className="label-sm mb-2 px-2">FILES</div>
-                {results.files.map((f) => (
-                  <button key={f.id} onClick={() => { relicRuntime.files.reveal(f.id); void relicRuntime.files.open(f.id); close() }} className="flex w-full items-center gap-2 px-2 py-1.5 text-left hover:bg-burgundy/60">
-                    <span className="flex-1 truncate text-[12px] text-bone">{f.name}</span>
-                    <ArrowUpRight size={12} className="text-smoke" />
-                  </button>
-                ))}
-                {!results.files.length && <div className="label-sm px-2 py-1 text-soot">NONE</div>}
-              </div>
-            </div>
-          )}
+function Prompt({ seed }: { seed: string }) {
+  const [text, setText] = useState(seed)
+  const [held, setHeld] = useState(false)
+  const heldRef = useRef(false) // read synchronously: the space's own input event fires before state settles
+  const [armed, setArmed] = useState(0) // bumps to restart the drain line
+  const [turnId, setTurnId] = useState<string | null>(null)
+  const input = useRef<HTMLInputElement>(null)
+  const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
+  const busy = useOS((s) => s.agentBusy)
+  const messages = useOS((s) => s.messages)
+  const reply = turnId ? messages[messages.findIndex((m) => m.id === turnId) + 1] : undefined
+  const close = () => relicRuntime.shell.openCommand(false)
 
-          {messages.length > 0 && (
-            <div className="px-5 py-4">
-              <ClaudeTranscript compact limit={4} />
-            </div>
+  const run = useCallback((value: string) => {
+    const q = value.trim()
+    if (!q) return
+    if (getOS().agentBusy) {
+      timer.current = setTimeout(() => run(value), 300)
+      return
+    }
+    void relicRuntime.ai.ask(q)
+    const mine = getOS().messages.filter((m) => m.role === 'user' && m.text === q).at(-1)
+    setTurnId(mine?.id ?? null)
+    setText('')
+    setArmed(0)
+  }, [])
+
+  const arm = useCallback(
+    (value: string) => {
+      clearTimeout(timer.current)
+      if (!value.trim()) return setArmed(0)
+      setArmed((n) => n + 1)
+      timer.current = setTimeout(() => run(value), IDLE_MS)
+    },
+    [run],
+  )
+
+  useEffect(() => {
+    input.current?.focus({ preventScroll: true })
+    const v = input.current?.value ?? ''
+    input.current?.setSelectionRange(v.length, v.length)
+    if (seed) arm(seed)
+    return () => clearTimeout(timer.current)
+  }, [seed, arm])
+
+  // fade away once the answer has had time to be read; typing again keeps it open
+  useEffect(() => {
+    if (!reply || reply.streaming || busy || text) return
+    const t = setTimeout(close, lingerFor(reply.text))
+    return () => clearTimeout(t)
+  }, [reply, busy, text])
+
+  const route = text.trim().length > 2 ? classify(text) : null
+
+  return (
+    <motion.div
+      className="fixed inset-0 z-[9000] flex flex-col items-center bg-void/90 pt-[30vh] backdrop-blur-[8px]"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0, transition: { duration: 0.5 } }}
+      transition={{ duration: 0.18 }}
+      onMouseDown={close}
+    >
+      <div className="w-[min(680px,88vw)]" onMouseDown={(e) => e.stopPropagation()}>
+        <input
+          ref={input}
+          value={text}
+          onChange={(e) => {
+            setText(e.target.value)
+            if (!heldRef.current) arm(e.target.value)
+          }}
+          onKeyDown={(e) => {
+            if (e.key === ' ') {
+              if (e.repeat) e.preventDefault()
+              else {
+                heldRef.current = true
+                setHeld(true)
+                clearTimeout(timer.current)
+              }
+            }
+            if (e.key === 'Enter') {
+              clearTimeout(timer.current)
+              run(text)
+            }
+            if (e.key === 'Escape') close()
+          }}
+          onKeyUp={(e) => {
+            if (e.key === ' ') {
+              heldRef.current = false
+              setHeld(false)
+              arm(e.currentTarget.value)
+            }
+          }}
+          placeholder={busy ? '' : 'Ask anything'}
+          spellCheck={false}
+          autoComplete="off"
+          className="w-full bg-transparent text-center text-[clamp(20px,2.4vw,30px)] font-light tracking-[0.02em] text-bone caret-[#e8242b] outline-none placeholder:text-soot"
+          aria-label="Ask Claude"
+        />
+
+        {/* the second: a hairline that drains while Relic waits for you to finish */}
+        <div className="relative mx-auto mt-4 h-px w-full overflow-hidden bg-[var(--line-faint)]">
+          {held ? (
+            <span className="pulse absolute inset-0 bg-red/70" />
+          ) : armed > 0 ? (
+            <span key={armed} className="absolute inset-0 origin-center bg-signal shadow-[0_0_10px_rgba(232,36,43,0.8)]" style={{ animation: `drain ${IDLE_MS}ms linear forwards` }} />
+          ) : busy ? (
+            <span className="sweep" />
+          ) : null}
+        </div>
+        <div className="mt-2 flex h-4 items-center justify-center gap-3">
+          {held ? (
+            <span className="label-sm text-red">HOLDING · RELEASE TO SEND</span>
+          ) : route ? (
+            <span className="label-sm text-smoke">{routeLabel[route.route]} · {route.preview}</span>
+          ) : null}
+        </div>
+
+        <AnimatePresence>
+          {reply && (
+            <motion.div key={reply.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="mx-auto mt-8 max-w-[560px] text-center">
+              {(!!reply.activity || !!reply.steps?.length) && (
+                <div className="mb-4 inline-flex flex-col items-start gap-1 text-left">
+                  {reply.activity && <div className="label-sm mb-1 text-red">{reply.activity}</div>}
+                  {reply.steps?.map((s) => (
+                    <div key={s.id} className="flex items-center gap-2 text-[11px] tracking-[0.04em] text-ash">
+                      <span className="flex w-3 justify-center">
+                        {s.state === 'done' && <Check size={10} className="text-signal" strokeWidth={2} />}
+                        {s.state === 'running' && <Loader size={10} className="animate-spin" />}
+                        {s.state === 'waiting' && <span className="dot pulse" />}
+                        {s.state === 'failed' && <X size={10} strokeWidth={2} />}
+                      </span>
+                      {s.label}
+                    </div>
+                  ))}
+                </div>
+              )}
+              {reply.text && (
+                <div className="whitespace-pre-wrap text-[14px] leading-[1.7] text-bone/85">
+                  {reply.text}
+                  {reply.streaming && <span className="caret" />}
+                </div>
+              )}
+            </motion.div>
           )}
-          {messages.length === 0 && q.length < 2 && <Suggestions />}
-        </div>
-        <div className="flex items-center justify-between border-t hair px-5 py-2">
-          <span className="label-sm">CLAUDE · SYSTEM AGENT</span>
-          <span className="flex items-center gap-4">
-            <button className="label-sm hover:text-bone" onClick={() => { void relicRuntime.apps.launch('claude'); close() }}>
-              OPEN CLAUDE
-            </button>
-            <span className="label-sm text-smoke">ESC</span>
-          </span>
-        </div>
-      </motion.div>
+        </AnimatePresence>
+      </div>
     </motion.div>
   )
 }

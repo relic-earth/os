@@ -118,7 +118,7 @@ function plan(st: TurnState, ctx: SystemContext, offline: boolean): Plan {
       const lines = last.content.split('\n').filter(Boolean)
       if (intent.capability) return { say: `Devices with ${capabilityLabels[intent.capability]?.toLowerCase() ?? intent.capability}:\n${lines.map((l) => '· ' + l.split(':')[0].toUpperCase()).join('\n')}` }
       const on = lines.filter((l) => /online/.test(l))
-      return { say: `${on.length} of ${lines.length} devices are online:\n${lines.map((l) => '· ' + l.toUpperCase().replace(':', ' —')).join('\n')}` }
+      return { say: `${intent.status ? `${on.length} devices are online` : `${on.length} of ${lines.length} devices are online`}:\n${lines.map((l) => '· ' + l.toUpperCase().replace(':', ' —')).join('\n')}` }
     }
     case 'settings':
       if (!rounds.length) return { tools: [tool('open_settings', { section: intent.section })] }
