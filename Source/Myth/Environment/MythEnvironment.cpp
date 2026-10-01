@@ -89,7 +89,8 @@ AMythEnvironment* AMythEnvironment::Get(const UObject* WorldContext)
 {
 	UWorld* World = WorldContext ? WorldContext->GetWorld() : nullptr;
 	if (!World) return nullptr;
-	for (TActorIterator<AMythEnvironment> It(World); It; ++It) return *It;
+	TActorIterator<AMythEnvironment> It(World);
+	return It ? *It : nullptr;
 	return nullptr;
 }
 

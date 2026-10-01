@@ -301,9 +301,6 @@ void AMythHUD::DrawPerf(AMythPlayerController* PC)
 		Line(FString::Printf(TEXT("Rain %.2f  Wet %.2f  Night %.2f  %s"), Env->GetRainAmount(), Env->GetWetness(), Env->GetNightFactor(), Env->IsCameraSheltered() ? TEXT("sheltered") : TEXT("outdoors")), Ink);
 	if (UMythGameInstance* GI = Cast<UMythGameInstance>(GetGameInstance()))
 		Line(GI->GetHardwareSummary(), Dim);
-	for (TActorIterator<AMythEventDirector> It(GetWorld()); It; ++It)
-	{
-		if (!It->GetLastEventName().IsEmpty()) Line(FString::Printf(TEXT("Last event: %s"), *It->GetLastEventName()), Dim);
-		break;
-	}
+	TActorIterator<AMythEventDirector> Events(GetWorld());
+	if (Events && !Events->GetLastEventName().IsEmpty()) Line(FString::Printf(TEXT("Last event: %s"), *Events->GetLastEventName()), Dim);
 }

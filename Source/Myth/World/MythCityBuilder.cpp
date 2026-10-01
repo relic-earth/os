@@ -23,7 +23,8 @@ AMythCityBuilder* AMythCityBuilder::Get(const UObject* WorldContext)
 {
 	UWorld* World = WorldContext ? WorldContext->GetWorld() : nullptr;
 	if (!World) return nullptr;
-	for (TActorIterator<AMythCityBuilder> It(World); It; ++It) return *It;
+	TActorIterator<AMythCityBuilder> It(World);
+	return It ? *It : nullptr;
 	return nullptr;
 }
 

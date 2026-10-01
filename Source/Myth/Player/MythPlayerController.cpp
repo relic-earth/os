@@ -269,10 +269,10 @@ void AMythPlayerController::PlayerTick(float DeltaTime)
 	AutosaveTimer += DeltaTime;
 	if (AutosaveTimer > 60.f) { AutosaveTimer = 0.f; SaveGameNow(TEXT("autosave")); }
 
-	for (TActorIterator<AMythPickupManager> It(GetWorld()); It; ++It)
+	TActorIterator<AMythPickupManager> Pickups(GetWorld());
+	if (Pickups)
 	{
-		for (const FString& M : It->ConsumeMessages()) { Toast(M, 4.f); SaveGameNow(TEXT("pickup")); }
-		break;
+		for (const FString& M : Pickups->ConsumeMessages()) { Toast(M, 4.f); SaveGameNow(TEXT("pickup")); }
 	}
 }
 
