@@ -54,8 +54,8 @@ export function FileManager({ compact }: { compact?: boolean }) {
     <div ref={rootRef} className="relative flex h-full" onClick={() => setMenu(null)}>
       {/* places */}
       {!compact && (
-        <aside className="w-[170px] shrink-0 border-r hair bg-void/50 py-3">
-          <div className="label-sm px-4 pb-2">PLACES</div>
+        <aside className="well w-[190px] shrink-0 space-y-0.5 border-r hair px-2 py-3">
+          <div className="label-sm px-3 pb-2 pt-1">PLACES</div>
           {[{ id: 'recent', name: 'Recent' }, ...ROOT_FOLDERS.map((id) => ({ id, name: relicRuntime.files.get(id)!.name }))].map((p) => {
             const active = view.folder === p.id && !view.query
             return (
@@ -67,16 +67,16 @@ export function FileManager({ compact }: { compact?: boolean }) {
                   const id = e.dataTransfer.getData('text/relic-file')
                   if (id && p.id !== 'recent') relicRuntime.files.move(id, p.id)
                 }}
-                className={`relative flex h-8 w-full items-center gap-2.5 px-4 text-left ${active ? 'lit' : 'hover:bg-burgundy/40'}`}
+                className={`relative flex h-8 w-full items-center gap-2.5 rounded-[9px] px-3 text-left ${active ? 'lit' : 'hover:bg-white/[0.05]'}`}
               >
                 {p.id === 'recent' ? <Clock size={12} strokeWidth={1.25} className={active ? 'text-signal' : 'text-smoke'} /> : <Folder size={12} strokeWidth={1.25} className={active ? 'text-signal' : 'text-smoke'} />}
-                <span className={`text-[11px] tracking-[0.13em] font-semibold ${active ? 'text-bone' : 'text-ash'}`}>{p.name.toUpperCase()}</span>
+                <span className={`text-[11px] tracking-[0.15em] font-semibold ${active ? 'text-white' : 'text-smoke'}`}>{p.name.toUpperCase()}</span>
               </button>
             )
           })}
           <button
             onClick={() => relicRuntime.files.setView({ folder: 'trash', query: '', selectedId: undefined })}
-            className={`relative mt-3 flex h-8 w-full items-center gap-2.5 border-t hair px-4 pt-1 text-left ${view.folder === 'trash' ? 'lit' : 'hover:bg-burgundy/40'}`}
+            className={`relative !mt-3 flex h-8 w-full items-center gap-2.5 rounded-[9px] px-3 text-left ${view.folder === 'trash' ? 'lit' : 'hover:bg-white/[0.05]'}`}
           >
             <Trash2 size={12} strokeWidth={1.25} className="text-smoke" />
             <span className="text-[11px] tracking-[0.13em] font-semibold text-ash">TRASH</span>
@@ -101,7 +101,7 @@ export function FileManager({ compact }: { compact?: boolean }) {
               crumbs.map((c, i) => (
                 <span key={c.id} className="flex items-center gap-1 truncate">
                   {i > 0 && <ChevronRight size={11} className="text-soot" />}
-                  <button className={i === crumbs.length - 1 ? 'text-bone' : 'hover:text-bone'} onClick={() => relicRuntime.files.setView({ folder: c.id, selectedId: undefined })}>
+                  <button className={i === crumbs.length - 1 ? 'text-[20px] tracking-[0.12em] text-bone' : 'hover:text-bone'} onClick={() => relicRuntime.files.setView({ folder: c.id, selectedId: undefined })}>
                     {c.name.toUpperCase()}
                   </button>
                 </span>
@@ -172,15 +172,15 @@ export function FileManager({ compact }: { compact?: boolean }) {
                   {view.query && <span className="label-sm truncate text-soot">{relicRuntime.files.path(f.parent ?? 'root')}</span>}
                 </span>
                 <span className="label-sm">{kindLabel(f)}</span>
-                <span className="num text-[11px] text-ash">{f.kind === 'folder' ? `${relicRuntime.files.children(f.id).length} ITEMS` : fmtSize(f.size)}</span>
+                <span className="num text-[11px] text-smoke">{f.kind === 'folder' ? `${relicRuntime.files.children(f.id).length} ITEMS` : fmtSize(f.size)}</span>
                 <span className="label-sm">{fmtAgo(f.modified)}</span>
               </div>
             )
           })}
         </div>
         <div className="flex items-center justify-between border-t hair px-4 py-1.5">
-          <span className="label-sm">{list.length} ITEMS</span>
-          <span className="label-sm text-soot">DOUBLE-CLICK OPEN · F2 RENAME · DEL TRASH · RIGHT-CLICK MORE</span>
+          <span className="label-sm shrink-0 whitespace-nowrap">{list.length} ITEMS</span>
+          <span className="label-sm truncate text-soot">DOUBLE-CLICK OPEN · F2 RENAME · DEL TRASH · RIGHT-CLICK MORE</span>
         </div>
       </section>
 

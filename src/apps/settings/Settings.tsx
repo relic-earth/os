@@ -60,9 +60,9 @@ export function Settings({ win }: { win: RelicWindow }) {
 
   return (
     <div className="flex h-full">
-      <nav className="w-[190px] shrink-0 border-r hair bg-void/50 py-4">
+      <nav className="well w-[210px] shrink-0 space-y-0.5 border-r hair px-2.5 py-4">
         {SECTIONS.map((s) => (
-          <button key={s.id} onClick={() => { setSection(s.id); setSub(undefined) }} className={`relative flex h-9 w-full items-center px-5 text-left text-[11px] tracking-[0.14em] font-semibold ${section === s.id ? 'lit text-bone' : 'text-ash hover:bg-burgundy/40 hover:text-bone'}`}>
+          <button key={s.id} onClick={() => { setSection(s.id); setSub(undefined) }} className={`relative flex h-9 w-full items-center rounded-[10px] px-3 text-left text-[11px] tracking-[0.16em] font-semibold ${section === s.id ? 'lit' : 'text-smoke hover:bg-white/[0.05] hover:text-bone'}`}>
             {s.label}
           </button>
         ))}
@@ -86,18 +86,18 @@ export function Settings({ win }: { win: RelicWindow }) {
 
 function H({ children, sub }: { children: ReactNode; sub?: ReactNode }) {
   return (
-    <div className="mb-6">
-      <div className="text-[18px] tracking-[0.16em] font-semibold text-bone">{children}</div>
-      {sub && <div className="mt-1.5 text-[11px] text-ash">{sub}</div>}
+    <div className="mb-8">
+      <div className="t-title">{children}</div>
+      {sub && <div className="mt-3 max-w-[560px] text-[14px] leading-relaxed text-smoke">{sub}</div>}
     </div>
   )
 }
 
 function Row({ k, v, hot, children }: { k: string; v?: ReactNode; hot?: boolean; children?: ReactNode }) {
   return (
-    <div className="flex items-center justify-between gap-4 border-b hair-faint py-3">
+    <div className="flex items-center justify-between gap-4 border-b hair-faint py-3.5">
       <span className="label">{k}</span>
-      {children ?? <span className={`text-[11px] tracking-[0.12em] font-semibold ${hot ? 'text-signal' : 'text-bone'}`}>{v}</span>}
+      {children ?? <span className={`text-[14px] font-semibold ${hot ? 'text-signal' : 'text-ash'}`}>{v}</span>}
     </div>
   )
 }

@@ -29,7 +29,7 @@ export function DeviceSwitcher({ align = 'right', compact, up }: { align?: 'righ
         className="flex h-8 items-center gap-1.5 rounded-full px-3 text-ash transition-colors hover:bg-white/10 hover:text-bone"
         aria-label="Switch device"
       >
-        {!compact && <span className="text-[12px] font-semibold tracking-[0.12em] text-bone">{cur.label}</span>}
+        {!compact && <span className="text-[11px] font-semibold tracking-[0.16em] text-ash">{cur.label}</span>}
         {compact && <span className="text-[11px] font-semibold tracking-[0.12em]">DEVICE</span>}
         <ChevronDown size={12} strokeWidth={1.25} />
       </button>
@@ -123,7 +123,7 @@ export function TopBar({ compact }: { compact?: boolean }) {
         )}
       </div>
 
-      <span className="px-1.5 text-[14px] font-bold tracking-[0.02em] text-bone">{appName}</span>
+      <span className="px-1.5 text-[12px] font-semibold uppercase tracking-[0.2em] text-bone">{appName}</span>
 
       <div className="ml-auto flex items-center gap-1">
         {!compact && (
@@ -149,7 +149,7 @@ export function TopBar({ compact }: { compact?: boolean }) {
           {unread > 0 && <span className="dot absolute right-1 top-1" />}
         </button>
         <DeviceSwitcher compact={compact} />
-        <span className="num whitespace-nowrap px-2 text-[14px] font-bold text-bone">{fmtClock(now)}</span>
+        <span className="num whitespace-nowrap px-2 text-[13px] font-semibold tracking-[0.08em] text-bone">{fmtClock(now)}</span>
       </div>
     </header>
   )

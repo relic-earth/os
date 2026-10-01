@@ -29,8 +29,8 @@ export function ClaudeApp() {
         {count === 0 ? (
           <div className="mx-auto flex h-full max-w-[520px] flex-col justify-center">
             <div className="label text-red">CLAUDE</div>
-            <div className="mt-3 text-[28px] font-light tracking-[0.02em] text-bone">How can I help?</div>
-            <div className="mt-2 text-[12px] leading-relaxed text-ash">
+            <div className="t-title mt-4">How can I help?</div>
+            <div className="mt-3 text-[14px] leading-relaxed text-smoke">
               I operate Relic through permissioned tools — files, applications, devices, media and settings.
             </div>
             <div className="mt-7 border hair">

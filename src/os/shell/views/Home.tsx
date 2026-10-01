@@ -23,8 +23,8 @@ export function Home({ compact }: { compact?: boolean }) {
       <div className="mx-auto flex min-h-full w-full max-w-[1040px] flex-col px-6 pb-8 pt-[10vh]">
         <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: [0.2, 0, 0, 1] }} className="text-center">
           <div className="num text-[clamp(80px,11vw,148px)] font-semibold leading-none tracking-[-0.02em] text-bone [text-shadow:0_0_60px_rgba(232,36,43,0.35)]">{fmtClock(now).replace(/ (AM|PM)/, '')}</div>
-          <div className="mt-4 text-[18px] font-semibold text-ash">
-            {greeting} · {fmtDate(now).toLowerCase().replace(/(^|\s)\w/g, (c) => c.toUpperCase())}
+          <div className="mt-5 text-[12px] font-semibold uppercase tracking-[0.3em] text-smoke">
+            {greeting} · {fmtDate(now)}
           </div>
         </motion.div>
 
@@ -42,7 +42,7 @@ export function Home({ compact }: { compact?: boolean }) {
 function Widget({ title, children, onClick }: { title: string; children: React.ReactNode; onClick?: () => void }) {
   return (
     <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6, ease: [0.2, 0, 0, 1] }} className="panel flex min-h-[184px] min-w-0 flex-col p-5">
-      <button onClick={onClick} disabled={!onClick} className="mb-3 self-start text-[12px] font-semibold tracking-[0.14em] text-ash enabled:hover:text-bone">
+      <button onClick={onClick} disabled={!onClick} className="label mb-4 self-start enabled:hover:text-bone">
         {title}
       </button>
       {children}
@@ -60,7 +60,7 @@ function NowPlayingWidget() {
       <div className="flex gap-3">
         <div className="h-12 w-[72px] shrink-0 overflow-hidden rounded-md"><Art variant={m.art} className="h-full w-full" /></div>
         <div className="min-w-0">
-          <div className="truncate text-[16px] font-semibold text-bone">{m.title}</div>
+          <div className="truncate text-[16px] font-semibold uppercase tracking-[0.1em] text-bone">{m.title}</div>
           <div className="text-[12px] font-semibold text-smoke">{video.state.playing ? 'Playing' : 'Paused'} · {device?.name}</div>
         </div>
       </div>
@@ -93,7 +93,7 @@ function DevicesWidget() {
   const { devices, online, total } = useMesh()
   return (
     <Widget title="DEVICES" onClick={() => void relicRuntime.apps.launch('devices')}>
-      <div className="text-[15px] font-semibold text-bone">{online} of {total} online</div>
+      <div className="flex items-baseline gap-2"><span className="num text-[44px] font-semibold leading-none text-bone">{online}</span><span className="text-[13px] font-semibold text-smoke">of {total} online</span></div>
       <div className="mt-4 grid grid-cols-4 gap-2">
         {devices.map((d) => (
           <div key={d.id} title={d.name} className={`flex h-10 items-center justify-center rounded-[12px] ${d.status === 'online' ? 'bg-white/[0.07] text-signal' : 'text-soot'}`}>
@@ -113,7 +113,7 @@ function RecentWidget() {
       <div className="space-y-2">
         {recent.map((f) => (
           <button key={f.id} onClick={() => { relicRuntime.files.reveal(f.id); void relicRuntime.files.open(f.id) }} className="block w-full min-w-0 text-left">
-            <div className="truncate text-[13px] font-semibold text-bone hover:text-white">{f.name}</div>
+            <div className="truncate text-[14px] font-semibold text-ash hover:text-bone">{f.name}</div>
             <div className="text-[11px] font-semibold text-smoke">{fmtAgo(f.modified).toLowerCase().replace(/^\w/, (c) => c.toUpperCase())}</div>
           </button>
         ))}

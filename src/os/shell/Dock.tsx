@@ -5,6 +5,7 @@ import { useWindowFocus } from '../../ui/primitives'
 
 const PINNED = ['claude', 'files', 'web', 'apps', 'devices', 'settings']
 const SURFACES: { id: Section; name: string }[] = [
+  { id: 'home', name: 'Home' },
   { id: 'tv', name: 'TV' },
   { id: 'movies', name: 'Movies' },
   { id: 'games', name: 'Games' },
@@ -32,8 +33,10 @@ export function Dock() {
     if (top.focused && !top.minimized) relicRuntime.windows.minimize(top.id)
     else relicRuntime.windows.focus(top.id)
   }
+  // a surface is a place, not a window: going there clears the windows out of the way
   const surface = (id: Section) => {
-    relicRuntime.shell.setSection(section === id && !anyFocused ? 'home' : id)
+    relicRuntime.shell.setSection(id)
+    wins.filter((w) => !w.minimized).forEach((w) => relicRuntime.windows.minimize(w.id))
     relicRuntime.windows.blur(profile)
   }
   const appTab = (id: string) => {
@@ -45,17 +48,17 @@ export function Dock() {
   return (
     <div className="relative z-[5000] shrink-0 border-t border-[rgba(245,240,235,0.08)] bg-[rgba(12,9,9,0.72)] px-4 pb-3 pt-2 backdrop-blur-2xl" data-profile={profile}>
       <nav className="no-scrollbar flex items-center justify-center gap-1 overflow-x-auto" aria-label="Apps">
-        {PINNED.map(appTab)}
-        <Divider />
         {SURFACES.map((s) => (
           <Tab key={s.id} label={s.name} active={section === s.id && !anyFocused} onClick={() => surface(s.id)} />
         ))}
+        <Divider />
+        {PINNED.map(appTab)}
         {running.length > 0 && <Divider />}
         {running.map(appTab)}
       </nav>
       <button
         onClick={() => relicRuntime.shell.openCommand()}
-        className={`mt-2 flex h-11 w-full items-center rounded-[12px] bg-[rgba(118,110,110,0.2)] px-4 text-left transition-opacity hover:bg-[rgba(118,110,110,0.28)] ${commandOpen ? 'opacity-0' : ''}`}
+        className={`well mt-2 flex h-11 w-full items-center rounded-[12px] bg-[rgba(118,110,110,0.16)] px-4 text-left transition-opacity hover:bg-[rgba(118,110,110,0.28)] ${commandOpen ? 'opacity-0' : ''}`}
         aria-label="Ask Claude"
       >
         <span className="flex-1 text-[16px] text-smoke">Ask Claude</span>
@@ -73,8 +76,8 @@ function Tab({ label, active, running, onClick }: { label: string; active: boole
   return (
     <button
       onClick={onClick}
-      className={`relative h-7 shrink-0 rounded-full px-3 text-[13px] font-semibold transition-colors ${
-        active ? 'bg-red text-white shadow-[0_0_16px_rgba(232,36,43,0.5)]' : 'text-ash hover:bg-white/[0.08] hover:text-bone'
+      className={`relative h-7 shrink-0 rounded-full px-3 text-[11px] font-semibold uppercase tracking-[0.18em] transition-colors ${
+        active ? 'bg-gradient-to-b from-[#e8242b] to-[#a3121a] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.25),0_0_16px_rgba(232,36,43,0.45)]' : 'text-smoke hover:bg-white/[0.07] hover:text-bone'
       }`}
     >
       {label}

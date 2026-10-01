@@ -112,8 +112,8 @@ export function AppWindow({ win, children }: { win: RelicWindow; children: React
             </Light>
           </div>
           <div className="pointer-events-none absolute inset-x-28 flex items-center justify-center gap-2">
-            <Glyph id={win.appId} size={18} className={win.focused ? 'text-signal' : 'text-smoke'} />
-            <span className={`truncate text-[14px] font-semibold ${win.focused ? 'text-bone' : 'text-smoke'}`}>{win.title}</span>
+            <Glyph id={win.appId} size={16} className={win.focused ? 'text-signal' : 'text-soot'} />
+            <span className={`truncate text-[11px] font-semibold uppercase tracking-[0.2em] ${win.focused ? 'text-ash' : 'text-soot'}`}>{win.title}</span>
           </div>
           {isForeign && (
             <button
