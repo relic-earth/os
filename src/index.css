@@ -119,7 +119,7 @@
   --plate: rgba(1, 4, 8, 0.9);
   --grid: rgba(110, 255, 160, 0.04);
 }
-:root[data-skin="earth"] video, :root[data-skin="earth"] .art, :root[data-skin="earth"] .rx { filter: var(--art-filter); }
+:root[data-skin="earth"] video:not(.native), :root[data-skin="earth"] .art, :root[data-skin="earth"] .rx { filter: var(--art-filter); }
 /* KOTOR: dialogue green for labels and data, white for everything you read */
 :root[data-skin="earth"] .label, :root[data-skin="earth"] .label-sm, :root[data-skin="earth"] .font-mono { color: rgb(110 255 160); }
 :root[data-skin="earth"] .t-display, :root[data-skin="earth"] .t-title, :root[data-skin="earth"] .font-display { color: #fff; }
@@ -208,7 +208,7 @@
   --plate: rgba(10, 7, 3, 0.86);
   --grid: rgba(255, 186, 64, 0.045);
 }
-:root[data-skin="stark"] video, :root[data-skin="stark"] .art, :root[data-skin="stark"] .rx { filter: var(--art-filter); }
+:root[data-skin="stark"] video:not(.native), :root[data-skin="stark"] .art, :root[data-skin="stark"] .rx { filter: var(--art-filter); }
 :root[data-skin="stark"] body, :root[data-skin="stark"] #root { background: #060504; }
 
 /* ── CANON — Massimo Vignelli's New York: white paper, black Helvetica,
@@ -257,7 +257,7 @@
   --grid: rgba(17, 17, 17, 0.035);
   --glass: rgba(255, 255, 255, 0.9);
 }
-:root[data-skin="canon"] video, :root[data-skin="canon"] .art, :root[data-skin="canon"] .rx { filter: var(--art-filter); }
+:root[data-skin="canon"] video:not(.native), :root[data-skin="canon"] .art, :root[data-skin="canon"] .rx { filter: var(--art-filter); }
 :root[data-skin="canon"] body, :root[data-skin="canon"] #root { background: #f4f2ec; color: #111; }
 /* Vignelli: no glow, no bloom — type and space carry the hierarchy */
 :root[data-skin="canon"] * { text-shadow: none !important; }
@@ -275,7 +275,7 @@
 :root[data-skin="canon"] .well { background: rgba(17, 17, 17, 0.035); box-shadow: inset -1px 0 0 rgba(17, 17, 17, 0.1); }
 :root[data-skin="canon"] .panel, :root[data-skin="canon"] .win-frame { box-shadow: 0 1px 0 rgba(0,0,0,0.04), 0 12px 32px rgba(0,0,0,0.12); }
 
-:root[data-skin="savile"] video, :root[data-skin="savile"] .art, :root[data-skin="savile"] .rx { filter: var(--art-filter); }
+:root[data-skin="savile"] video:not(.native), :root[data-skin="savile"] .art, :root[data-skin="savile"] .rx { filter: var(--art-filter); }
 /* the tailor's hand: brass hairlines, ivory caps, a pinstripe in every plate */
 :root[data-skin="savile"] .panel, :root[data-skin="savile"] .plate { background-image:
     linear-gradient(135deg, transparent calc(50% - 0.8px), rgba(201,168,92,0.7) calc(50% - 0.8px) calc(50% + 0.8px), transparent calc(50% + 0.8px)),

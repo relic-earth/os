@@ -1,12 +1,48 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useOS } from '../runtime/store'
 import { Art } from '../../ui/Art'
 import { CoruscantWindow } from '../../ui/CoruscantWindow'
+
+/**
+ * A theme's own wallpaper, if one has been dropped in: public/wallpaper/<theme>.mp4
+ * (preferred) or .jpg. Probed once per theme; a dev server answers missing files
+ * with index.html, so only a real video/image counts.
+ */
+const themeArt = new Map<string, Promise<{ src: string; kind: 'video' | 'image' } | null>>()
+function findThemeArt(skin: string) {
+  if (!themeArt.has(skin))
+    themeArt.set(
+      skin,
+      (async () => {
+        for (const [ext, kind] of [['mp4', 'video'], ['jpg', 'image']] as const) {
+          try {
+            const r = await fetch(`wallpaper/${skin}.${ext}`, { method: 'HEAD' })
+            const type = r.headers.get('content-type') ?? ''
+            if (r.ok && type.startsWith(kind === 'video' ? 'video/' : 'image/')) return { src: `wallpaper/${skin}.${ext}`, kind }
+          } catch {
+            /* offline: fall back to the wave */
+          }
+        }
+        return null
+      })(),
+    )
+  return themeArt.get(skin)!
+}
 
 /** Atmospheric layer. Never louder than the interface above it. */
 export function Background({ variant }: { variant?: string }) {
   const bg = useOS((s) => s.background)
   const v = variant ?? bg
+  const skin = useOS((s) => s.skin)
+  const [own, setOwn] = useState<{ src: string; kind: 'video' | 'image' } | null>(null)
+  useEffect(() => {
+    let live = true
+    setOwn(null)
+    void findThemeArt(skin).then((a) => live && setOwn(a))
+    return () => {
+      live = false
+    }
+  }, [skin])
   const video = useRef<HTMLVideoElement>(null)
   // Rams 9 — environmentally friendly: no decoding frames nobody sees
   useEffect(() => {
@@ -21,8 +57,13 @@ export function Background({ variant }: { variant?: string }) {
   }, [])
   return (
     <div className="pointer-events-none absolute inset-0 overflow-clip bg-void">
-      {v === 'wave' && (
-        // the Great Wave in red ASCII — a ping-pong loop, so it breathes without a seam
+      {v === 'wave' && own?.kind === 'video' && (
+        // this theme's own wallpaper, already in its colours
+        <video ref={video} key={own.src} className="native absolute inset-0 h-full w-full object-cover opacity-85" src={own.src} autoPlay muted loop playsInline preload="auto" />
+      )}
+      {v === 'wave' && own?.kind === 'image' && <img key={own.src} src={own.src} alt="" className="native absolute inset-0 h-full w-full object-cover opacity-85" />}
+      {v === 'wave' && !own && (
+        // the Great Wave in red ASCII — a ping-pong loop, re-lit per theme
         <video ref={video} className="absolute inset-0 h-full w-full object-cover opacity-80" src="wallpaper/wave.mp4" poster="wallpaper/wave-poster.jpg" autoPlay muted loop playsInline preload="auto" />
       )}
       {v === 'chancellor' && <CoruscantWindow className="absolute inset-0 h-full w-full opacity-[0.78]" />}
