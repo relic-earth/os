@@ -512,7 +512,7 @@ function SkinPicker() {
               style={{ background: k.bg, borderColor: on ? k.swatch[2] : `${k.swatch[2]}55` }}
             >
               <div className="flex items-center gap-3">
-                <span className="text-[24px] tracking-[0.1em]" style={{ fontFamily: `'${k.fonts[0]}', serif`, fontWeight: k.id === 'stark' ? 200 : k.id === 'sith' || k.id === 'earth' ? 500 : 700, color: k.ink }}>
+                <span className="text-[24px] tracking-[0.1em]" style={{ fontFamily: `'${k.fonts[0]}', serif`, fontWeight: k.weight, color: k.ink }}>
                   {k.name}
                 </span>
                 {on && <span className="text-[13px]" style={{ fontFamily: `'${k.fonts[2]}', monospace`, color: k.swatch[4] }}>● ACTIVE</span>}

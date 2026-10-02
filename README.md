@@ -74,21 +74,24 @@ The UI never calls a model directly. Set `VITE_CLAUDE_PROVIDER=anthropic`, or pi
 
 ## Interface
 
-**Themes** (telemetry strip, or Settings → Display; remembered per device). Every face comes from the *Vignelli Canon* — Garamond, Bodoni, Century Expanded, Helvetica, plus Optima, Futura, Univers, Caslon, Baskerville, Times — and each theme uses at most three:
+**Themes** (top bar, or Settings → Display; remembered per device). Every face comes from the *Vignelli Canon* — Garamond, Bodoni, Century Expanded, Helvetica, plus Optima, Futura, Univers, Caslon, Baskerville, Times — and each theme uses at most three:
 
-| Theme | Inspiration | Display | Text | Data |
+| Theme | Mood | Display | Text | Data |
 |---|---|---|---|---|
-| **SITH** | Star Wars · black and red | Futura | Helvetica | Helvetica (tabular) |
-| **EARTH** | KOTOR · white and green on Republic blue | Optima | Helvetica | Futura |
-| **SAVILE** | Kingsman · bottle green, jade, brass, ivory | Bodoni | Garamond | Garamond |
-| **STARK** | Marvel · Iron Man HUD: amber, JARVIS cyan, hot-rod red | Helvetica UltraLight | Helvetica | Futura |
-| **CANON** | Vignelli's New York · white paper, black, one red | Helvetica Bold | Helvetica | Helvetica |
+| **ORBIT** (default) | The habitat above the world · champagne light, ice-blue labels on deep space | Futura Light | Helvetica | Futura Light |
+| **EMBER** | Imperial dusk · black and red | Futura | Helvetica | Helvetica (tabular) |
+| **TERRA** | Frontier world · white and green on deep blue | Optima | Helvetica | Futura |
+| **TAILOR** | Bespoke · bottle green, jade, brass, ivory | Bodoni | Bodoni | Bodoni |
+| **FORGE** | Workshop light · amber, cyan, one red | Helvetica UltraLight | Helvetica | Futura |
+| **PAPER** | Vignelli's transit map · white paper, black, one red | Helvetica Bold | Helvetica | Helvetica |
 
-Apple devices ship the real Helvetica Neue, Futura, Optima, Bodoni 72 and Baskerville; EB Garamond, Bodoni Moda and Jost (a Futura revival, used only where Futura is absent) are bundled via `@fontsource`. Type sizes follow Vignelli's contrast of scale: 11 · 13 · 16 · 24 · 40 · 72.
+Apple devices ship the real Helvetica Neue, Futura, Optima and Bodoni 72; Bodoni Moda (variable, with optical sizes, so TAILOR can set text and hairline display caps in one face) and Jost (a Futura revival, used only where Futura is absent) are bundled via `@fontsource`. Type sizes follow Vignelli's contrast of scale: 11 · 13 · 16 · 24 · 40 · 72. Saved choices under the old theme names carry across.
 
-**Design rules** — Dieter Rams' ten principles applied: no decoration that does nothing (no grain, sweeping scanlines or glitch text); icons rest until hovered or active; motion only explains state (windows projecting in, the prompt igniting); badges say what is really running; the wallpaper video pauses when the tab is hidden and a minimized Windows PC stops its CPU.
+**Look** — expensive, not technical: smoked glass on deep space, hairlines instead of plates, light gathering only where you look. No codes, meters, numbered keys, chamfers or target brackets. Icons are [Phosphor](https://phosphoricons.com) Light (Duotone when active). The home screen holds the time inside a slowly turning orbital ring drawn in CSS 3D (`src/ui/OrbitalRing.tsx`); windows arrive out of focus and settle; a theme change crossfades the whole screen (View Transitions).
 
-Wallpaper: each theme has its own ASCII scene in `public/wallpaper/<theme>.jpg`, typeset by `python3 scripts/wallpapers.py` (SITH: Coruscant from the Chancellor's window; EARTH: the Dantooine Enclave; SAVILE: a Savile Row shopfront in the rain; STARK: a wireframe faceplate; CANON: a subway diagram with one red line). A `<theme>.mp4` dropped beside it wins. Without one, the Great Wave in red ASCII plays as a seamless ping-pong loop (`public/wallpaper/wave.mp4`); Coruscant at dusk (`src/ui/CoruscantWindow.tsx`) is the alternative. HUD language: JARVIS reactor rings and EDITH callouts around the clock (`src/ui/HudReactor.tsx`), target-lock brackets on hover and active, hologram-projector window transitions, a saber-ignite prompt, every icon in motion. Minimal and Mac-proportioned: a menu bar, the time, one *Ask Claude* field, four widgets and a dock. The scarab and striped wordmark are the Relic marks from relic.earth.
+**Design rules** — Dieter Rams' ten principles applied: no decoration that does nothing (no grain, scanlines or glitch text); icons rest until hovered or active; motion only explains state; badges say what is really running; the wallpaper video pauses when the tab is hidden and a minimized Windows PC stops its CPU.
+
+Wallpaper: each theme has its own painted scene in `public/wallpaper/<theme>.jpg`, rendered by `python3 scripts/wallpapers.py` — the planet's limb at dawn from orbit (ORBIT), and the same world at a red dusk (EMBER), a green dawn (TERRA) and a molten amber horizon (FORGE); brass and jade lights through rain on a shop window (TAILOR); a transit diagram with one red line (PAPER). The earlier ASCII set is still there (`ascii-<theme>`). A `<theme>.mp4` dropped beside the jpg wins. The scarab and striped wordmark are the Relic marks from relic.earth.
 
 - **Type anywhere** to talk to Claude. The prompt runs one second after you stop typing. Hold the spacebar to keep it waiting, press Enter to run at once, Esc to close.
 - If the page is framed (for example in a preview) and has no keyboard focus, Home shows *Click anywhere, then type*.

@@ -26,17 +26,18 @@ import { appRegistry } from '../apps/registry'
  */
 
 export type Section = 'home' | 'tv' | 'movies' | 'games'
-export type Skin = 'sith' | 'earth' | 'savile' | 'stark' | 'canon'
+export type Skin = 'orbit' | 'ember' | 'terra' | 'tailor' | 'forge' | 'paper'
 /**
  * Each skin is a whole visual language: palette, how the artwork is lit, and
  * three type roles — every face drawn from the Vignelli Canon.
  */
-export const SKINS: { id: Skin; name: string; note: string; swatch: string[]; fonts: [string, string, string]; bg: string; ink: string }[] = [
-  { id: 'sith', name: 'SITH', note: 'Star Wars · black and red · Futura, Helvetica', swatch: ['#000', '#f5f0eb', '#ff3a40', '#7d0f14', '#b08a52'], fonts: ['Futura', 'Helvetica Neue', 'Helvetica Neue'], bg: 'linear-gradient(135deg,#000 0%,#1a0204 60%,#3a0609 100%)', ink: '#f5f0eb' },
-  { id: 'earth', name: 'EARTH', note: 'KOTOR · white and green on Republic blue · Optima, Helvetica, Futura', swatch: ['#000', '#ffffff', '#6effa0', '#1e78dc', '#0c3878'], fonts: ['Optima', 'Helvetica Neue', 'Futura'], bg: 'linear-gradient(135deg,#000 0%,#031a10 55%,#04162e 100%)', ink: '#ffffff' },
-  { id: 'savile', name: 'SAVILE', note: 'Kingsman · bottle green, jade, brass, ivory · Bodoni, Garamond', swatch: ['#020805', '#f4f0e2', '#46dc96', '#145c3a', '#c9a85c'], fonts: ['Bodoni 72', 'EB Garamond', 'EB Garamond'], bg: 'linear-gradient(135deg,#010402 0%,#06180e 60%,#123020 100%)', ink: '#f4f0e2' },
-  { id: 'stark', name: 'STARK', note: 'Marvel · Iron Man HUD: amber-gold light, JARVIS cyan, hot-rod red · Helvetica, Futura', swatch: ['#060504', '#fff6e6', '#ffba40', '#ba162a', '#6ed6ff'], fonts: ['Helvetica Neue', 'Helvetica Neue', 'Futura'], bg: 'linear-gradient(135deg,#060504 0%,#2a1806 55%,#3a0a12 100%)', ink: '#fff6e6' },
-  { id: 'canon', name: 'CANON', note: 'Vignelli · white paper, black Helvetica, one red · Helvetica', swatch: ['#f4f2ec', '#111111', '#e2231a', '#ffffff', '#686868'], fonts: ['Helvetica Neue', 'Helvetica Neue', 'Helvetica Neue'], bg: 'linear-gradient(135deg,#ffffff 0%,#f4f2ec 70%,#e8e4da 100%)', ink: '#111111' },
+export const SKINS: { id: Skin; name: string; note: string; swatch: string[]; fonts: [string, string, string]; weight: number; bg: string; ink: string }[] = [
+  { id: 'orbit', name: 'ORBIT', note: 'The habitat above the world · champagne light on deep space · Futura Light, Helvetica', swatch: ['#04060a', '#f4f1ea', '#e8d6b0', '#9cc2e6', '#2b3648'], fonts: ['Futura', 'Helvetica Neue', 'Futura'], weight: 300, bg: 'radial-gradient(120% 90% at 70% 110%,#2b4a6e 0%,#0b1422 45%,#04060a 100%)', ink: '#f4f1ea' },
+  { id: 'ember', name: 'EMBER', note: 'Imperial dusk · black and red · Futura, Helvetica', swatch: ['#000', '#f5f0eb', '#ff3a40', '#7d0f14', '#b08a52'], fonts: ['Futura', 'Helvetica Neue', 'Helvetica Neue'], weight: 500, bg: 'linear-gradient(135deg,#000 0%,#1a0204 60%,#3a0609 100%)', ink: '#f5f0eb' },
+  { id: 'terra', name: 'TERRA', note: 'Frontier world · white and green on deep blue · Optima, Helvetica, Futura', swatch: ['#000', '#ffffff', '#6effa0', '#1e78dc', '#0c3878'], fonts: ['Optima', 'Helvetica Neue', 'Futura'], weight: 400, bg: 'linear-gradient(135deg,#000 0%,#031a10 55%,#04162e 100%)', ink: '#ffffff' },
+  { id: 'tailor', name: 'TAILOR', note: 'Bespoke · bottle green, jade, brass, ivory · Bodoni throughout', swatch: ['#020805', '#f4f0e2', '#46dc96', '#145c3a', '#c9a85c'], fonts: ['Bodoni Moda Variable', 'Bodoni Moda Variable', 'Bodoni Moda Variable'], weight: 500, bg: 'linear-gradient(135deg,#010402 0%,#06180e 60%,#123020 100%)', ink: '#f4f0e2' },
+  { id: 'forge', name: 'FORGE', note: 'Workshop light · amber, cyan, one red · Helvetica, Futura', swatch: ['#060504', '#fff6e6', '#ffba40', '#ba162a', '#6ed6ff'], fonts: ['Helvetica Neue', 'Helvetica Neue', 'Futura'], weight: 200, bg: 'linear-gradient(135deg,#060504 0%,#2a1806 55%,#3a0a12 100%)', ink: '#fff6e6' },
+  { id: 'paper', name: 'PAPER', note: 'Transit map · white paper, black Helvetica, one red', swatch: ['#f4f2ec', '#111111', '#e2231a', '#ffffff', '#686868'], fonts: ['Helvetica Neue', 'Helvetica Neue', 'Helvetica Neue'], weight: 700, bg: 'linear-gradient(135deg,#ffffff 0%,#f4f2ec 70%,#e8e4da 100%)', ink: '#111111' },
 ]
 export type Profile = 'relic-laptop' | 'relic-desktop' | 'relic-tv' | 'relic-phone' | 'relic-car' | 'relic-thermostat'
 
@@ -209,10 +210,13 @@ export const initialKernelState = (): KernelState => ({
   })(),
   skin: (() => {
     try {
-      const v = localStorage.getItem('relic.skin')
-      return v === 'earth' || v === 'savile' || v === 'stark' || v === 'canon' ? v : 'sith'
+      const v = localStorage.getItem('relic.skin') ?? ''
+      // themes were renamed; carry a saved choice across
+      const was: Record<string, Skin> = { sith: 'ember', earth: 'terra', savile: 'tailor', stark: 'forge', canon: 'paper' }
+      const k = was[v] ?? v
+      return SKINS.some((x) => x.id === k) ? (k as Skin) : 'orbit'
     } catch {
-      return 'sith'
+      return 'orbit'
     }
   })() as Skin,
   background: 'wave',

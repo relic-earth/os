@@ -10,6 +10,7 @@ resolution, then typeset glyph by glyph in the theme's colours:
   savile  a Savile Row shopfront at night, in the rain       brass + jade on bottle green
   stark   an armoured faceplate as a holographic wireframe   amber + cyan on black
   canon   a 1972-style subway diagram                        black + one red line on paper
+  orbit   the planet's limb at dawn from a high orbit         painted, not typeset
 
 Output: public/wallpaper/<theme>.jpg (2560x1440). Usage: python3 scripts/wallpapers.py [theme…]
 Needs Pillow + numpy and DejaVu Sans Mono.
@@ -287,11 +288,176 @@ def canon():
     return typeset(lum, acc, (242, 238, 228), (16, 16, 16), (226, 35, 26), accent_ramp='#')
 
 
-SCENES = {'sith': sith, 'earth': earth, 'savile': savile, 'stark': stark, 'canon': canon}
+# ─── ORBIT ────────────────────────────────────────────────────────────────
+def orbit(atmo=(90, 170, 255), halo_c=(20, 50, 110), sun=(1.0, 0.92, 0.78), city=(255, 200, 130), sea=(3, 9, 22), cloud=(18, 26, 40), day=(50, 90, 140), space=(4, 10, 22), sun_x=0.84, seed=42, cities=True):
+    """Painted, not typeset: the planet's limb at dawn from a high orbit —
+    a dark ocean hemisphere strung with city lights, a thin blue atmosphere,
+    the sun breaking over the edge, and a field of stars."""
+    from PIL import ImageFilter
+    h, w = H, W
+    yy, xx = np.mgrid[0:h, 0:w].astype(np.float32)
+    r = np.random.default_rng(seed)
+
+    def fbm(base, octs, seed):
+        g = np.random.default_rng(seed)
+        out = np.zeros((h, w), np.float32)
+        amp, tot = 1.0, 0.0
+        for o in range(octs):
+            n = base * 2 ** o
+            small = Image.fromarray((g.random((max(2, int(n * h / w)), n)) * 255).astype(np.uint8))
+            out += amp * np.asarray(small.resize((w, h), Image.BICUBIC), np.float32) / 255
+            tot += amp
+            amp *= 0.55
+        return out / tot
+
+    img = np.zeros((h, w, 3), np.float32)
+    # deep space, faintly blue toward the planet
+    img += np.array([2, 4, 9], np.float32)
+    img += (yy / h)[..., None] ** 2 * np.array(space, np.float32)
+    # stars
+    n = 2600
+    sx, sy = r.random(n) * w, r.random(n) * h * 0.72
+    sb = r.random(n) ** 6
+    star = np.zeros((h, w), np.float32)
+    star[sy.astype(int), sx.astype(int)] = 80 + sb * 400
+    star = np.asarray(Image.fromarray(np.clip(star, 0, 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(0.7)), np.float32) * 1.6
+    img += star[..., None] * np.array([0.9, 0.95, 1.0])
+
+    # the planet
+    cx, cy, R = w * 0.56, h + 2300, 2900
+    d = np.hypot(xx - cx, yy - cy)
+    inside = d < R
+    # surface: ocean, cloud bands, city lights
+    clouds = fbm(6, 6, 3)
+    clouds = np.clip((clouds - 0.45) * 2.6, 0, 1)
+    land = fbm(3, 5, 9) > 0.53
+    # cities: sparse points, clustered into a few lit coasts and valleys
+    cluster = np.clip((fbm(14, 4, 11) - 0.56) * 5, 0, 1) * land
+    pts = r.random((h, w)) > 0.985
+    lights = np.asarray(Image.fromarray((cluster * pts * 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(0.8)), np.float32) / 255 * 2.2
+    edge = np.clip((R - d) / 260, 0, 1)                 # 0 at the limb
+    lit = np.clip(1 - (xx - w * (sun_x - 0.02)) ** 2 / (w * 0.5) ** 2, 0, 1) ** 3  # sunrise side
+    surface = np.zeros((h, w, 3), np.float32)
+    surface += np.array(sea) + clouds[..., None] * np.array(cloud) * (0.3 + edge[..., None] * 0.7)
+    surface += (lit * np.clip(1 - edge * 1.4 + 0.25, 0, 1))[..., None] * np.array(day) * (0.4 + clouds[..., None])
+    surface += lights[..., None] * np.array(city) * (1 - lit[..., None] * 0.9) * cities
+    img = np.where(inside[..., None], surface, img)
+
+    # atmosphere: a thin band hugging the limb, brightest toward the sun
+    alt = d - R
+    band = np.exp(-np.maximum(alt, 0) / 26) * (alt > -40) * np.exp(-np.maximum(-alt, 0) / 14)
+    halo = np.exp(-np.maximum(alt, 0) / 130) * (alt > 0)
+    sunward = 0.35 + 0.65 * np.exp(-((xx - w * sun_x) / (w * 0.22)) ** 2)
+    img += band[..., None] * sunward[..., None] * np.array(atmo) * 1.4
+    img += halo[..., None] * sunward[..., None] * np.array(halo_c) * 0.9
+    # the sun breaking over the edge, with a long horizontal glare
+    sx0, sy0 = w * sun_x, cy - np.sqrt(R ** 2 - (w * sun_x - cx) ** 2) - 6
+    ds = np.hypot(xx - sx0, (yy - sy0) * 1.0)
+    img += (np.exp(-ds / 22) * 900 + np.exp(-ds / 140) * 120 + np.exp(-ds / 520) * 40)[..., None] * np.array(sun)
+    glare = np.exp(-np.abs(yy - sy0) / 3.5) * np.exp(-np.abs(xx - sx0) / 700)
+    img += glare[..., None] * np.array(sun) * 255 * 0.9
+
+    # film: soft bloom, gentle vignette, fine grain
+    out = Image.fromarray(np.clip(img, 0, 255).astype(np.uint8))
+    bloom = out.filter(ImageFilter.GaussianBlur(18))
+    out = Image.fromarray(np.clip(np.asarray(out, np.float32) + np.asarray(bloom, np.float32) * 0.35, 0, 255).astype(np.uint8))
+    a = np.asarray(out, np.float32)
+    vig = 1 - 0.45 * (((xx - w / 2) / (w * 0.75)) ** 2 + ((yy - h * 0.45) / (h * 0.9)) ** 2)
+    a = a * np.clip(vig, 0.4, 1)[..., None] + r.normal(0, 2.2, (h, w, 1))
+    return Image.fromarray(np.clip(a, 0, 255).astype(np.uint8))
+
+
+def ember():
+    """Dusk over a dark world: a red atmosphere, a low orange sun."""
+    return orbit(atmo=(255, 70, 50), halo_c=(110, 14, 10), sun=(1.0, 0.62, 0.42), city=(255, 120, 80), sea=(6, 2, 3), cloud=(30, 10, 10), day=(120, 30, 20), space=(18, 3, 4), sun_x=0.2, seed=5)
+
+
+def terra():
+    """Dawn on a green frontier world: white light, a green-blue sky."""
+    return orbit(atmo=(110, 255, 170), halo_c=(14, 70, 60), sun=(0.95, 1.0, 0.95), city=(200, 255, 210), sea=(2, 10, 18), cloud=(20, 40, 36), day=(40, 120, 110), space=(2, 12, 18), sun_x=0.7, seed=17)
+
+
+def forge():
+    """A molten horizon: amber corona with a thin cyan rim."""
+    return orbit(atmo=(255, 176, 60), halo_c=(90, 46, 6), sun=(1.0, 0.86, 0.6), city=(120, 220, 255), sea=(8, 6, 4), cloud=(34, 24, 12), day=(140, 90, 30), space=(16, 10, 4), sun_x=0.5, seed=23)
+
+
+def tailor():
+    """After hours behind a shop window: brass and jade lights through rain on glass."""
+    from PIL import ImageFilter
+    h, w = H, W
+    r = np.random.default_rng(31)
+    base = np.zeros((h, w, 3), np.float32)
+    yy, xx = np.mgrid[0:h, 0:w].astype(np.float32)
+    base += np.array([2, 10, 6]) + (1 - yy / h)[..., None] * np.array([4, 16, 10])
+    # out-of-focus lights: large soft discs with bright rims (anamorphic bokeh)
+    layer = Image.new('RGB', (w, h))
+    from PIL import ImageDraw as D
+    d = D.Draw(layer, 'RGBA')
+    for _ in range(46):
+        # a lit window across the street: lights gather in a band, a few stray
+        x = w * (0.5 + r.normal(0, 0.24))
+        y = h * (0.62 + r.normal(0, 0.12))
+        rad = 24 + r.random() ** 3 * 150
+        c = (214, 178, 104) if r.random() > 0.3 else (92, 210, 160)
+        a = int(14 + r.random() * 34)
+        d.ellipse((x - rad, y - rad, x + rad, y + rad), fill=c + (a,), outline=c + (min(255, int(a * 2.4)),), width=3)
+    bokeh = np.asarray(layer.filter(ImageFilter.GaussianBlur(5)), np.float32)
+    # a warm interior glow behind it all
+    bokeh += (np.exp(-(((xx - w * 0.5) / (w * 0.35)) ** 2 + ((yy - h * 0.62) / (h * 0.25)) ** 2)) * 40)[..., None] * np.array([0.9, 0.75, 0.45])
+    img = base + bokeh
+    # rain on the glass: soft streaks and beads that catch the light
+    rain = Image.new('L', (w, h))
+    dr = D.Draw(rain)
+    for _ in range(700):
+        x, y = r.random() * w, r.random() * h
+        ln = 20 + r.random() * 90
+        dr.line((x, y, x + ln * 0.12, y + ln), fill=int(30 + r.random() * 60), width=1)
+    for _ in range(500):
+        x, y, rr = r.random() * w, r.random() * h, 1 + r.random() * 3
+        dr.ellipse((x - rr, y - rr, x + rr, y + rr), fill=int(90 + r.random() * 120))
+    rain = np.asarray(rain.filter(ImageFilter.GaussianBlur(0.8)), np.float32) / 255
+    img += rain[..., None] * np.array([150, 170, 140]) * 0.6
+    vig = 1 - 0.5 * (((xx - w / 2) / (w * 0.7)) ** 2 + ((yy - h / 2) / (h * 0.8)) ** 2)
+    img = img * np.clip(vig, 0.35, 1)[..., None] + r.normal(0, 2, (h, w, 1))
+    return Image.fromarray(np.clip(img, 0, 255).astype(np.uint8))
+
+
+def paper():
+    """A transit diagram drawn as a print would be: lines at 0/45/90°, one red."""
+    from PIL import ImageDraw as D
+    k = 2  # supersample
+    w, h = W * k, H * k
+    img = Image.new('RGB', (w, h), (243, 240, 232))
+    d = D.Draw(img)
+    U = h  # coordinates in the same units as the ASCII scene: x in [0, 16/9], y in [0, 1]
+    P = lambda pts: [(x * U, y * U) for x, y in pts]
+    greys = [(30, 30, 30), (90, 90, 90), (150, 150, 150)]
+    lines = [
+        [(0.1, 0.12), (0.45, 0.12), (0.7, 0.37), (0.7, 0.92)],
+        [(0.25, 0.05), (0.25, 0.45), (0.6, 0.8), (1.3, 0.8), (1.45, 0.95)],
+        [(0.05, 0.55), (0.55, 0.55), (0.9, 0.2), (1.7, 0.2)],
+        [(0.4, 0.95), (0.4, 0.7), (1.0, 0.1), (1.0, 0.02)],
+        [(1.15, 0.05), (1.15, 0.6), (1.4, 0.6), (1.7, 0.9)],
+        [(0.85, 0.98), (0.85, 0.66), (1.6, 0.66), (1.6, 0.45), (1.75, 0.45)],
+    ]
+    for i, pts in enumerate(lines):
+        d.line(P(pts), fill=greys[i % 3], width=int(0.006 * U), joint='curve')
+    d.line(P([(0.0, 0.33), (0.5, 0.33), (0.82, 0.65), (1.78, 0.65)]), fill=(226, 35, 26), width=int(0.009 * U), joint='curve')
+    for sx, sy in [(0.45, 0.12), (0.25, 0.33), (0.55, 0.55), (0.7, 0.65), (1.0, 0.65), (1.15, 0.2), (1.3, 0.8), (0.85, 0.66), (1.6, 0.66), (1.15, 0.6)]:
+        R1, R2 = 0.014 * U, 0.008 * U
+        d.ellipse((sx * U - R1, sy * U - R1, sx * U + R1, sy * U + R1), fill=(20, 20, 20))
+        d.ellipse((sx * U - R2, sy * U - R2, sx * U + R2, sy * U + R2), fill=(255, 255, 255))
+    return img.resize((W, H), Image.LANCZOS)
+
+
+SCENES = {'orbit': orbit, 'ember': ember, 'terra': terra, 'tailor': tailor, 'forge': forge, 'paper': paper}
+# the earlier typeset (ASCII) set, kept for reference: python3 scripts/wallpapers.py ascii-ember …
+ASCII = {'ascii-ember': sith, 'ascii-terra': earth, 'ascii-tailor': savile, 'ascii-forge': stark, 'ascii-paper': canon}
 
 if __name__ == '__main__':
     OUT.mkdir(parents=True, exist_ok=True)
     for name in sys.argv[1:] or SCENES:
-        img = SCENES[name]()
+        img = {**SCENES, **ASCII}[name]()
         img.save(OUT / f'{name}.jpg', quality=82, optimize=True, progressive=True)
         print(name, (OUT / f'{name}.jpg').stat().st_size // 1024, 'KB')

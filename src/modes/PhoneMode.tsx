@@ -10,7 +10,7 @@ import { Icon, deviceIcon } from '../ui/Icon'
 import { Art } from '../ui/Art'
 import { fmtClock, fmtDate, statusText, useMesh, useNow, Wordmark } from '../ui/primitives'
 import { ScarabMark } from '../ui/Brand'
-import { HudReactor } from '../ui/HudReactor'
+import { OrbitalRing } from '../ui/OrbitalRing'
 import { Background } from '../os/shell/Background'
 import { DeviceSwitcher } from '../os/shell/TopBar'
 import { ClaudeTranscript, Suggestions } from '../apps/claude/ClaudePanel'
@@ -73,7 +73,7 @@ function PhoneShell({ framed }: { framed: boolean }) {
   const here = useOS((s) => s.sessions.find((x) => x.deviceId === PHONE && x.mediaId))
   return (
     <div className="relative flex h-full flex-col">
-      <video className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-50" src="wallpaper/wave.mp4" poster="wallpaper/wave-poster.jpg" autoPlay muted loop playsInline />
+      <Background />
       {!framed && <div className="shrink-0" style={{ height: 'max(12px, env(safe-area-inset-top))' }} />}
       <PhoneStrip />
       {framed && <div className="relative z-40 flex h-11 shrink-0 items-center justify-between px-7 pt-2">
@@ -100,7 +100,7 @@ function PhoneShell({ framed }: { framed: boolean }) {
             <button
               key={t.id}
               onClick={() => { setTab(t.id); setSheet(null) }}
-              className={`hud-target h-7 rounded-full px-2.5 text-[11px] font-semibold uppercase tracking-[0.14em] transition-colors ${tab === t.id ? 'is-active bg-gradient-to-b from-[rgb(var(--acc-2))] to-[rgb(var(--acc-3))] text-white shadow-[inset_0_1px_0_rgb(var(--gold-2)/0.45),0_0_14px_rgb(var(--acc-1)/0.5)]' : 'text-smoke'}`}
+              className={`hud-target h-7 rounded-full px-2.5 text-[10.5px] font-medium uppercase tracking-[0.18em] transition-colors ${tab === t.id ? 'is-active bg-white/[0.08] text-bone shadow-[inset_0_0_0_1px_rgb(var(--acc)/0.35)]' : 'text-smoke'}`}
             >
               {t.label}
             </button>
@@ -129,37 +129,32 @@ function PhoneAsk({ onAsk }: { onAsk: () => void }) {
       onChange={(e) => setText(e.target.value)}
       onKeyDown={(e) => e.key === 'Enter' && send()}
       enterKeyHint="send"
-      placeholder={busy ? 'WORKING…' : 'COMMAND RELIC'}
+      placeholder={busy ? 'Working…' : 'Ask Claude'}
       aria-label="Ask Claude"
-      className="well mt-2 h-11 w-full rounded-[2px] border border-[rgb(var(--gold)/0.3)] bg-[rgb(var(--ink-2)/0.7)] px-4 text-[17px] text-bone caret-[rgb(var(--acc-1))] outline-none placeholder:text-smoke focus:shadow-[0_0_0_1px_rgb(var(--acc-1)/0.5),0_0_20px_rgb(var(--acc-1)/0.25)]"
+      className="mt-2 h-11 w-full rounded-[10px] border border-[var(--hair-strong)] bg-[rgb(var(--ink-2)/0.55)] px-4 text-[16px] text-bone caret-[rgb(var(--acc))] outline-none backdrop-blur-xl placeholder:text-soot focus:border-[rgb(var(--acc)/0.6)] focus:shadow-[0_0_24px_-6px_rgb(var(--acc)/0.5)]"
     />
   )
 }
 
-/** The phone's telemetry strip: the mark, the theme keys, mesh and power. */
+/** The phone's top edge: the mark, the theme keys, a quiet status. */
 function PhoneStrip() {
   const skin = useOS((s) => s.skin)
   const { online, total } = useMesh()
   const battery = useOS((s) => s.devices.find((d) => d.id === PHONE)?.battery ?? 0.7)
   return (
-    <div className="relative z-40 flex h-9 shrink-0 items-stretch border-b border-[rgb(var(--acc)/0.25)] font-mono text-[10px] text-ash">
-      <span className="flex items-center gap-1.5 bg-[linear-gradient(180deg,rgb(var(--acc-2)),rgb(var(--acc-3)))] pl-4 pr-5 text-white [clip-path:polygon(0_0,100%_0,calc(100%-10px)_100%,0_100%)]">
-        <ScarabMark size={14} className="text-white" />
-        <span className="font-display text-[9px] tracking-[0.18em]">RLC</span>
-      </span>
-      <span className="flex items-center gap-1.5 px-3">
+    <div className="relative z-40 flex h-10 shrink-0 items-center gap-2 px-4 text-[10px] text-smoke">
+      <span className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-[linear-gradient(90deg,transparent,var(--hair-strong),transparent)]" />
+      <ScarabMark size={15} className="text-[rgb(var(--acc))] drop-shadow-[0_0_6px_rgb(var(--acc)/0.6)]" />
+      <span className="flex items-center gap-1 pl-2">
         {SKINS.map((k) => (
-          <button key={k.id} onClick={() => relicRuntime.shell.setSkin(k.id)} aria-label={`${k.name} theme`} aria-pressed={skin === k.id} className={`px-0.5 ${skin === k.id ? 'text-white [text-shadow:0_0_8px_rgb(var(--acc))]' : 'text-soot'}`}>
+          <button key={k.id} onClick={() => relicRuntime.shell.setSkin(k.id)} aria-label={`${k.name} theme`} aria-pressed={skin === k.id} className={`relative px-1 py-1 tracking-[0.16em] ${skin === k.id ? 'text-bone' : 'text-soot'}`}>
             {k.name.slice(0, 2)}
+            {skin === k.id && <span className="absolute inset-x-1 bottom-0 h-px bg-[rgb(var(--acc))]" />}
           </button>
         ))}
       </span>
-      <span className="ml-auto flex items-center gap-1.5 border-l border-[rgb(var(--acc)/0.18)] px-3">
-        MESH <span className="text-white">{online}/{total}</span>
-      </span>
-      <span className="flex items-center gap-1.5 border-l border-[rgb(var(--acc)/0.18)] px-3">
-        PWR <span className="text-white">{Math.round(battery * 100)}</span>
-      </span>
+      <span className="ml-auto tracking-[0.14em]" title="Devices online">{online}/{total}</span>
+      <span className="tracking-[0.14em]" title="Battery">{Math.round(battery * 100)}%</span>
     </div>
   )
 }
@@ -170,7 +165,7 @@ function PhoneReactor({ online, total }: { online: number; total: number }) {
   const t = new Date(now)
   return (
     <div className="relative mx-auto flex h-[290px] w-[290px] items-center justify-center">
-      <div className="absolute inset-0"><HudReactor size={290} callouts={false} /></div>
+      <div className="absolute inset-0 flex items-center justify-center"><OrbitalRing size={290} /></div>
       <div className="relative text-center">
         <div className="font-mono text-[9px] tracking-[0.3em] text-[rgb(var(--gold))]">{fmtDate(now)}</div>
         <div className="mt-2 font-display text-[54px] leading-none text-white [text-shadow:0_0_24px_rgb(var(--acc)/0.8)]">

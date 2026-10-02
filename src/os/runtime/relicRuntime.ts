@@ -1,3 +1,4 @@
+import { flushSync } from 'react-dom'
 import { apps } from '../apps/service'
 import { files } from '../files/service'
 import { devices, home } from '../devices/service'
@@ -70,7 +71,14 @@ export const relicRuntime = {
       }
     },
     setSkin: (skin: Skin) => {
-      setOS({ skin })
+      // a theme change crossfades the whole screen (View Transitions), where supported
+      const apply = () => {
+        flushSync(() => setOS({ skin }))
+        document.documentElement.dataset.skin = skin
+      }
+      const doc = document as Document & { startViewTransition?: (cb: () => void) => unknown }
+      if (doc.startViewTransition && !matchMedia('(prefers-reduced-motion: reduce)').matches) doc.startViewTransition(apply)
+      else apply()
       try {
         localStorage.setItem('relic.skin', skin)
       } catch {
