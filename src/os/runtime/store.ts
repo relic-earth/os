@@ -26,12 +26,17 @@ import { appRegistry } from '../apps/registry'
  */
 
 export type Section = 'home' | 'tv' | 'movies' | 'games'
-export type Skin = 'sith' | 'earth' | 'savile'
-/** Each skin is a whole visual language: palette, three faces, and how the artwork is lit. */
-export const SKINS: { id: Skin; name: string; note: string; swatch: string[]; fonts: [string, string, string]; bg: string }[] = [
-  { id: 'sith', name: 'SITH', note: 'Black and red · Michroma, Oxanium, JetBrains Mono', swatch: ['#000', '#f5f0eb', '#ff3a40', '#7d0f14', '#b08a52'], fonts: ['Michroma', 'Oxanium', 'JetBrains Mono'], bg: 'linear-gradient(135deg,#000 0%,#1a0204 60%,#3a0609 100%)' },
-  { id: 'earth', name: 'EARTH', note: 'After KOTOR · black, white, terminal green, Republic blue · Sackers Gothic, Meta, OCR A', swatch: ['#000', '#ffffff', '#6effa0', '#1e78dc', '#0c3878'], fonts: ['Copperplate', 'Fira Sans', 'Share Tech Mono'], bg: 'linear-gradient(135deg,#000 0%,#031a10 55%,#04162e 100%)' },
-  { id: 'savile', name: 'SAVILE', note: 'After Kingsman · bottle green, jade, brass, ivory · Cormorant SC, Josefin Sans, IBM Plex Mono', swatch: ['#020805', '#f4f0e2', '#46dc96', '#145c3a', '#c9a85c'], fonts: ['Cormorant SC', 'Josefin Sans', 'IBM Plex Mono'], bg: 'linear-gradient(135deg,#010402 0%,#06180e 60%,#123020 100%)' },
+export type Skin = 'sith' | 'earth' | 'savile' | 'stark' | 'canon'
+/**
+ * Each skin is a whole visual language: palette, how the artwork is lit, and
+ * three type roles — every face drawn from the Vignelli Canon.
+ */
+export const SKINS: { id: Skin; name: string; note: string; swatch: string[]; fonts: [string, string, string]; bg: string; ink: string }[] = [
+  { id: 'sith', name: 'SITH', note: 'Star Wars · black and red · Futura, Helvetica', swatch: ['#000', '#f5f0eb', '#ff3a40', '#7d0f14', '#b08a52'], fonts: ['Futura', 'Helvetica Neue', 'Helvetica Neue'], bg: 'linear-gradient(135deg,#000 0%,#1a0204 60%,#3a0609 100%)', ink: '#f5f0eb' },
+  { id: 'earth', name: 'EARTH', note: 'KOTOR · white and green on Republic blue · Optima, Helvetica, Futura', swatch: ['#000', '#ffffff', '#6effa0', '#1e78dc', '#0c3878'], fonts: ['Optima', 'Helvetica Neue', 'Futura'], bg: 'linear-gradient(135deg,#000 0%,#031a10 55%,#04162e 100%)', ink: '#ffffff' },
+  { id: 'savile', name: 'SAVILE', note: 'Kingsman · bottle green, jade, brass, ivory · Bodoni, Garamond', swatch: ['#020805', '#f4f0e2', '#46dc96', '#145c3a', '#c9a85c'], fonts: ['Bodoni 72', 'EB Garamond', 'EB Garamond'], bg: 'linear-gradient(135deg,#010402 0%,#06180e 60%,#123020 100%)', ink: '#f4f0e2' },
+  { id: 'stark', name: 'STARK', note: 'Marvel · Iron Man HUD: amber-gold light, JARVIS cyan, hot-rod red · Helvetica, Futura', swatch: ['#060504', '#fff6e6', '#ffba40', '#ba162a', '#6ed6ff'], fonts: ['Helvetica Neue', 'Helvetica Neue', 'Futura'], bg: 'linear-gradient(135deg,#060504 0%,#2a1806 55%,#3a0a12 100%)', ink: '#fff6e6' },
+  { id: 'canon', name: 'CANON', note: 'Vignelli · white paper, black Helvetica, one red · Helvetica', swatch: ['#f4f2ec', '#111111', '#e2231a', '#ffffff', '#686868'], fonts: ['Helvetica Neue', 'Helvetica Neue', 'Helvetica Neue'], bg: 'linear-gradient(135deg,#ffffff 0%,#f4f2ec 70%,#e8e4da 100%)', ink: '#111111' },
 ]
 export type Profile = 'relic-laptop' | 'relic-desktop' | 'relic-tv' | 'relic-phone' | 'relic-car' | 'relic-thermostat'
 
@@ -205,7 +210,7 @@ export const initialKernelState = (): KernelState => ({
   skin: (() => {
     try {
       const v = localStorage.getItem('relic.skin')
-      return v === 'earth' || v === 'savile' ? v : 'sith'
+      return v === 'earth' || v === 'savile' || v === 'stark' || v === 'canon' ? v : 'sith'
     } catch {
       return 'sith'
     }

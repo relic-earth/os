@@ -131,6 +131,14 @@ export function WindowsPC({ win }: { win: RelicWindow }) {
     e.mouse_set_enabled(win.focused)
   }, [win.focused, phase])
 
+  // Rams 9 — a minimized PC stops its CPU; it resumes exactly where it was
+  useEffect(() => {
+    const e = emu.current
+    if (!e || phase !== 'running') return
+    if (win.minimized) void e.stop()
+    else void e.run()
+  }, [win.minimized, phase])
+
   // 5 · power off when the window closes
   useEffect(
     () => () => {

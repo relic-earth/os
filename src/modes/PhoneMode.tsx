@@ -150,7 +150,7 @@ function PhoneStrip() {
       <span className="flex items-center gap-1.5 px-3">
         {SKINS.map((k) => (
           <button key={k.id} onClick={() => relicRuntime.shell.setSkin(k.id)} aria-label={`${k.name} theme`} aria-pressed={skin === k.id} className={`px-0.5 ${skin === k.id ? 'text-white [text-shadow:0_0_8px_rgb(var(--acc))]' : 'text-soot'}`}>
-            {k.name[0]}
+            {k.name.slice(0, 2)}
           </button>
         ))}
       </span>

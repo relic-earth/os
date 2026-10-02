@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import { useOS } from '../runtime/store'
 import { Art } from '../../ui/Art'
 import { CoruscantWindow } from '../../ui/CoruscantWindow'
@@ -6,11 +7,23 @@ import { CoruscantWindow } from '../../ui/CoruscantWindow'
 export function Background({ variant }: { variant?: string }) {
   const bg = useOS((s) => s.background)
   const v = variant ?? bg
+  const video = useRef<HTMLVideoElement>(null)
+  // Rams 9 — environmentally friendly: no decoding frames nobody sees
+  useEffect(() => {
+    const on = () => {
+      const el = video.current
+      if (!el) return
+      if (document.hidden) el.pause()
+      else void el.play().catch(() => {})
+    }
+    document.addEventListener('visibilitychange', on)
+    return () => document.removeEventListener('visibilitychange', on)
+  }, [])
   return (
     <div className="pointer-events-none absolute inset-0 overflow-clip bg-void">
       {v === 'wave' && (
         // the Great Wave in red ASCII — a ping-pong loop, so it breathes without a seam
-        <video className="absolute inset-0 h-full w-full object-cover opacity-80" src="wallpaper/wave.mp4" poster="wallpaper/wave-poster.jpg" autoPlay muted loop playsInline preload="auto" />
+        <video ref={video} className="absolute inset-0 h-full w-full object-cover opacity-80" src="wallpaper/wave.mp4" poster="wallpaper/wave-poster.jpg" autoPlay muted loop playsInline preload="auto" />
       )}
       {v === 'chancellor' && <CoruscantWindow className="absolute inset-0 h-full w-full opacity-[0.78]" />}
       {v === 'horizon' && (
@@ -23,9 +36,8 @@ export function Background({ variant }: { variant?: string }) {
       {v === 'topographic' && <Art variant="topo" seed={5} className="absolute inset-0 h-full w-full opacity-90" />}
       {v === 'architecture' && <Art variant="spire" seed={6} className="absolute inset-0 h-full w-full opacity-60" />}
       {/* vignette + grain */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_40%,transparent_0%,rgba(3,3,3,0.55)_60%,rgba(3,3,3,0.92)_100%)]" />
+      <div className="vignette absolute inset-0 bg-[radial-gradient(ellipse_at_50%_40%,transparent_0%,rgba(3,3,3,0.55)_60%,rgba(3,3,3,0.92)_100%)]" />
       <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-void to-transparent" />
-      <div className="grain" />
     </div>
   )
 }

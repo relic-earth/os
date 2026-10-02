@@ -11,15 +11,9 @@
     "reactos": "node scripts/reactos.mjs"
   },
   "dependencies": {
-    "@fontsource/cormorant-sc": "^5.3.0",
-    "@fontsource/fira-sans": "^5.3.0",
-    "@fontsource/ibm-plex-mono": "^5.3.0",
-    "@fontsource/jetbrains-mono": "^5.3.0",
-    "@fontsource/josefin-sans": "^5.3.0",
-    "@fontsource/michroma": "^5.3.0",
-    "@fontsource/oxanium": "^5.3.0",
-    "@fontsource/share-tech-mono": "^5.3.0",
-    "@fontsource/syncopate": "^5.3.0",
+    "@fontsource/bodoni-moda": "^5.3.0",
+    "@fontsource/eb-garamond": "^5.3.0",
+    "@fontsource/jost": "^5.3.0",
     "framer-motion": "^13.4.6",
     "fzstd": "^0.1.1",
     "lucide-react": "^1.49.0",

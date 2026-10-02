@@ -500,7 +500,7 @@ function SkinPicker() {
   return (
     <div className="mb-10">
       <div className="label mb-3">Theme</div>
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 gap-4 xl:grid-cols-3">
         {SKINS.map((k) => {
           const on = skin === k.id
           return (
@@ -512,7 +512,7 @@ function SkinPicker() {
               style={{ background: k.bg, borderColor: on ? k.swatch[2] : `${k.swatch[2]}55` }}
             >
               <div className="flex items-center gap-3">
-                <span className="text-[24px] tracking-[0.1em]" style={{ fontFamily: `'${k.fonts[0]}', serif`, fontWeight: k.id === 'sith' ? 400 : 700, color: k.swatch[1] }}>
+                <span className="text-[24px] tracking-[0.1em]" style={{ fontFamily: `'${k.fonts[0]}', serif`, fontWeight: k.id === 'stark' ? 200 : k.id === 'sith' || k.id === 'earth' ? 500 : 700, color: k.ink }}>
                   {k.name}
                 </span>
                 {on && <span className="text-[13px]" style={{ fontFamily: `'${k.fonts[2]}', monospace`, color: k.swatch[4] }}>● ACTIVE</span>}
@@ -522,7 +522,7 @@ function SkinPicker() {
                   <span key={c} className="h-4 w-7" style={{ background: c, boxShadow: 'inset 0 0 0 1px rgba(255,255,255,0.15)' }} />
                 ))}
               </div>
-              <div className="text-[12px] leading-snug" style={{ fontFamily: `'${k.fonts[1]}', sans-serif`, color: k.swatch[1], opacity: 0.8 }}>
+              <div className="text-[12px] leading-snug" style={{ fontFamily: `'${k.fonts[1]}', sans-serif`, color: k.ink, opacity: 0.8 }}>
                 {k.note}
               </div>
             </button>

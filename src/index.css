@@ -6,11 +6,13 @@
    One red family only. Bright red is reserved for active state.
    ─────────────────────────────────────────────────────────── */
 @theme {
-  /* DECK typography — Michroma: wide, Eurostile-like display; Oxanium: squared
-     interface text with angled terminals; JetBrains Mono: data and telemetry. */
-  --font-sans: "Oxanium", "Eurostile", "Bank Gothic", "Helvetica Neue", Arial, sans-serif;
-  --font-display: "Michroma", "Eurostile Extended", "Oxanium", sans-serif;
-  --font-mono: "JetBrains Mono", "SF Mono", Menlo, monospace;
+  /* Type comes only from the Vignelli Canon (Garamond, Bodoni, Century
+     Expanded, Helvetica; + Optima, Futura, Univers, Caslon, Baskerville,
+     Times). Each theme assigns three roles: display, text, data. SITH:
+     Futura display, Helvetica text, Helvetica data (tabular figures). */
+  --font-sans: "Helvetica Neue", Helvetica, "Nimbus Sans", Arial, sans-serif;
+  --font-display: Futura, "Futura PT", Jost, "Helvetica Neue", sans-serif;
+  --font-mono: "Helvetica Neue", Helvetica, "Nimbus Sans", Arial, sans-serif;
   /* angular geometry: Tailwind's named radii collapse to near-square */
   --radius-xs: 1px;
   --radius-sm: 2px;
@@ -40,6 +42,10 @@
 }
 
 :root {
+  /* display voice — SITH: Futura medium, wide caps */
+  --display-weight: 500;
+  --display-track: 0.08em;
+  --display-case: uppercase;
   /* ── THEME TOKENS (rgb triplets) — SITH is the default skin ── */
   --acc: 255 58 64;      /* light: edges, glows, active */
   --acc-1: 232 36 43;    /* signal */
@@ -74,10 +80,13 @@
 
 /* ── EARTH — after Knights of the Old Republic: black, with white and
    terminal green leading and Republic blue beneath. Three faces:
-   Sackers Gothic (engraved display) · Meta (interface) · OCR A (data).
+   Canon faces: Optima (display) · Helvetica (text) · Futura (data).
    Each is used if present (installed, or dropped in public/fonts);
-   otherwise Copperplate / Syncopate, Fira Sans, Share Tech Mono. ── */
+   (Optima carries the Old Republic's carved, humanist gravity.) ── */
 :root[data-skin="earth"] {
+  --display-weight: 400;
+  --display-track: 0.12em;
+  --display-case: uppercase;
   --acc: 110 255 160;     /* terminal green: edges, glows, the lit key */
   --acc-1: 72 232 132;
   --acc-2: 30 120 220;    /* Republic blue: fills */
@@ -99,9 +108,9 @@
   --color-ash: rgb(220 230 240);
   --color-smoke: rgb(150 172 190);
   --color-soot: rgb(70 88 104);
-  --font-display: "Relic Sackers", "Sackers Gothic Std", "Sackers Gothic", "Copperplate", "Copperplate Gothic", "Syncopate", serif;
-  --font-sans: "Relic Meta", "FF Meta Pro", "Meta Pro", "FF Meta", "Meta", "Fira Sans", sans-serif;
-  --font-mono: "Relic OCR", "OCR A Std", "OCR A Extended", "OCR-A", "Share Tech Mono", monospace;
+  --font-display: Optima, "Optima nova", "Helvetica Neue", sans-serif;   /* Canon: Optima */
+  --font-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;           /* Canon: Helvetica */
+  --font-mono: Futura, "Futura PT", Jost, sans-serif;                    /* Canon: Futura */
   --line-soft: rgba(255, 255, 255, 0.14);
   --line-faint: rgba(255, 255, 255, 0.07);
   --line: rgba(110, 255, 160, 0.4);
@@ -113,15 +122,18 @@
 :root[data-skin="earth"] video, :root[data-skin="earth"] .art, :root[data-skin="earth"] .rx { filter: var(--art-filter); }
 /* KOTOR: dialogue green for labels and data, white for everything you read */
 :root[data-skin="earth"] .label, :root[data-skin="earth"] .label-sm, :root[data-skin="earth"] .font-mono { color: rgb(110 255 160); }
-:root[data-skin="earth"] .t-display, :root[data-skin="earth"] .t-title, :root[data-skin="earth"] .font-display { font-weight: 700; letter-spacing: 0.1em; color: #fff; }
+:root[data-skin="earth"] .t-display, :root[data-skin="earth"] .t-title, :root[data-skin="earth"] .font-display { color: #fff; }
 /* the lit key: blue plate, green light, white type */
 :root[data-skin="earth"] .rail-key.is-active, :root[data-skin="earth"] .lit { background: linear-gradient(180deg, rgb(30 120 220 / 0.85), rgb(12 56 120 / 0.85)) !important; box-shadow: inset 0 0 0 1px rgb(110 255 160), inset 0 1px 0 rgba(255,255,255,0.5), 0 0 22px rgb(110 255 160 / 0.45) !important; }
 :root[data-skin="earth"] body, :root[data-skin="earth"] #root { background: #000; }
 
 /* ── SAVILE — after Kingsman: Merlin's screens in a Savile Row fitting room.
-   Bottle-green black, jade light, brass and ivory. Cormorant SC (engraved),
-   Josefin Sans (1920s deco geometric), IBM Plex Mono (the armourer's data). ── */
+   Bottle-green black, jade light, brass and ivory. Canon faces: Bodoni
+   (display, the tailor's label) · Garamond (text and data). ── */
 :root[data-skin="savile"] {
+  --display-weight: 700;
+  --display-track: 0.02em;
+  --display-case: none;
   --acc: 70 220 150;
   --acc-1: 40 186 116;
   --acc-2: 22 116 74;
@@ -143,9 +155,9 @@
   --color-ash: rgb(206 210 196);
   --color-smoke: rgb(140 152 136);
   --color-soot: rgb(64 80 66);
-  --font-display: "Cormorant SC", "Bodoni 72 Smallcaps", Didot, serif;
-  --font-sans: "Josefin Sans", "Futura", "Century Gothic", sans-serif;
-  --font-mono: "IBM Plex Mono", "SF Mono", Menlo, monospace;
+  --font-display: "Bodoni 72", "Bodoni Moda", "Bodoni MT", Didot, serif;  /* Canon: Bodoni */
+  --font-sans: "EB Garamond", Garamond, "Adobe Garamond Pro", serif;       /* Canon: Garamond */
+  --font-mono: "EB Garamond", Garamond, serif;
   --line-soft: rgba(201, 168, 92, 0.18);
   --line-faint: rgba(201, 168, 92, 0.08);
   --line: rgba(70, 220, 150, 0.4);
@@ -154,8 +166,116 @@
   --plate: rgba(2, 10, 6, 0.9);
   --grid: rgba(70, 220, 150, 0.035);
 }
+/* ── STARK — after Marvel's Stark interfaces: a holographic HUD on midnight
+   navy. Cyan light, Stark gold for labels, hot-rod red only for what is
+   active. Canon faces: Helvetica UltraLight (display, wide caps) ·
+   Helvetica (text) · Futura (data). ── */
+:root[data-skin="stark"] {
+  /* Iron Man's helmet HUD: amber-gold light, JARVIS cyan for labels,
+     hot-rod red only for what is active */
+  --display-weight: 200;
+  --display-track: 0.22em;
+  --display-case: uppercase;
+  --acc: 255 186 64;
+  --acc-1: 255 156 36;
+  --acc-2: 186 22 42;
+  --acc-3: 108 10 24;
+  --gold: 110 214 255;
+  --gold-2: 190 238 255;
+  --ink-1: 6 5 4;
+  --ink-2: 22 14 6;
+  --text: 255 246 230;
+  --art-filter: hue-rotate(36deg) saturate(1.05) brightness(1.15);
+  --color-red: rgb(186 22 42);
+  --color-signal: rgb(255 186 64);
+  --color-blood: rgb(108 10 24);
+  --color-oxblood: rgb(40 22 6);
+  --color-burgundy: rgb(20 12 4);
+  --color-bronze: rgb(110 214 255);
+  --color-brass: rgb(190 238 255);
+  --color-bone: rgb(255 246 230);
+  --color-ash: rgb(232 214 186);
+  --color-smoke: rgb(170 150 120);
+  --color-soot: rgb(90 76 58);
+  --font-display: "Helvetica Neue", Helvetica, Arial, sans-serif;   /* Canon: Helvetica */
+  --font-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-mono: Futura, "Futura PT", Jost, sans-serif;                /* Canon: Futura */
+  --line-soft: rgba(255, 186, 64, 0.16);
+  --line-faint: rgba(255, 186, 64, 0.08);
+  --line: rgba(255, 186, 64, 0.45);
+  --edge: rgba(255, 186, 64, 0.5);
+  --edge-dim: rgba(255, 186, 64, 0.18);
+  --plate: rgba(10, 7, 3, 0.86);
+  --grid: rgba(255, 186, 64, 0.045);
+}
+:root[data-skin="stark"] video, :root[data-skin="stark"] .art, :root[data-skin="stark"] .rx { filter: var(--art-filter); }
+:root[data-skin="stark"] body, :root[data-skin="stark"] #root { background: #060504; }
+
+/* ── CANON — Massimo Vignelli's New York: white paper, black Helvetica,
+   one signal red. The only light theme; no glow anywhere. Canon face:
+   Helvetica alone (bold display, regular text, tabular data). ── */
+:root[data-skin="canon"] {
+  color-scheme: light;
+  --display-weight: 700;
+  --display-track: -0.01em;
+  --display-case: none;
+  --acc: 226 35 26;
+  --acc-1: 226 35 26;
+  --acc-2: 226 35 26;
+  --acc-3: 160 20 14;
+  --gold: 17 17 17;
+  --gold-2: 17 17 17;
+  --ink-1: 244 242 236;
+  --ink-2: 255 255 255;
+  --text: 17 17 17;
+  --art-filter: invert(1) hue-rotate(180deg) saturate(1.3);
+  --color-void: rgb(244 242 236);
+  --color-ink: rgb(244 242 236);
+  --color-coal: rgb(236 234 228);
+  --color-slate: rgb(228 226 220);
+  --color-graphite: rgb(214 212 206);
+  --color-red: rgb(226 35 26);
+  --color-signal: rgb(226 35 26);
+  --color-blood: rgb(160 20 14);
+  --color-oxblood: rgb(236 234 228);
+  --color-burgundy: rgb(236 234 228);
+  --color-bronze: rgb(17 17 17);
+  --color-brass: rgb(17 17 17);
+  --color-bone: rgb(17 17 17);
+  --color-ash: rgb(56 56 56);
+  --color-smoke: rgb(104 104 104);
+  --color-soot: rgb(168 168 168);
+  --font-display: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-mono: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --line-soft: rgba(17, 17, 17, 0.14);
+  --line-faint: rgba(17, 17, 17, 0.07);
+  --line: rgba(17, 17, 17, 0.5);
+  --edge: rgba(17, 17, 17, 0.6);
+  --edge-dim: rgba(17, 17, 17, 0.18);
+  --plate: rgba(255, 255, 255, 0.94);
+  --grid: rgba(17, 17, 17, 0.035);
+  --glass: rgba(255, 255, 255, 0.9);
+}
+:root[data-skin="canon"] video, :root[data-skin="canon"] .art, :root[data-skin="canon"] .rx { filter: var(--art-filter); }
+:root[data-skin="canon"] body, :root[data-skin="canon"] #root { background: #f4f2ec; color: #111; }
+/* Vignelli: no glow, no bloom — type and space carry the hierarchy */
+:root[data-skin="canon"] * { text-shadow: none !important; }
+:root[data-skin="canon"] .text-white, :root[data-skin="canon"] .text-bone { color: #111; }
+:root[data-skin="canon"] :is(.is-active, .btn-primary, .lit, .bg-red) :is(.text-white, .text-bone),
+:root[data-skin="canon"] :is(.is-active, .btn-primary, .lit).text-white,
+:root[data-skin="canon"] .is-active, :root[data-skin="canon"] .btn-primary, :root[data-skin="canon"] .lit { color: #fff; }
+:root[data-skin="canon"] .bg-black, :root[data-skin="canon"] .bg-void { background-color: #f4f2ec; }
+/* the subway band: the telemetry strip and command bar are black, type white */
+:root[data-skin="canon"] header, :root[data-skin="canon"] nav[aria-label="Apps"] { background: #111 !important; color: #fff; }
+:root[data-skin="canon"] header .text-white, :root[data-skin="canon"] header .text-bone, :root[data-skin="canon"] nav[aria-label="Apps"] .rail-label { color: #fff; }
+:root[data-skin="canon"] header .text-ash, :root[data-skin="canon"] header .text-smoke { color: #bbb; }
+:root[data-skin="canon"] .rail-key { color: #ddd; }
+:root[data-skin="canon"] .vignette { display: none; }
+:root[data-skin="canon"] .well { background: rgba(17, 17, 17, 0.035); box-shadow: inset -1px 0 0 rgba(17, 17, 17, 0.1); }
+:root[data-skin="canon"] .panel, :root[data-skin="canon"] .win-frame { box-shadow: 0 1px 0 rgba(0,0,0,0.04), 0 12px 32px rgba(0,0,0,0.12); }
+
 :root[data-skin="savile"] video, :root[data-skin="savile"] .art, :root[data-skin="savile"] .rx { filter: var(--art-filter); }
-:root[data-skin="savile"] .t-display, :root[data-skin="savile"] .t-title, :root[data-skin="savile"] .font-display { font-weight: 600; letter-spacing: 0.06em; }
 /* the tailor's hand: brass hairlines, ivory caps, a pinstripe in every plate */
 :root[data-skin="savile"] .panel, :root[data-skin="savile"] .plate { background-image:
     linear-gradient(135deg, transparent calc(50% - 0.8px), rgba(201,168,92,0.7) calc(50% - 0.8px) calc(50% + 0.8px), transparent calc(50% + 0.8px)),
@@ -225,12 +345,13 @@ button {
   padding: 0;
 }
 
-/* Michroma is reserved for display: it is wide and should be rare */
+/* the display face is reserved for display: titles, the clock, the hero */
 h1, h2, h3, .wordmark, .t-display, .t-title, .t-section, .font-display {
   font-family: var(--font-display);
   font-weight: 400;
 }
-.num, .mono, .font-mono { font-family: var(--font-mono); }
+.num, .mono, .font-mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums lining-nums; }
+h1, h2, h3, .wordmark, .t-display, .t-title, .t-section, .font-display { font-weight: var(--display-weight); }
 
 button:focus-visible,
 a:focus-visible {
@@ -845,56 +966,16 @@ button:active:not(:disabled) { transform: scale(0.96); }
 @keyframes scan-pass { to { transform: translateX(120%); } }
 
 /* ── EVERY ICON ALIVE ───────────────────────────────────── */
-/* drawn app glyphs: always in motion, faster on hover */
-.ai .ai-spin-slow { animation: ai-spin 14s linear infinite; }
-.ai .ai-breathe { animation: ai-breathe 3s ease-in-out infinite; }
-.ai .ai-lift { animation: ai-lift 2.6s ease-in-out infinite; }
-.ai .ai-orbit { animation: ai-orbit 5s linear infinite; }
-.ai .ai-cell { animation: ai-cell 2.4s ease-in-out infinite; }
-.ai .ai-flow { animation: ai-flow 1.6s linear infinite; }
-.ai .ai-spin { animation: ai-spin 9s linear infinite; }
-.ai .ai-spin-rev { animation: ai-spin-rev 6s linear infinite; }
-.ai .ai-scan { animation: ai-scan 2.4s ease-in-out infinite alternate; }
-.ai .ai-ignite { animation: ai-ignite 3.2s cubic-bezier(0.2,0,0,1) infinite; }
-.ai .ai-wing-l { animation: ai-wing-l 2.2s ease-in-out infinite; }
-.ai .ai-wing-r { animation: ai-wing-r 2.2s ease-in-out infinite; }
-.ai .ai-bar { animation: ai-bar 1.4s ease-in-out infinite; }
-.ai .ai-ripple { animation: ai-ripple 2.4s ease-out infinite; }
-.ai .ai-read { animation: ai-read 4s ease-in-out infinite; }
-.ai .ai-rise { animation: ai-rise 2.2s ease-in-out infinite; }
-.ai { animation: holo-flicker 7s steps(1) infinite; }
-
-/* every lucide icon in the interface: a holographic flicker at rest, its own motion on hover */
-svg.lucide { overflow: visible; animation: holo-flicker 6s steps(1) infinite; filter: drop-shadow(0 0 2px rgb(var(--acc)/0.35)); }
-svg.lucide:nth-of-type(3n) { animation-duration: 8.3s; }
-svg.lucide:nth-of-type(3n + 1) { animation-duration: 5.1s; animation-delay: -2s; }
-@keyframes holo-flicker { 0%, 91%, 100% { opacity: 1; } 92% { opacity: 0.35; } 93% { opacity: 1; } 95% { opacity: 0.6; } 96% { opacity: 1; } }
-
-svg.lucide-wifi path, svg.lucide-wifi-high path { animation: wifi-arc 2.4s ease-in-out infinite; }
-svg.lucide-wifi path:nth-child(2) { animation-delay: 0.2s; } svg.lucide-wifi path:nth-child(3) { animation-delay: 0.4s; } svg.lucide-wifi path:nth-child(4) { animation-delay: 0.6s; }
-@keyframes wifi-arc { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
-svg.lucide-bell { transform-origin: 50% 10%; animation: bell-idle 8s ease-in-out infinite; }
-@keyframes bell-idle { 0%, 88%, 100% { transform: rotate(0); } 90% { transform: rotate(14deg); } 92% { transform: rotate(-12deg); } 94% { transform: rotate(8deg); } 96% { transform: rotate(-4deg); } }
-svg.lucide-search { animation: search-scan 5s ease-in-out infinite; }
-@keyframes search-scan { 0%, 100% { transform: translate(0, 0); } 25% { transform: translate(1.5px, -1px); } 50% { transform: translate(-1px, 1px); } 75% { transform: translate(1px, 1px); } }
-svg[class*="lucide-battery"] rect:last-of-type, svg[class*="lucide-battery"] path:last-of-type { animation: wifi-arc 3s ease-in-out infinite; }
-svg[class*="lucide-cloud"] { animation: cloud-drift 6s ease-in-out infinite; }
-@keyframes cloud-drift { 0%, 100% { transform: translateX(-1px); } 50% { transform: translateX(1.5px); } }
-svg[class*="lucide-chevron"] { animation: chevron-nudge 2.6s ease-in-out infinite; }
-@keyframes chevron-nudge { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(1.5px); } }
+/* Rams 5 — unobtrusive: icons are still at rest; each glyph's motion plays on
+   hover and for the app that is active (see .group:hover / .ai-live rules). */
+svg.lucide { overflow: visible; }
 svg.lucide-loader, svg.lucide-loader-circle, svg[class*="lucide-refresh"], svg.lucide-rotate-cw { animation: ai-spin 1.6s linear infinite; }
-svg.lucide-play { animation: play-pulse 2s ease-in-out infinite; }
-@keyframes play-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); filter: drop-shadow(0 0 6px rgb(var(--acc))); } }
-svg[class*="lucide-folder"], svg[class*="lucide-file"] { animation: file-float 4s ease-in-out infinite; }
-@keyframes file-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-1.5px); } }
-svg.lucide-x, svg.lucide-minus, svg.lucide-plus, svg[class*="lucide-maximize"], svg[class*="lucide-minimize"] { animation: none; }
-svg.lucide-cpu { animation: ai-spin 12s linear infinite; }
 svg.lucide-check { stroke-dasharray: 24; animation: check-draw 0.5s ease-out both; }
 @keyframes check-draw { from { stroke-dashoffset: 24; } to { stroke-dashoffset: 0; } }
 
 /* hover: every icon kicks */
 button:hover svg.lucide, a:hover svg.lucide { animation: icon-kick 0.6s cubic-bezier(0.2,0,0,1); filter: drop-shadow(0 0 6px rgb(var(--acc)/0.9)); }
-@keyframes icon-kick { 0% { transform: scale(1) rotate(0); } 30% { transform: scale(1.3) rotate(-8deg); } 60% { transform: scale(0.92) rotate(4deg); } 100% { transform: scale(1) rotate(0); } }
+@keyframes icon-kick { 0% { transform: translateY(0); } 40% { transform: translateY(-2px) scale(1.08); } 100% { transform: translateY(0); } }
 .group:hover .ai .ai-spin-slow { animation-duration: 3s; }
 .group:hover .ai { filter: drop-shadow(0 0 8px rgb(var(--acc)/1)) drop-shadow(0 0 16px rgb(var(--acc)/0.5)); }
 
@@ -941,11 +1022,13 @@ button:hover svg.lucide, a:hover svg.lucide { animation: icon-kick 0.6s cubic-be
 @layer components {
   :root { --edge: rgb(var(--acc) / 0.34); --edge-dim: rgb(var(--acc) / 0.14); --plate: rgb(var(--ink-1) / 0.86); --grid: rgb(var(--acc) / 0.045); }
 
-  .t-display { font-size: clamp(30px, 3.4vw, 46px); letter-spacing: 0.04em; line-height: 1.05; }
-  .t-title { font-size: 24px; letter-spacing: 0.06em; line-height: 1.15; }
-  .t-section { font-size: 13px; letter-spacing: 0.14em; }
-  .label { font-family: var(--font-sans); font-size: 11px; font-weight: 600; letter-spacing: 0.22em; color: var(--color-bronze); }
-  .label-sm { font-family: var(--font-mono); font-size: 10px; font-weight: 400; letter-spacing: 0.08em; color: var(--color-smoke); }
+  /* Vignelli: contrast of scale, a few sizes only — 11 · 13 · 16 · 24 · 40 · 72.
+     Display weight, tracking and case belong to each theme's face. */
+  .t-display { font-size: clamp(40px, 4.2vw, 72px); font-weight: var(--display-weight); letter-spacing: var(--display-track); text-transform: var(--display-case); line-height: 1; }
+  .t-title { font-size: 40px; font-weight: var(--display-weight); letter-spacing: var(--display-track); text-transform: var(--display-case); line-height: 1.05; }
+  .t-section { font-size: 24px; font-weight: var(--display-weight); letter-spacing: var(--display-track); text-transform: var(--display-case); line-height: 1.15; }
+  .label { font-family: var(--font-sans); font-size: 11px; font-weight: 600; letter-spacing: 0.16em; color: var(--color-bronze); }
+  .label-sm { font-family: var(--font-mono); font-size: 11px; font-weight: 400; letter-spacing: 0.06em; color: var(--color-smoke); font-variant-numeric: tabular-nums lining-nums; }
 
   /* a chamfered plate */
   .plate, .panel, .panel-solid {

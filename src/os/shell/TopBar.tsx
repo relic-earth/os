@@ -152,7 +152,7 @@ export function TopBar({ compact }: { compact?: boolean }) {
       <div className="flex items-center gap-3 pl-3 pr-4">
         <span className="font-display text-[12px] tracking-[0.12em] text-white [text-shadow:0_0_14px_rgb(var(--acc)/0.8)]">{appName.toUpperCase()}</span>
         <span className="font-mono text-[10px] text-[rgb(var(--gold)/0.8)]">{'//'} RELIC·OS 0.1</span>
-        {busy && <span className="glitch-text font-mono text-[10px] tracking-[0.2em] text-signal" data-text="CLAUDE·EXEC">CLAUDE·EXEC</span>}
+        {busy && <span className="pulse font-mono text-[11px] tracking-[0.12em] text-signal">CLAUDE · WORKING</span>}
       </div>
 
       {/* readouts */}

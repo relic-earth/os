@@ -19,7 +19,6 @@ export function OSShell({ compact }: { compact?: boolean }) {
     <div className="relative flex h-full w-full flex-col overflow-clip">
       <Background />
       <div className="deck-grid" />
-      <div className="deck-scan" />
       <TopBar compact={compact} />
       <div className="relative flex min-h-0 flex-1">
         <main className="relative min-w-0 flex-1 overflow-clip">
