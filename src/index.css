@@ -1088,3 +1088,7 @@ button:hover svg.lucide, a:hover svg.lucide { animation: icon-kick 0.6s cubic-be
 .win-key:hover { background: rgb(var(--acc) / 0.22); box-shadow: inset 0 0 0 1px rgb(var(--acc)); color: #fff; }
 .win-key-danger:hover { background: rgb(var(--acc-1)); color: #fff; }
 .win-key.hud-target::before, .win-key.hud-target::after { display: none; }
+
+/* ── Windows (v86): the guest's framebuffer fits the window, pixels stay crisp ── */
+.v86-screen canvas { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; image-rendering: pixelated; }
+.v86-screen > div:empty { display: none; }

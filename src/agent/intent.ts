@@ -55,6 +55,9 @@ export interface Classified {
 const escape = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 
 const appAliases: [string, string][] = [
+  ['windows', 'windows'],
+  ['reactos', 'windows'],
+  ['windows pc', 'windows'],
   ['photoshop', 'photoshop'],
   ['autocad', 'autocad'],
   ['excel', 'excel'],

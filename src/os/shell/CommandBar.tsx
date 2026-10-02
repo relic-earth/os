@@ -5,6 +5,7 @@ import { AppIcon } from '../../ui/AppIcon'
 import { getOS, useOS } from '../runtime/store'
 import { relicRuntime } from '../runtime/relicRuntime'
 import { classify, routeLabel } from '../../agent/intent'
+import { windowsOwnsKeyboard } from '../../apps/windows/keyboard'
 
 /**
  * TYPE ANYWHERE
@@ -34,6 +35,7 @@ export function CommandBar() {
       if (e.ctrlKey || e.metaKey || e.altKey || e.isComposing) return
       if (e.key.length !== 1 || e.key === ' ') return
       if (isTypingTarget(e.target)) return
+      if (windowsOwnsKeyboard()) return
       e.preventDefault()
       setSeed(e.key)
       relicRuntime.shell.openCommand(true)

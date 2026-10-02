@@ -1,4 +1,4 @@
-import type { ComponentType } from 'react'
+import { lazy, Suspense, type ComponentType } from 'react'
 import type { RelicWindow } from '../sdk/types'
 import { ClaudeApp } from './claude/ClaudeApp'
 import { FileManager } from './files/FileManager'
@@ -13,6 +13,8 @@ import { Excel } from './sim/Excel'
 import { AutoCAD, Blender, Revit, Steam, VSCode } from './sim/Engineering'
 import { Spotify } from './sim/Spotify'
 import { RelicBuild } from './sim/RelicBuild'
+// the x86 emulator only loads when a Windows window opens
+const WindowsPC = lazy(() => import('./windows/WindowsPC').then((m) => ({ default: m.WindowsPC })))
 
 export type SurfaceProps = { win: RelicWindow; tv?: boolean }
 
@@ -39,6 +41,11 @@ const surfaces: Record<string, ComponentType<SurfaceProps>> = {
   spotify: Spotify,
   steam: Steam,
   'relic-build': RelicBuild,
+  windows: (props) => (
+    <Suspense fallback={<div className="flex h-full items-center justify-center bg-black font-mono text-[11px] text-smoke">LOADING THE x86 EMULATOR…</div>}>
+      <WindowsPC {...props} />
+    </Suspense>
+  ),
 }
 
 export function AppSurface({ win, tv }: SurfaceProps) {

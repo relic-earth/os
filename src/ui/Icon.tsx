@@ -50,6 +50,7 @@ const relicGlyph: Record<string, string> = {
   music: 'music',
   gamepad: 'games',
   hammer: 'relic-build',
+  windows: 'windows',
   image: 'photoshop',
   compass: 'autocad',
   table: 'excel',

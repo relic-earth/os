@@ -125,6 +125,19 @@ const glyphs: Record<string, ReactNode> = {
       <rect x="16" y="20" width="17" height="4" rx="2" fill="currentColor" opacity="0.5" className="ai-read" />
     </>
   ),
+  // Windows — four panes on a slant; one lights in turn
+  windows: (
+    <g transform="skewY(-6) translate(0 3)">
+      {[
+        [10, 10],
+        [26, 10],
+        [10, 26],
+        [26, 26],
+      ].map(([x, y], i) => (
+        <rect key={i} x={x} y={y} width="13" height="13" rx="1" fill="currentColor" className="ai-cell" style={{ animationDelay: `${i * 0.3}s` }} />
+      ))}
+    </g>
+  ),
   // Relic Build — chevrons rising out of a forge
   'relic-build': (
     <>

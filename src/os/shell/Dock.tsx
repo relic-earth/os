@@ -3,7 +3,7 @@ import { relicRuntime } from '../runtime/relicRuntime'
 import { getApp } from '../apps/registry'
 import { Glyph } from '../../ui/AppIcon'
 
-const PINNED = ['claude', 'files', 'web', 'apps', 'devices', 'settings']
+const PINNED = ['claude', 'files', 'web', 'windows', 'apps', 'devices', 'settings']
 const SURFACES: { id: Section; name: string }[] = [
   { id: 'home', name: 'Home' },
   { id: 'tv', name: 'TV' },
